@@ -2,7 +2,7 @@
 {
 	var id;
 	var subCounterFont;
-	var _mainMC;// provvisoria
+	var _mainMC;// provvisoria da gestire con un pool di menu per i submenu
 	var menuItems = new Array();
 	var panels = new Array();
 	var BannerSprite;
@@ -63,7 +63,7 @@
 		this.CounterText = this.SubtitleSprite.counterMC.labelTF;
 		this.CounterText.antiAliasType = "advanced";
 		this.CounterText.selectable = false;
-		com.rockstargames.ui.utils.UIText.setSizedText(this.CounterText,"0/0",true, true);
+		com.rockstargames.ui.utils.UIText.setSizedText(this.CounterText,"0/0",true,true);
 
 		this.Footer = this._mainMC.attachMovie("Footer", "footer", this._mainMC.getNextHighestDepth());
 		this.Footer._visible = false;
@@ -208,8 +208,7 @@
 		{
 			this.DescriptionSprite._visible = false;
 		}
-		com.rockstargames.ui.utils.UIText.setDescText(this.CounterText,this.currentSelection + 1 + "/" + this.itemCount,true);
-		com.rockstargames.ui.utils.Colour.ApplyHudColourToTF(this.CounterText,com.rockstargames.ui.utils.HudColour.HUD_COLOUR_FREEMODE);
+		com.rockstargames.ui.utils.UIText.setSizedText(this.CounterText,this.currentSelection + 1 + "/" + this.itemCount,true,true);
 	}
 
 	function get currentItem()
