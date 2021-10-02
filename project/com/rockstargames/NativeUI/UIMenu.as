@@ -27,13 +27,12 @@
 	// COSì POSSO FARE COME VOGLIO PER EDITARE LA DESCRIZIONE E RENDERE IL TEXTO SCROLLABLE COSì SCORRE SE PIU LUNGO.
 	function UIMenu(mc, title, subtitle)
 	{
+		this._mainMC = mc;
 		this._maxItem = this.maxItemsOnScreen;
 		this._minItem = 0;
-
-		this._mainMC = mc;
 		var bannerFont = new TextFormat("$Font5", 31);
 		bannerFont.align = "center";
-		this.BannerSprite = mc.attachMovie("BannerSprite", "bannerSprite", mc.getNextHighestDepth());
+		this.BannerSprite = this._mainMC.attachMovie("BannerSprite", "bannerSprite", this._mainMC.getNextHighestDepth());
 		this.BannerSprite._x = 0;
 		this.BannerSprite._y = 0;
 		this.BannerSprite._width = 288;
@@ -46,7 +45,7 @@
 		{
 			com.rockstargames.ui.utils.UIText.setSizedText(this.BannerTitle,title,true,true,31,31);
 		}
-		this.SubtitleSprite = mc.attachMovie("SubtitleSprite", "subtitleSprite", mc.getNextHighestDepth());
+		this.SubtitleSprite = this._mainMC.attachMovie("SubtitleSprite", "subtitleSprite", this._mainMC.getNextHighestDepth());
 		this.SubtitleSprite._x = 0;
 		this.SubtitleSprite._y = this.BannerSprite._height - 1;
 		this.SubtitleSprite._width = 288;
@@ -67,14 +66,26 @@
 
 		this.Footer = this._mainMC.attachMovie("Footer", "footer", this._mainMC.getNextHighestDepth());
 		this.Footer._visible = false;
-		this.DescriptionSprite = mc.attachMovie("DescriptionBG", "description", mc.getNextHighestDepth());
+		this.DescriptionSprite = this._mainMC.attachMovie("DescriptionBG", "description", this._mainMC.getNextHighestDepth());
 		this.DescriptionSprite._visible = false;
 	}
 
-	function addItem(str, substr)
+	function addItem(id, str, substr, style, checked)
 	{
 		var _selectedItem = this.currentSelection;
-		var item = new com.rockstargames.NativeUI.items.UIMenuItem(this._mainMC, str, substr, this);
+		var item;
+		switch (id)
+		{
+			case 0 :
+				item = new com.rockstargames.NativeUI.items.UIMenuItem(str, substr, this);
+				break;
+			case 2 :
+				item = new com.rockstargames.NativeUI.items.UIMenuCheckboxItem(str, substr, this, style, checked);
+				break;
+			default :
+				item = new com.rockstargames.NativeUI.items.UIMenuItem(str, substr, this);
+				break;
+		}
 		this.itemCount = this.menuItems.push(item);
 		if (this.itemCount <= this.maxItemsOnScreen + 1)
 		{
@@ -230,7 +241,7 @@
 		{
 			this._activeItem = 0;
 		}
-		this.menuItems[this._activeItem % (this.itemCount)].highlighted = false;
+		this.currentItem.highlighted = false;
 		this._activeItem = 1000000 - (1000000 % this.itemCount) + val;
 		if (this.currentSelection > this._maxItem)
 		{
@@ -243,4 +254,14 @@
 			this._minItem = this.currentSelection;
 		}
 	}
+
+	/*
+	FOR DEBUG PURPOUSES!!!
+	*/
+	function setDebugText(str)
+	{
+		com.rockstargames.ui.utils.UIText.setDescText(this._mainMC.debugText,str,true);
+		com.rockstargames.ui.utils.Colour.ApplyHudColourToTF(this._mainMC.debugText,com.rockstargames.ui.utils.HudColour.HUD_COLOUR_WHITE);
+	}
+
 }

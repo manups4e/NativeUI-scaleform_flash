@@ -18,14 +18,9 @@
 		this.UIMenu = new com.rockstargames.NativeUI.UIMenu(this.CONTENT, "NativeUI UIMenu", "Let's test");
 	}
 
-	function setDebugText(str)
+	function ADD_ITEM(id, str, sub, style, checked)
 	{
-		this.CONTENT.debugText.htmlText = str;
-	}
-
-	function ADD_ITEM(str, sub, bool)
-	{
-		this.UIMenu.addItem(str,sub,bool);
+		this.UIMenu.addItem(id,str,sub, style, checked);
 	}
 
 	function GO_UP()

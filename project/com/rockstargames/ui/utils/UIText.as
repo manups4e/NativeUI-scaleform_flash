@@ -1,4 +1,4 @@
-class com.rockstargames.ui.utils.UIText
+﻿class com.rockstargames.ui.utils.UIText
 {
    static var SIZE = 13;
    static var SIZE_GTAG = 18;
