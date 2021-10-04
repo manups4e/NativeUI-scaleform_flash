@@ -23,6 +23,11 @@
 		var _loc2_ = {ra:100, rb:r, ga:100, gb:g, ba:100, bb:b, aa:100, ab:100};
 		_loc1_.setTransform(_loc2_);
 	}
+
+	public static function rgb2hex(r, g, b, a)
+	{
+		return (a << 24) | (r << 16) | (g << 8) | b;
+	}
 	static function RGBToHex(r, g, b)
 	{
 		var _loc2_ = r.toString(16);
@@ -51,10 +56,34 @@
 		var _loc4_ = _loc2_ - (_loc3_ << 8);
 		return {r:_loc1_, g:_loc3_, b:_loc4_};
 	}
+	static function ARGBtoHEX(argb)
+	{
+		return argb.a << 24 | argb.r << 16 | argb.g << 8 | argb.b;
+	}
+
+	static function HexToARGB(hex)
+	{
+		var col = {};
+		col.a = (hex >> 24) & 0xFF;
+		col.r = (hex >> 16) & 0xFF;
+		col.g = (hex >> 8) & 0xFF;
+		col.b = hex & 0xFF;
+		return col;
+	}
+	static function StringToColour(string)
+	{
+		var s = string.split(",");
+		return {a:s[0], r:s[1], g:s[2], b:s[3]};
+	}
 	static function ApplyHudColour(mc, colourId)
 	{
 		var _loc1_ = new com.rockstargames.ui.utils.HudColour();
 		com.rockstargames.ui.utils.Colour.setHudColour(colourId,_loc1_);
+		com.rockstargames.ui.utils.Colour.Colourise(mc,_loc1_.r,_loc1_.g,_loc1_.b,_loc1_.a);
+	}
+	static function ApplyHudIntColour(mc, colour)
+	{
+		var _loc1_ = com.rockstargames.ui.utils.Colour.HexToARGB(colour);
 		com.rockstargames.ui.utils.Colour.Colourise(mc,_loc1_.r,_loc1_.g,_loc1_.b,_loc1_.a);
 	}
 

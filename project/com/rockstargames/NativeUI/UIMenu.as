@@ -1,6 +1,5 @@
 ﻿class com.rockstargames.NativeUI.UIMenu
 {
-	var id;
 	var subCounterFont;
 	var _mainMC;// provvisoria da gestire con un pool di menu per i submenu
 	var menuItems = new Array();
@@ -70,17 +69,26 @@
 		this.DescriptionSprite._visible = false;
 	}
 
-	function addItem(id, str, substr, style, checked)
+	function addItem(id, str, substr, param1, param2, param3, param4, param5, param6, param7, param8, param9, param10)
 	{
 		var _selectedItem = this.currentSelection;
 		var item;
 		switch (id)
 		{
 			case 0 :
-				item = new com.rockstargames.NativeUI.items.UIMenuItem(str, substr, this);
+				item = new com.rockstargames.NativeUI.items.UIMenuItem(str, substr, this, param1, param2, param3, param4);
+				break;
+			case 1 :
+				item = new com.rockstargames.NativeUI.items.UIMenuListItem(str, substr, this, param1, param2, param3, param4, param5, param6);
 				break;
 			case 2 :
-				item = new com.rockstargames.NativeUI.items.UIMenuCheckboxItem(str, substr, this, style, checked);
+				item = new com.rockstargames.NativeUI.items.UIMenuCheckboxItem(str, substr, this, param1, param2, param3, param4, param5, param6);
+				break;
+			case 3 :
+				item = new com.rockstargames.NativeUI.items.UIMenuSliderItem(str, substr, this, param1, param2, param3, param4, param5, param6, param7, param8, param9);
+				break;
+			case 4 :
+				item = new com.rockstargames.NativeUI.items.UIMenuProgressItem(str, substr, this, param1, param2, param3, param4, param5, param6, param7, param8, param9);
 				break;
 			default :
 				item = new com.rockstargames.NativeUI.items.UIMenuItem(str, substr, this);
@@ -169,6 +177,49 @@
 		this.updateItemsDrawing();
 	}
 
+	function goLeft()
+	{
+		var retVal = -1;
+		if (this.currentItem instanceof com.rockstargames.NativeUI.items.UIMenuListItem)
+		{
+			this.currentItem.index--;
+			retVal = this.currentItem.index;
+		}
+		else if (this.currentItem instanceof com.rockstargames.NativeUI.items.UIMenuSliderItem)
+		{
+			this.currentItem.value -= this.currentItem.multiplier;
+			retVal = this.currentItem.value;
+		}
+		else if (this.currentItem instanceof com.rockstargames.NativeUI.items.UIMenuProgressItem)
+		{
+			this.currentItem.value--;
+			retVal = this.currentItem.value;
+		}
+		this.updateDescription();
+		return retVal;
+	}
+
+	function goRight()
+	{
+		var retVal = -1;
+		if (this.currentItem instanceof com.rockstargames.NativeUI.items.UIMenuListItem)
+		{
+			this.currentItem.index++;
+			retVal = this.currentItem.index;
+		}
+		else if (this.currentItem instanceof com.rockstargames.NativeUI.items.UIMenuSliderItem)
+		{
+			this.currentItem.value += this.currentItem.multiplier;
+			retVal = this.currentItem.value;
+		}
+		else if (this.currentItem instanceof com.rockstargames.NativeUI.items.UIMenuProgressItem)
+		{
+			this.currentItem.value++;
+			retVal = this.currentItem.value;
+		}
+		this.updateDescription();
+		return retVal;
+	}
 
 	function updateItemsDrawing()
 	{
@@ -200,7 +251,7 @@
 		if (this.menuItems[this.currentSelection].subtitle != undefined && this.menuItems[this.currentSelection].subtitle != "")
 		{
 			this.DescriptionSprite._visible = true;
-			com.rockstargames.ui.utils.UIText.setDescText(this.DescriptionSprite.descriptionMC.descText,this.menuItems[this.currentSelection].subtitle,true);
+			this.updateDescription();
 			if (this.itemCount >= this.maxItemsOnScreen + 1)
 			{
 				this.DescriptionSprite._y = this.BannerSprite._height + this.SubtitleSprite._height + ((this.maxItemsOnScreen + 1) * 25) + 1;
@@ -219,9 +270,14 @@
 		{
 			this.DescriptionSprite._visible = false;
 		}
+		this.updateDescription();
 		com.rockstargames.ui.utils.UIText.setSizedText(this.CounterText,this.currentSelection + 1 + "/" + this.itemCount,true,true);
 	}
 
+	function updateDescription()
+	{
+		com.rockstargames.ui.utils.UIText.setDescText(this.DescriptionSprite.descriptionMC.descText,this.menuItems[this.currentSelection].subtitle,true);
+	}
 	function get currentItem()
 	{
 		return this.menuItems[this._activeItem % (this.itemCount)];
@@ -254,6 +310,35 @@
 			this._minItem = this.currentSelection;
 		}
 	}
+
+	function SET_INPUT_EVENT(direction)
+	{
+		var _loc2_ = 0;
+		switch (direction)
+		{
+			case com.rockstargames.ui.game.GamePadConstants.CROSS :
+				//_loc2_ = this.CURSOR_CLICK();
+				break;
+			case com.rockstargames.ui.game.GamePadConstants.DPADUP :
+				//this.MOVE_CURSOR(0,- this.mouseSpeed);
+				break;
+			case com.rockstargames.ui.game.GamePadConstants.DPADDOWN :
+				//this.MOVE_CURSOR(0,this.mouseSpeed);
+				break;
+			case com.rockstargames.ui.game.GamePadConstants.DPADLEFT :
+				//this.MOVE_CURSOR(- this.mouseSpeed,0);
+				break;
+			case com.rockstargames.ui.game.GamePadConstants.DPADRIGHT :
+				//this.MOVE_CURSOR(this.mouseSpeed,0);
+		}
+		return _loc2_;
+	}
+
+	function SET_INPUT_EVENT_SELECT()
+	{
+		//var _loc2_ = this.CURSOR_CLICK();
+	}
+
 
 	/*
 	FOR DEBUG PURPOUSES!!!

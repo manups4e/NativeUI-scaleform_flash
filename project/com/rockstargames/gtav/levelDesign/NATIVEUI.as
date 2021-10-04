@@ -16,11 +16,12 @@
 		super.INITIALISE(mc);
 		this.loaderObject = new Object();
 		this.UIMenu = new com.rockstargames.NativeUI.UIMenu(this.CONTENT, "NativeUI UIMenu", "Let's test");
+		this.loaderObject = new com.rockstargames.ui.media.ImageLoaderManager();
 	}
 
-	function ADD_ITEM(id, str, sub, style, checked)
+	function ADD_ITEM(id, str, sub, param1, param2, param3, param4, param5, param6, param7, param8, param9, param10)
 	{
-		this.UIMenu.addItem(id,str,sub, style, checked);
+		this.UIMenu.addItem(id,str,sub,param1,param2,param3,param4,param5,param6,param7,param8,param9,param10);
 	}
 
 	function GO_UP()
@@ -32,6 +33,24 @@
 		this.UIMenu.goDown();
 	}
 
+	function GO_LEFT()
+	{
+		return this.UIMenu.goLeft();
+	}
+	function GO_RIGHT()
+	{
+		return this.UIMenu.goRight();
+	}
+
+	function ADD_ITEM_TO_ITEMLIST(listItemId, item)
+	{
+
+	}
+
+	function SET_RIGHT_BADGE(item, txd, icon)
+	{
+		this.UIMenu.menuItems[item].SetRightBadge(txd, icon);
+	}
 	/*
 	function SET_BANNER_SPRITE(txd, texture)
 	{
