@@ -16,15 +16,60 @@
 	var _highlightColor = com.rockstargames.ui.utils.HudColour.HUD_COLOUR_WHITE;// HUD_COLOUR_WHITE
 	var _textColor = com.rockstargames.ui.utils.HudColour.HUD_COLOUR_WHITE;
 	var _textHighlightColor = com.rockstargames.ui.utils.HudColour.HUD_COLOUR_BLACK;
-
+	var _mouseCatcher;
+	var _hovered;
+	var panels = new Array();
 	function BaseMenuItem(parent, str, substr)
 	{
 		this._parentMenu = parent;
 		this.parentMC = this._parentMenu._mainMC;
 		this.leftText = str;
 		this.subtitle = substr;
-
 	}
+
+	function initBaseMouseInterface()
+	{
+		this.backgroundMC.onRelease = mx.utils.Delegate.create(this, this.mPress);
+		this.backgroundMC.onRollOver = mx.utils.Delegate.create(this, this.mOver);
+		this.backgroundMC.onRollOut = mx.utils.Delegate.create(this, this.mOut);
+	}
+
+	function mPress()
+	{
+		for (var item in this._parentMenu.menuItems)
+		{
+			if (this._parentMenu.menuItems[item].leftText == this.leftText && this._parentMenu.menuItems[item].subtitle == this.subtitle)
+			{
+				if (!this._parentMenu.menuItems[item].highlighted)
+				{
+					this._parentMenu.currentSelection = item;
+				}
+			}
+		}
+	}
+	function mOver()
+	{
+		if (!this.highlighted)
+		{
+			if (!this._hovered)
+			{
+				this._hovered = true;
+			}
+			com.rockstargames.ui.utils.Colour.ApplyHudColour(this.backgroundMC,com.rockstargames.ui.utils.HudColour.HUD_COLOUR_MENU_HIGHLIGHT);
+		}
+	}
+	function mOut()
+	{
+		if (!this.highlighted)
+		{
+			if (this._hovered)
+			{
+				this._hovered = false;
+			}
+			com.rockstargames.ui.utils.Colour.ApplyHudColour(this.backgroundMC,this._mainColor);
+		}
+	}
+
 
 	function setRightText(tf, str, autoShrink, sizeOffset, sizeOverride)
 	{
@@ -61,8 +106,6 @@
 		com.rockstargames.ui.utils.Colour.setHudColour(_loc2_,_loc1_);
 		return _loc1_.r * 65536 + _loc1_.g * 256 + _loc1_.b;
 	}
-	
-	
 
 	function set highlighted(_h)
 	{
@@ -76,15 +119,6 @@
 		return this._highlighted;
 	}
 
-	function set _visible(_v)
-	{
-		this.itemMC._visible = _v;
-	}
-	function get _visible()
-	{
-		return this.itemMC._visible;
-	}
-
 	function set enabled(e)
 	{
 		this.isActive = e;
@@ -92,5 +126,13 @@
 	function get enabled()
 	{
 		return this.isActive;
+	}
+	function set isVisible(_v)
+	{
+		this.itemMC._visible = _v;
+	}
+	function get isVisible()
+	{
+		return this.itemMC._visible;
 	}
 }

@@ -5,6 +5,7 @@
 	var _customBannerLoaded = false;
 	var barMC;
 	var UIMenu;
+
 	function NATIVEUI()
 	{
 		super();
@@ -14,9 +15,9 @@
 	function INITIALISE(mc)
 	{
 		super.INITIALISE(mc);
+		this.getDisplayConfig(true);
 		this.loaderObject = new Object();
-		this.UIMenu = new com.rockstargames.NativeUI.UIMenu(this.CONTENT, "NativeUI UIMenu", "Let's test");
-		this.loaderObject = new com.rockstargames.ui.media.ImageLoaderManager();
+		this.UIMenu = new com.rockstargames.NativeUI.UIMenu(this.CONTENT, "Scaleform NativeUI", "Let's test");
 	}
 
 	function ADD_ITEM(id, str, sub, param1, param2, param3, param4, param5, param6, param7, param8, param9, param10)
@@ -49,8 +50,22 @@
 
 	function SET_RIGHT_BADGE(item, txd, icon)
 	{
-		this.UIMenu.menuItems[item].SetRightBadge(txd, icon);
+		this.UIMenu.menuItems[item].SetRightBadge(txd,icon);
 	}
+
+	function ADD_PANEL(item, panelType, param1, param2, param3, param4, param5, param6, param7, param8, param9, param10)
+	{
+		this.UIMenu.addPanel(item,panelType,param1,param2,param3,param4,param5,param6,param7,param8,param9,param10);
+	}
+
+	function SET_COLOR_SLOT(item, panel, index, r, g, b)
+	{
+		var _item = this.UIMenu.menuItems[item];
+		var _panel = _item.panels[panel];
+		_panel.addColor(index,r,g,b);
+	}
+
+
 	/*
 	function SET_BANNER_SPRITE(txd, texture)
 	{

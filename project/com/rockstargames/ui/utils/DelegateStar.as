@@ -1,4 +1,4 @@
-class com.rockstargames.ui.utils.DelegateStar
+﻿class com.rockstargames.ui.utils.DelegateStar
 {
    function DelegateStar()
    {

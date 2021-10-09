@@ -1,3 +1,3 @@
-interface MouseBtnInterface
+﻿interface com.rockstargames.ui.mouse.MouseBtnInterface
 {
 }

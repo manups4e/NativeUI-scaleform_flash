@@ -6,10 +6,11 @@
 	var rightBadge = com.rockstargames.NativeUI.utils.Badges.NONE;
 	var _data;
 	var txd_loader;
+
 	function UIMenuItem(str, substr, parentMenu, mainColor, highlightColor, textColor, textHighlightColor)
 	{
 		super(parentMenu,str,substr);
-		this.itemMC = this.parentMC.attachMovie("UIMenuItem", "menuItem", this.parentMC.getNextHighestDepth());
+		this.itemMC = this.parentMC.attachMovie("UIMenuItem", "menuItem_" + (this._parentMenu.itemCount + 1), this.parentMC.getNextHighestDepth());
 		this.backgroundMC = this.itemMC.bgMC;
 		this.leftTextTF = this.itemMC.labelMC.labelTF;
 		this.leftTextTF.antiAliasType = "advanced";
@@ -32,10 +33,9 @@
 			this._textHighlightColor = textHighlightColor;
 		}
 		com.rockstargames.ui.utils.UIText.setSizedText(this.leftTextTF,this.leftText,true,true);
-		/*
-		com.rockstargames.ui.utils.Colour.ApplyHudColourToTF(this.leftTextTF,com.rockstargames.ui.utils.HudColour.HUD_COLOUR_WHITE);
-		*/
+		this.initBaseMouseInterface();
 	}
+
 
 	function SetRightText(str)
 	{
@@ -47,9 +47,9 @@
 		if (this.rightBadge == com.rockstargames.NativeUI.utils.Badges.NONE)
 		{
 			this.itemMC.RLabelMC._x -= 24;
-			this.badgeMC = this.itemMC.createEmptyMovieClip("badge", this.itemMC.getNextHighestDepth());
+			this.badgeMC = this.itemMC.createEmptyMovieClip("badge_" + (this._parentMenu.itemCount + 1), this.itemMC.getNextHighestDepth());
 			var sprite_name = com.rockstargames.NativeUI.utils.Badges.getSpriteNameById(id);
-			this.loadclip(txd,sprite_name,this.badgeMC);
+			this.SetClip(this.badgeMC,txd,sprite_name);
 		}
 		else
 		{
@@ -57,16 +57,15 @@
 			this.itemMC.RLabelMC._x += 24;
 		}
 	}
-	
-	//LOADCLIP E ONLOADINIT VANNO INSIEME!!
-	//TESTARE PER CARICARE DINAMICAMENTE ANCHE LE LIBRERIE BASE DI UIMENU!
-	function loadclip(textureDict, textureName, targetMC)
+
+	function SetClip(targetMC, textureDict, textureName)
 	{
 		this.txd_loader = new MovieClipLoader();
 		this.txd_loader.addListener(this);
 		var _loc2_ = "img://" + textureDict + "/" + textureName;
 		this.txd_loader.loadClip(_loc2_,targetMC);
 	}
+
 	function onLoadInit(target_mc)
 	{
 		target_mc._width = 24;
@@ -77,10 +76,19 @@
 		delete this.txd_loader;
 	}
 
+	function addPanel(_panel)
+	{
+		this.panels.push(_panel);
+	}
+
 	function set highlighted(_h)
 	{
 		super.highlighted = _h;
 		//com.rockstargames.ui.utils.Colour.ApplyHudColour(this.badgeMC,!_h ? this._textColor : this._textHighlightColor);
 		com.rockstargames.ui.utils.Colour.ApplyHudColourToTF(this.rightTextTF,!_h ? this._textColor : this._textHighlightColor);
+		for (var _panel in this.panels)
+		{
+			this.panels[_panel].isVisible = _h;
+		}
 	}
 }
