@@ -3,8 +3,6 @@
 	var disabledItemColor = [163, 159, 148];
 	var isActive = true;
 	var _highlighted;
-	var _width = 288;
-	var _height = 25;
 	var itemMC;
 	var backgroundMC;
 	var subtitle;
@@ -16,56 +14,54 @@
 	var _highlightColor = com.rockstargames.ui.utils.HudColour.HUD_COLOUR_WHITE;// HUD_COLOUR_WHITE
 	var _textColor = com.rockstargames.ui.utils.HudColour.HUD_COLOUR_WHITE;
 	var _textHighlightColor = com.rockstargames.ui.utils.HudColour.HUD_COLOUR_BLACK;
-	var _mouseCatcher;
-	var _hovered;
-	var panels = new Array();
+	var _hovered = false;
+	var hover = -1;
+	var panels;
+
 	function BaseMenuItem(parent, str, substr)
 	{
 		this._parentMenu = parent;
 		this.parentMC = this._parentMenu._mainMC;
 		this.leftText = str;
 		this.subtitle = substr;
+		this.panels = new Array();
+		this._hovered = false;
 	}
 
 	function initBaseMouseInterface()
 	{
-		this.backgroundMC.onRelease = mx.utils.Delegate.create(this, this.mPress);
-		this.backgroundMC.onRollOver = mx.utils.Delegate.create(this, this.mOver);
-		this.backgroundMC.onRollOut = mx.utils.Delegate.create(this, this.mOut);
+		this.backgroundMC.onRollOver = com.rockstargames.ui.utils.DelegateStar.create(this, this.mOver);
+		this.backgroundMC.onRollOut = com.rockstargames.ui.utils.DelegateStar.create(this, this.mOut);
 	}
 
-	function mPress()
-	{
-		for (var item in this._parentMenu.menuItems)
-		{
-			if (this._parentMenu.menuItems[item].leftText == this.leftText && this._parentMenu.menuItems[item].subtitle == this.subtitle)
-			{
-				if (!this._parentMenu.menuItems[item].highlighted)
-				{
-					this._parentMenu.currentSelection = item;
-				}
-			}
-		}
-	}
 	function mOver()
 	{
+		if (!this._hovered)
+		{
+			this._hovered = true;
+		}
 		if (!this.highlighted)
 		{
-			if (!this._hovered)
+			if (this._mainColor == com.rockstargames.ui.utils.HudColour.HUD_COLOUR_PAUSE_BG)
 			{
-				this._hovered = true;
+				com.rockstargames.ui.utils.Colour.ApplyHudColour(this.backgroundMC,com.rockstargames.ui.utils.HudColour.HUD_COLOUR_MENU_HIGHLIGHT);
 			}
-			com.rockstargames.ui.utils.Colour.ApplyHudColour(this.backgroundMC,com.rockstargames.ui.utils.HudColour.HUD_COLOUR_MENU_HIGHLIGHT);
+			else
+			{
+				var col = new com.rockstargames.ui.utils.HudColour();
+				com.rockstargames.ui.utils.Colour.setHudColour(this._mainColor,col);
+				com.rockstargames.ui.utils.Colour.Colourise(this.backgroundMC,col.r,col.g,col.b,col.a - 20);
+			}
 		}
 	}
 	function mOut()
 	{
+		if (this._hovered)
+		{
+			this._hovered = false;
+		}
 		if (!this.highlighted)
 		{
-			if (this._hovered)
-			{
-				this._hovered = false;
-			}
 			com.rockstargames.ui.utils.Colour.ApplyHudColour(this.backgroundMC,this._mainColor);
 		}
 	}
@@ -78,12 +74,12 @@
 		tf.html = true;
 		tf.autoSize = "right";
 		var _loc3_ = 0;
-		if (sizeOffset != undefined)
+		if ((sizeOffset != undefined))
 		{
 			_loc3_ = sizeOffset;
 		}
 		var _loc2_ = com.rockstargames.ui.utils.UIText.SIZE - _loc3_;
-		if (sizeOverride != undefined)
+		if ((sizeOverride != undefined))
 		{
 			_loc2_ = sizeOverride;
 		}

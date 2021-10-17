@@ -4,10 +4,11 @@
 	var rightTextTF;
 	var itemList = [];
 	var leftArrow;
-	var leftArrowPos = 257.0;
+	var leftArrowPos = 262.85;
 	var rightArrow;
 	var stringItems;
 	var arrow_loader;
+
 	function UIMenuListItem(str, substr, parentMenu, listItems, __index, mainColor, highlightColor, textColor, textHighlightColor)
 	{
 		super(parentMenu,str,substr);
@@ -16,8 +17,6 @@
 		this.itemList = listItems.split(",");
 		this.leftArrow = this.itemMC.leftArrow;
 		this.rightArrow = this.itemMC.rightArrow;
-		this.SetClip(this.leftArrow.arrowMC,"commonmenu","arrowleft");
-		this.SetClip(this.rightArrow.arrowMC,"commonmenu","arrowright");
 		this.leftTextTF = this.itemMC.labelMC.labelTF;
 		this.leftTextTF.antiAliasType = "advanced";
 		this.leftTextTF.selectable = false;
@@ -26,10 +25,7 @@
 		this.rightTextTF.selectable = false;
 		this.index = __index;
 		this.stringItems = listItems;
-		leftArrow._x = (this.leftArrowPos + 8) - this.itemMC.RLabelMC.labelTF.textWidth;
-		this.rightArrow._x = 266 + 9;
-		this.leftArrow._y = 7;
-		this.rightArrow._y = 7;
+		leftArrow._x = (this.leftArrowPos + 5.15) - this.itemMC.RLabelMC.labelTF.textWidth;
 
 		if (mainColor != undefined)
 		{
@@ -49,23 +45,31 @@
 		}
 		com.rockstargames.ui.utils.UIText.setSizedText(this.leftTextTF,this.leftText,true,true);
 		this.initBaseMouseInterface();
-		this.leftArrow.onRollOver = com.rockstargames.ui.utils.DelegateStar.create(this, this.mOverArrow, this.leftArrow);
-		this.leftArrow.onRollOut = com.rockstargames.ui.utils.DelegateStar.create(this, this.mOutArrow, this.leftArrow);
-		this.rightArrow.onRollOver = com.rockstargames.ui.utils.DelegateStar.create(this, this.mOverArrow, this.rightArrow);
-		this.rightArrow.onRollOut = com.rockstargames.ui.utils.DelegateStar.create(this, this.mOutArrow, this.rightArrow);
-		com.rockstargames.ui.utils.Colour.ApplyHudColour(this.rightArrow, com.rockstargames.ui.utils.HudColour.HUD_COLOUR_BLACK);
+		this.leftArrow.onRollOver = com.rockstargames.ui.utils.DelegateStar.create(this, this.mOverLI, this.leftArrow);
+		this.leftArrow.onRollOut = com.rockstargames.ui.utils.DelegateStar.create(this, this.mOutLI, this.leftArrow);
+		this.rightArrow.onRollOver = com.rockstargames.ui.utils.DelegateStar.create(this, this.mOverLI, this.rightArrow);
+		this.rightArrow.onRollOut = com.rockstargames.ui.utils.DelegateStar.create(this, this.mOutLI, this.rightArrow);
+		com.rockstargames.ui.utils.Colour.ApplyHudColour(this.rightArrow,com.rockstargames.ui.utils.HudColour.HUD_COLOUR_BLACK);
 		com.rockstargames.ui.utils.Colour.ApplyHudColour(this.leftArrow,com.rockstargames.ui.utils.HudColour.HUD_COLOUR_BLACK);
 	}
 
-	function mOverArrow(mc)
+	function mOverLI(mc)
 	{
-		mc._width += 2;
-		mc._height += 2;
+		if (mc == this.leftArrow)
+		{
+			this._hovered = true;
+			this.hover = 0;
+		}
+		else if (mc == this.rightArrow)
+		{
+			this._hovered = true;
+			this.hover = 1;
+		}
 	}
-	function mOutArrow(mc)
+	function mOutLI(mc)
 	{
-		mc._width -= 2;
-		mc._height -= 2;
+		this._hovered = false;
+		this.hover = -1;
 	}
 
 	function SetClip(targetMC, textureDict, textureName)
@@ -77,8 +81,8 @@
 	}
 	function onLoadInit(target_mc)
 	{
-		target_mc._width = 16;
-		target_mc._height = 16;
+		target_mc._width = 18;
+		target_mc._height = 18;
 		//com.rockstargames.ui.utils.Colour.ApplyHudColour(target_mc,!this.highlighted ? this._textColor : this._textHighlightColor); 
 		delete this.arrow_loader;
 	}
@@ -92,8 +96,12 @@
 	{
 		this._index = 100000000 - (100000000 % this.itemList.length) + val;
 		this.setRightText(this.rightTextTF,this.itemList[this.index]);
-		leftArrow._x = (this.leftArrowPos + 8) - this.itemMC.RLabelMC.labelTF.textWidth;
+		leftArrow._x = (this.leftArrowPos + 5.15) - this.itemMC.RLabelMC.labelTF.textWidth;
 		com.rockstargames.ui.utils.Colour.ApplyHudColourToTF(this.rightTextTF,this._textHighlightColor);
+	}
+	function addPanel(_panel)
+	{
+		this.panels.push(_panel);
 	}
 
 	function addItem(item)
@@ -112,5 +120,24 @@
 		this.leftArrow._visible = _h;
 		this.rightArrow._visible = _h;
 		com.rockstargames.ui.utils.Colour.ApplyHudColourToTF(this.rightTextTF,!_h ? this._textColor : this._textHighlightColor);
+		for (var _panel in this.panels)
+		{
+			this.panels[_panel].isVisible = _h;
+		}
+	}
+	function Select()
+	{
+		if (this.highlighted)
+		{
+			if (this.hover == 0)
+			{
+				this.index--;
+			}
+			else if (this.hover == 1)
+			{
+				this.index++;
+			}
+		}
+		return this.index;
 	}
 }

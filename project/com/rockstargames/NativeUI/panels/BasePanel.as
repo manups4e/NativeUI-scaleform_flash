@@ -2,14 +2,14 @@
 {
 	var parentItem;
 	var _enabled;
-	var bgMC;
+	var backgroundMC;
 	var itemMC;
-
+	var _hovered = false;
 	function BasePanel(parent)
 	{
 		this.parentItem = parent;
 	}
-	
+
 	function setRightText(tf, str, autoShrink, sizeOffset, sizeOverride)
 	{
 		tf.wordWrap = false;

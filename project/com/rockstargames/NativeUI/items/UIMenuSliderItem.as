@@ -19,17 +19,11 @@
 		this.backgroundMC = this.itemMC.bgMC;
 		this.leftArrow = this.itemMC.leftArrow;
 		this.rightArrow = this.itemMC.rightArrow;
-		this.SetClip(this.leftArrow.arrowMC,"commonmenu","arrowleft");
-		this.SetClip(this.rightArrow.arrowMC,"commonmenu","arrowright");
 		this.leftTextTF = this.itemMC.labelMC.labelTF;
 		this.leftTextTF.antiAliasType = "advanced";
 		this.leftTextTF.selectable = false;
 		this._sliderBG = this.itemMC.sliderMC.sliderBG;
 		this._slider = this.itemMC.sliderMC.slider;
-		this.leftArrow._x = 228.55 - 61;
-		this.rightArrow._x = 228.55 + 49;
-		this.leftArrow._y = 6;
-		this.rightArrow._y = 6;
 		this._max = max;
 		this._multiplier = mult;
 		if (startIndex == undefined)
@@ -61,12 +55,12 @@
 		com.rockstargames.ui.utils.Colour.ApplyHudColour(this._sliderBG,this._sliderBGColor);
 		com.rockstargames.ui.utils.Colour.ApplyHudColour(this._slider,this._sliderColor);
 		this.initBaseMouseInterface();
-		this.leftArrow.onRollOver = com.rockstargames.ui.utils.DelegateStar.create(this, this.mOverArrow, this.leftArrow);
-		this.leftArrow.onRollOut = com.rockstargames.ui.utils.DelegateStar.create(this, this.mOutArrow, this.leftArrow);
-		this.rightArrow.onRollOver = com.rockstargames.ui.utils.DelegateStar.create(this, this.mOverArrow, this.rightArrow);
-		this.rightArrow.onRollOut = com.rockstargames.ui.utils.DelegateStar.create(this, this.mOutArrow, this.rightArrow);
-		com.rockstargames.ui.utils.Colour.ApplyHudColour(this.rightArrow,com.rockstargames.ui.utils.HudColour.HUD_COLOUR_BLACK);
-		com.rockstargames.ui.utils.Colour.ApplyHudColour(this.leftArrow,com.rockstargames.ui.utils.HudColour.HUD_COLOUR_BLACK);
+		this.leftArrow.onRollOver = com.rockstargames.ui.utils.DelegateStar.create(this, this.mOverS, this.leftArrow);
+		this.leftArrow.onRollOut = com.rockstargames.ui.utils.DelegateStar.create(this, this.mOutS, this.leftArrow);
+		this.rightArrow.onRollOver = com.rockstargames.ui.utils.DelegateStar.create(this, this.mOverS, this.rightArrow);
+		this.rightArrow.onRollOut = com.rockstargames.ui.utils.DelegateStar.create(this, this.mOutS, this.rightArrow);
+		this.itemMC.sliderMC.onRollOver = com.rockstargames.ui.utils.DelegateStar.create(this, this.mOverS, this.itemMC.sliderMC);
+		this.itemMC.sliderMC.onRollOut = com.rockstargames.ui.utils.DelegateStar.create(this, this.mOutS, this.itemMC.sliderMC);
 	}
 	function SetClip(targetMC, textureDict, textureName)
 	{
@@ -83,15 +77,32 @@
 		delete this.arrow_loader;
 	}
 
-	function mOverArrow(mc)
+	function mOverS(mc)
 	{
-		mc._width += 2;
-		mc._height += 2;
+		if (mc == this.leftArrow)
+		{
+			this._hovered = true;
+			this.hover = 0;
+		}
+		else if (mc == this.rightArrow)
+		{
+			this._hovered = true;
+			this.hover = 1;
+		}
+		else if (mc == this.itemMC.sliderMC)
+		{
+			this._hovered = true;
+			this.hover = 2;
+		}
 	}
-	function mOutArrow(mc)
+	function mOutS(mc)
 	{
-		mc._width -= 2;
-		mc._height -= 2;
+		this._hovered = false;
+		this.hover = -1;
+	}
+	function addPanel(_panel)
+	{
+		this.panels.push(_panel);
 	}
 
 	function set maximum(val)
@@ -145,5 +156,31 @@
 		super.highlighted = _h;
 		this.leftArrow._visible = _h;
 		this.rightArrow._visible = _h;
+		for (var _panel in this.panels)
+		{
+			this.panels[_panel].isVisible = _h;
+		}
+	}
+
+	function Select(posX, posY)
+	{
+		if (this.highlighted)
+		{
+			switch (this.hover)
+			{
+				case 0 :
+					this.value -= this.multiplier;
+					break;
+				case 1 :
+					this.value += this.multiplier;
+					break;
+			}
+		}
+		if (this.hover == 2)
+		{
+			var val = ((posX - 228.55 + 25) / (this._sliderBG._width - this._slider._width)) * this._max;
+			this.value = val;
+		}
+		return this.value;
 	}
 }

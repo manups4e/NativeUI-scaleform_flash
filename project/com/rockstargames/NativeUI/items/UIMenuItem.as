@@ -6,7 +6,7 @@
 	var rightBadge = com.rockstargames.NativeUI.utils.Badges.NONE;
 	var _data;
 	var txd_loader;
-
+	
 	function UIMenuItem(str, substr, parentMenu, mainColor, highlightColor, textColor, textHighlightColor)
 	{
 		super(parentMenu,str,substr);

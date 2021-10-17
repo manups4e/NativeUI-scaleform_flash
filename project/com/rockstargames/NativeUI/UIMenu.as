@@ -2,7 +2,7 @@
 {
 	var subCounterFont;
 	var _mainMC;// provvisoria da gestire con un pool di menu per i submenu
-	var menuItems = new Array();
+	var menuItems;
 	var BannerSprite;
 	var BodySprite;
 	var DescriptionSprite;
@@ -15,7 +15,7 @@
 	var Footer;
 	var maxItemsOnScreen = 6;
 	var _currentItem;
-	var _activeItem = 1000;
+	var _activeItem = 0;
 	var itemCount = 0;
 	var _minItem = 0;
 	var _maxItem = this.maxItemsOnScreen;
@@ -24,20 +24,25 @@
 	var _bodyTexture = "gradient_bgd";
 	var _upAndDownArrows = "shop_arrows_upanddown";
 	var txd_loader;
+	var mouseOn;
 
 	// COSì POSSO FARE COME VOGLIO PER EDITARE LA DESCRIZIONE E RENDERE IL TEXTO SCROLLABLE COSì SCORRE SE PIU LUNGO.
 	function UIMenu(mc, title, subtitle, txd, txn)
 	{
+		this.menuItems = new Array();
+		Mouse.addListener(this);
 		this._mainMC = mc;
 		this._menuTitle = title;
 		this._menuSubtitle = subtitle;
 		this._maxItem = this.maxItemsOnScreen;
 		this._minItem = 0;
+		this.itemCount = 0;
+
 		this.BannerSprite = this._mainMC.attachMovie("BannerSprite", "bannerSpriteMC", this._mainMC.getNextHighestDepth());
 		this.BannerSprite._x = 0;
 		this.BannerSprite._y = 0;
 		this.BannerSprite._width = 288;
-		this.BannerSprite._height = 54.75;
+		this.BannerSprite._height = 65;
 
 		if (txd == undefined || txd == "")
 		{
@@ -121,7 +126,7 @@
 		this.updateItemsDrawing();
 	}
 
-	function addPanel(item, id, param1, param2, param3, param4, param5, param6, param7, param8, param9, param10)
+	function addPanel(item, id, param1, param2, param3, param4, param5, param6, param7, param8)
 	{
 		var panel;
 		var selectItem = this.menuItems[item];
@@ -134,12 +139,11 @@
 				panel = new com.rockstargames.NativeUI.panels.UIMenuPercentagePanel(selectItem, param1, param2, param3, param4);
 				break;
 			case 2 :
+				panel = new com.rockstargames.NativeUI.panels.UIMenuGridPanel(selectItem, param1, param2, param3, param4, param5, param6, param7, param8);
 				break;
 			case 3 :
+				panel = new com.rockstargames.NativeUI.panels.UIMenuStatsPanel(selectItem);
 				break;
-			case 4 :
-				break;
-			default :
 		}
 		selectItem.addPanel(panel);
 		if (!selectItem.highlighted)
@@ -183,6 +187,7 @@
 		}
 		this.updateItemsDrawing();
 		com.rockstargames.ui.game.GameInterface.call("PLAY_SOUND",com.rockstargames.ui.game.GameInterface.GENERIC_TYPE,"NAV_UP_DOWN","HUD_FRONTEND_DEFAULT_SOUNDSET");
+		return this.currentSelection;
 	}
 
 	function goDown()
@@ -218,6 +223,7 @@
 		}
 		this.updateItemsDrawing();
 		com.rockstargames.ui.game.GameInterface.call("PLAY_SOUND",com.rockstargames.ui.game.GameInterface.GENERIC_TYPE,"NAV_UP_DOWN","HUD_FRONTEND_DEFAULT_SOUNDSET");
+		return this.currentSelection;
 	}
 
 	function goLeft()
@@ -239,6 +245,7 @@
 			retVal = this.currentItem.value;
 		}
 		this.updateDescription();
+		com.rockstargames.ui.game.GameInterface.call("PLAY_SOUND",com.rockstargames.ui.game.GameInterface.GENERIC_TYPE,"NAV_LEFT_RIGHT","HUD_FRONTEND_DEFAULT_SOUNDSET");
 		return retVal;
 	}
 
@@ -261,6 +268,7 @@
 			retVal = this.currentItem.value;
 		}
 		this.updateDescription();
+		com.rockstargames.ui.game.GameInterface.call("PLAY_SOUND",com.rockstargames.ui.game.GameInterface.GENERIC_TYPE,"NAV_LEFT_RIGHT","HUD_FRONTEND_DEFAULT_SOUNDSET");
 		return retVal;
 	}
 
@@ -283,29 +291,50 @@
 		var count = 0;
 		for (var i = this._minItem; i <= this._maxItem; i++)
 		{
-			if ((i <= this.itemCount))
+			if (i <= this.itemCount)
 			{
 				this.menuItems[i].isVisible = true;
 				this.menuItems[i].itemMC._y = this.BannerSprite._height + this.SubtitleSprite._height + (count * 25);
 			}
 			count++;
 		}
-		this.menuItems[this.currentSelection].highlighted = true;
-		this.updateDescription();
-		com.rockstargames.ui.utils.UIText.setSizedText(this.CounterText,this.currentSelection + 1 + "/" + this.itemCount,true,true);
+		this.currentItem.highlighted = true;
+		if (this.currentItem.subtitle != undefined && this.currentItem.subtitle != "")
+		{
+			this.DescriptionSprite._visible = true;
+			com.rockstargames.ui.utils.UIText.setDescText(this.DescriptionSprite.descriptionMC.descText,this.currentItem.subtitle,true);
+			if (this.itemCount >= this.maxItemsOnScreen + 1)
+			{
+				this.DescriptionSprite._y = this.BannerSprite._height + this.SubtitleSprite._height + (this.maxItemsOnScreen + 1) * 25 + 1;
+			}
+			else
+			{
+				this.DescriptionSprite._y = this.BannerSprite._height + this.SubtitleSprite._height + (this.itemCount * 25) + 1;
+			}
+			this.DescriptionSprite.descBG._height = this.DescriptionSprite.descriptionMC._height + 5;
+			if (this.Footer._visible)
+			{
+				this.DescriptionSprite._y += this.Footer._height;
+			}
+		}
+		else
+		{
+			this.DescriptionSprite._visible = false;
+		}
+		com.rockstargames.ui.utils.UIText.setSizedText(this.CounterText,(this.currentSelection + 1) + "/" + this.itemCount,true,true);
 		// PANELS
 		if (this.currentItem.panels.length > 0)
 		{
 			for (var i = 0; i < this.currentItem.panels.length; i++)
 			{
-				var offset = 0;
+				var offset = this.BannerSprite._height + this.SubtitleSprite._height;
 				if (this.itemCount >= this.maxItemsOnScreen + 1)
 				{
-					offset = (this.maxItemsOnScreen + 1) * 25 + 1;
+					offset += ((this.maxItemsOnScreen + 1) * 25) + 1;
 				}
 				else
 				{
-					offset = (this.itemCount * 25) + 1;
+					offset += (this.itemCount * 25) + 1;
 				}
 				if (this.Footer._visible)
 				{
@@ -319,7 +348,7 @@
 				{
 					for (var j = 0; j < i; j++)
 					{
-						offset += ((this.currentItem.panels[j].itemMC._height + 2));
+						offset += (this.currentItem.panels[j].itemMC._height + 2);
 					}
 				}
 				this.currentItem.panels[i].itemMC._y = offset;
@@ -329,10 +358,10 @@
 
 	function updateDescription()
 	{
-		if (this.menuItems[this.currentSelection].subtitle != undefined && this.menuItems[this.currentSelection].subtitle != "")
+		if (this.currentItem.subtitle != undefined && this.currentItem.subtitle != "")
 		{
 			this.DescriptionSprite._visible = true;
-			com.rockstargames.ui.utils.UIText.setDescText(this.DescriptionSprite.descriptionMC.descText,this.menuItems[this.currentSelection].subtitle,true);
+			com.rockstargames.ui.utils.UIText.setDescText(this.DescriptionSprite.descriptionMC.descText,this.currentItem.subtitle,true);
 			if (this.itemCount >= this.maxItemsOnScreen + 1)
 			{
 				this.DescriptionSprite._y = this.BannerSprite._height + this.SubtitleSprite._height + (this.maxItemsOnScreen + 1) * 25 + 1;
@@ -356,6 +385,24 @@
 	{
 		return this.menuItems[this.currentSelection];
 	}
+	function set currentItem(item)
+	{
+		var limit = this.UIMenu.itemCount - 1;
+		var counter = 0;
+		if (this.itemCount > this.maxItemsOnScreen + 1)
+		{
+			limit = this._maxItem;
+		}
+
+		for (var i = this._minItem; i <= limit; i++)
+		{
+			if (this.menuItems[i].leftText == item.leftText && this.menuItems[i].subtitle == item.subtitle)
+			{
+				this.currentSelection = i;
+			}
+		}
+	}
+
 	function get currentSelection()
 	{
 		if (this.itemCount == 0)
@@ -365,13 +412,13 @@
 		return this._activeItem % this.itemCount;
 
 	}
+
 	function set currentSelection(val)
 	{
 		if (this.itemCount == 0)
 		{
 			this._activeItem = 0;
 		}
-		this.currentItem.highlighted = false;
 		this._activeItem = 1000000 - (1000000 % this.itemCount) + val;
 		if (this.currentSelection > this._maxItem)
 		{
@@ -383,38 +430,8 @@
 			this._maxItem = this.maxItemsOnScreen + this.currentSelection;
 			this._minItem = this.currentSelection;
 		}
-		this.currentItem.highlighted = true;
+		this.updateItemsDrawing();
 	}
-
-	function SET_INPUT_EVENT(direction)
-	{
-		var _loc2_ = 0;
-		switch (direction)
-		{
-			case com.rockstargames.ui.game.GamePadConstants.CROSS :
-				//_loc2_ = this.CURSOR_CLICK();
-				break;
-			case com.rockstargames.ui.game.GamePadConstants.DPADUP :
-				//this.MOVE_CURSOR(0,- this.mouseSpeed);
-				break;
-			case com.rockstargames.ui.game.GamePadConstants.DPADDOWN :
-				//this.MOVE_CURSOR(0,this.mouseSpeed);
-				break;
-			case com.rockstargames.ui.game.GamePadConstants.DPADLEFT :
-				//this.MOVE_CURSOR(- this.mouseSpeed,0);
-				break;
-			case com.rockstargames.ui.game.GamePadConstants.DPADRIGHT :
-				//this.MOVE_CURSOR(this.mouseSpeed,0);
-		}
-		return _loc2_;
-	}
-
-	function SET_INPUT_EVENT_SELECT()
-	{
-		//var _loc2_ = this.CURSOR_CLICK();
-	}
-
-
 
 	function SetClip(targetMC, textureDict, textureName)
 	{
@@ -440,6 +457,25 @@
 			target_mc._height = 25;
 		}
 		delete this.txd_loader;
+	}
+
+	function Clear()
+	{
+		for (var it in this.menuItems)
+		{
+			for (var pan in this.menuItems[it].panels)
+			{
+				this.menuItems[it].panels[pan].itemMC.removeMovieClip();
+			}
+			this.menuItems[it].itemMC.removeMovieClip();
+		}
+		this.BannerSprite.removeMovieClip();
+		this.BodySprite.removeMovieClip();
+		this.DescriptionSprite.removeMovieClip();
+		this.SubtitleSprite.removeMovieClip();
+		this.Footer.removeMovieClip();
+		this.currentSelection = 0;
+		this.menuItems = new Array();
 	}
 
 	/*

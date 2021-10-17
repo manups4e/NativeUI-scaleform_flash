@@ -1,4 +1,4 @@
-class com.rockstargames.ui.game.GamePadConstants
+﻿class com.rockstargames.ui.game.GamePadConstants
 {
    static var DPADUP = 8;
    static var DPADDOWN = 9;
