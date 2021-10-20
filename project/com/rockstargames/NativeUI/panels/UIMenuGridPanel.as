@@ -75,6 +75,15 @@
 		//this.initBaseMouseInterface();
 	}
 
+	function mPressGP(mc)
+	{
+		com.rockstargames.ui.game.GameInterface.call("PLAY_SOUND",com.rockstargames.ui.game.GameInterface.GENERIC_TYPE,"CONTINUOUS_SLIDER","HUD_FRONTEND_DEFAULT_SOUNDSET");
+	}
+	function mReleaseGP(mc)
+	{
+		com.rockstargames.ui.game.GameInterface.call("STOP_SOUND",com.rockstargames.ui.game.GameInterface.GENERIC_TYPE);
+	}
+
 	function mOverGP(mc)
 	{
 		this.hovered = true;

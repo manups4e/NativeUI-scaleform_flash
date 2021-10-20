@@ -545,4 +545,174 @@
 				break;
 		}
 	}
+
+	static function GetSpriteDictionary(icon)
+	{
+		switch (icon)
+		{
+			case com.rockstargames.NativeUI.utils.Badges.MALE :
+			case com.rockstargames.NativeUI.utils.Badges.FEMALE :
+			case com.rockstargames.NativeUI.utils.Badges.AUDIO_MUTE :
+			case com.rockstargames.NativeUI.utils.Badges.AUDIO_INACTIVE :
+			case com.rockstargames.NativeUI.utils.Badges.AUDIO_VOL1 :
+			case com.rockstargames.NativeUI.utils.Badges.AUDIO_VOL2 :
+			case com.rockstargames.NativeUI.utils.Badges.AUDIO_VOL3 :
+				return "mpleaderboard";
+			case com.rockstargames.NativeUI.utils.Badges.INV_ARM_WRESTLING :
+			case com.rockstargames.NativeUI.utils.Badges.INV_BASEJUMP :
+			case com.rockstargames.NativeUI.utils.Badges.INV_MISSION :
+			case com.rockstargames.NativeUI.utils.Badges.INV_DARTS :
+			case com.rockstargames.NativeUI.utils.Badges.INV_DEATHMATCH :
+			case com.rockstargames.NativeUI.utils.Badges.INV_DRUG :
+			case com.rockstargames.NativeUI.utils.Badges.INV_CASTLE :
+			case com.rockstargames.NativeUI.utils.Badges.INV_GOLF :
+			case com.rockstargames.NativeUI.utils.Badges.INV_BIKE :
+			case com.rockstargames.NativeUI.utils.Badges.INV_BOAT :
+			case com.rockstargames.NativeUI.utils.Badges.INV_ANCHOR :
+			case com.rockstargames.NativeUI.utils.Badges.INV_CAR :
+			case com.rockstargames.NativeUI.utils.Badges.INV_DOLLAR :
+			case com.rockstargames.NativeUI.utils.Badges.INV_COKE :
+			case com.rockstargames.NativeUI.utils.Badges.INV_KEY :
+			case com.rockstargames.NativeUI.utils.Badges.INV_DATA :
+			case com.rockstargames.NativeUI.utils.Badges.INV_HELI :
+			case com.rockstargames.NativeUI.utils.Badges.INV_HEORIN :
+			case com.rockstargames.NativeUI.utils.Badges.INV_KEYCARD :
+			case com.rockstargames.NativeUI.utils.Badges.INV_METH :
+			case com.rockstargames.NativeUI.utils.Badges.INV_BRIEFCASE :
+			case com.rockstargames.NativeUI.utils.Badges.INV_LINK :
+			case com.rockstargames.NativeUI.utils.Badges.INV_PERSON :
+			case com.rockstargames.NativeUI.utils.Badges.INV_PLANE :
+			case com.rockstargames.NativeUI.utils.Badges.INV_PLANE2 :
+			case com.rockstargames.NativeUI.utils.Badges.INV_QUESTIONMARK :
+			case com.rockstargames.NativeUI.utils.Badges.INV_REMOTE :
+			case com.rockstargames.NativeUI.utils.Badges.INV_SAFE :
+			case com.rockstargames.NativeUI.utils.Badges.INV_STEER_WHEEL :
+			case com.rockstargames.NativeUI.utils.Badges.INV_WEAPON :
+			case com.rockstargames.NativeUI.utils.Badges.INV_WEED :
+			case com.rockstargames.NativeUI.utils.Badges.INV_RACE_FLAG_PLANE :
+			case com.rockstargames.NativeUI.utils.Badges.INV_RACE_FLAG_BICYCLE :
+			case com.rockstargames.NativeUI.utils.Badges.INV_RACE_FLAG_BOAT_ANCHOR :
+			case com.rockstargames.NativeUI.utils.Badges.INV_RACE_FLAG_PERSON :
+			case com.rockstargames.NativeUI.utils.Badges.INV_RACE_FLAG_CAR :
+			case com.rockstargames.NativeUI.utils.Badges.INV_RACE_FLAG_HELMET :
+			case com.rockstargames.NativeUI.utils.Badges.INV_SHOOTING_RANGE :
+			case com.rockstargames.NativeUI.utils.Badges.INV_SURVIVAL :
+			case com.rockstargames.NativeUI.utils.Badges.INV_TEAM_DEATHMATCH :
+			case com.rockstargames.NativeUI.utils.Badges.INV_TENNIS :
+			case com.rockstargames.NativeUI.utils.Badges.INV_VEHICLE_DEATHMATCH :
+				return "mpinventory";
+			case com.rockstargames.NativeUI.utils.Badges.ADVERSARY :
+			case com.rockstargames.NativeUI.utils.Badges.BASE_JUMPING :
+			case com.rockstargames.NativeUI.utils.Badges.BRIEFCASE :
+			case com.rockstargames.NativeUI.utils.Badges.MISSION_STAR :
+			case com.rockstargames.NativeUI.utils.Badges.DEATHMATCH :
+			case com.rockstargames.NativeUI.utils.Badges.CASTLE :
+			case com.rockstargames.NativeUI.utils.Badges.TROPHY :
+			case com.rockstargames.NativeUI.utils.Badges.RACE_FLAG :
+			case com.rockstargames.NativeUI.utils.Badges.RACE_FLAG_PLANE :
+			case com.rockstargames.NativeUI.utils.Badges.RACE_FLAG_BICYCLE :
+			case com.rockstargames.NativeUI.utils.Badges.RACE_FLAG_PERSON :
+			case com.rockstargames.NativeUI.utils.Badges.RACE_FLAG_CAR :
+			case com.rockstargames.NativeUI.utils.Badges.RACE_FLAG_BOAT_ANCHOR :
+			case com.rockstargames.NativeUI.utils.Badges.ROCKSTAR :
+			case com.rockstargames.NativeUI.utils.Badges.STUNT :
+			case com.rockstargames.NativeUI.utils.Badges.STUNT_PREMIUM :
+			case com.rockstargames.NativeUI.utils.Badges.RACE_FLAG_STUNT_JUMP :
+			case com.rockstargames.NativeUI.utils.Badges.SHIELD :
+			case com.rockstargames.NativeUI.utils.Badges.TEAM_DEATHMATCH :
+			case com.rockstargames.NativeUI.utils.Badges.VEHICLE_DEATHMATCH :
+				return "commonmenutu";
+			case com.rockstargames.NativeUI.utils.Badges.MP_AMMO_PICKUP :
+			case com.rockstargames.NativeUI.utils.Badges.MP_AMMO :
+			case com.rockstargames.NativeUI.utils.Badges.MP_CASH :
+			case com.rockstargames.NativeUI.utils.Badges.MP_RP :
+			case com.rockstargames.NativeUI.utils.Badges.MP_SPECTATING :
+				return "mphud";
+			case com.rockstargames.NativeUI.utils.Badges.SALE :
+				return "mpshopsale";
+			case com.rockstargames.NativeUI.utils.Badges.GLOBE_WHITE :
+			case com.rockstargames.NativeUI.utils.Badges.GLOBE_RED :
+			case com.rockstargames.NativeUI.utils.Badges.GLOBE_BLUE :
+			case com.rockstargames.NativeUI.utils.Badges.GLOBE_YELLOW :
+			case com.rockstargames.NativeUI.utils.Badges.GLOBE_GREEN :
+			case com.rockstargames.NativeUI.utils.Badges.GLOBE_ORANGE :
+				return "mprankbadge";
+			case com.rockstargames.NativeUI.utils.Badges.COUNTRY_USA :
+			case com.rockstargames.NativeUI.utils.Badges.COUNTRY_UK :
+			case com.rockstargames.NativeUI.utils.Badges.COUNTRY_SWEDEN :
+			case com.rockstargames.NativeUI.utils.Badges.COUNTRY_KOREA :
+			case com.rockstargames.NativeUI.utils.Badges.COUNTRY_JAPAN :
+			case com.rockstargames.NativeUI.utils.Badges.COUNTRY_ITALY :
+			case com.rockstargames.NativeUI.utils.Badges.COUNTRY_GERMANY :
+			case com.rockstargames.NativeUI.utils.Badges.COUNTRY_FRANCE :
+			case com.rockstargames.NativeUI.utils.Badges.BRAND_ALBANY :
+			case com.rockstargames.NativeUI.utils.Badges.BRAND_ANNIS :
+			case com.rockstargames.NativeUI.utils.Badges.BRAND_BANSHEE :
+			case com.rockstargames.NativeUI.utils.Badges.BRAND_BENEFACTOR :
+			case com.rockstargames.NativeUI.utils.Badges.BRAND_BF :
+			case com.rockstargames.NativeUI.utils.Badges.BRAND_BOLLOKAN :
+			case com.rockstargames.NativeUI.utils.Badges.BRAND_BRAVADO :
+			case com.rockstargames.NativeUI.utils.Badges.BRAND_BRUTE :
+			case com.rockstargames.NativeUI.utils.Badges.BRAND_BUCKINGHAM :
+			case com.rockstargames.NativeUI.utils.Badges.BRAND_CANIS :
+			case com.rockstargames.NativeUI.utils.Badges.BRAND_CHARIOT :
+			case com.rockstargames.NativeUI.utils.Badges.BRAND_CHEVAL :
+			case com.rockstargames.NativeUI.utils.Badges.BRAND_CLASSIQUE :
+			case com.rockstargames.NativeUI.utils.Badges.BRAND_COIL :
+			case com.rockstargames.NativeUI.utils.Badges.BRAND_DECLASSE :
+			case com.rockstargames.NativeUI.utils.Badges.BRAND_DEWBAUCHEE :
+			case com.rockstargames.NativeUI.utils.Badges.BRAND_DILETTANTE :
+			case com.rockstargames.NativeUI.utils.Badges.BRAND_DINKA :
+			case com.rockstargames.NativeUI.utils.Badges.BRAND_DUNDREARY :
+			case com.rockstargames.NativeUI.utils.Badges.BRAND_EMPORER :
+			case com.rockstargames.NativeUI.utils.Badges.BRAND_ENUS :
+			case com.rockstargames.NativeUI.utils.Badges.BRAND_FATHOM :
+			case com.rockstargames.NativeUI.utils.Badges.BRAND_GALIVANTER :
+			case com.rockstargames.NativeUI.utils.Badges.BRAND_GROTTI :
+			case com.rockstargames.NativeUI.utils.Badges.BRAND_HIJAK :
+			case com.rockstargames.NativeUI.utils.Badges.BRAND_HVY :
+			case com.rockstargames.NativeUI.utils.Badges.BRAND_IMPONTE :
+			case com.rockstargames.NativeUI.utils.Badges.BRAND_INVETERO :
+			case com.rockstargames.NativeUI.utils.Badges.BRAND_JACKSHEEPE :
+			case com.rockstargames.NativeUI.utils.Badges.BRAND_JOBUILT :
+			case com.rockstargames.NativeUI.utils.Badges.BRAND_KARIN :
+			case com.rockstargames.NativeUI.utils.Badges.BRAND_LAMPADATI :
+			case com.rockstargames.NativeUI.utils.Badges.BRAND_MAIBATSU :
+			case com.rockstargames.NativeUI.utils.Badges.BRAND_MAMMOTH :
+			case com.rockstargames.NativeUI.utils.Badges.BRAND_MTL :
+			case com.rockstargames.NativeUI.utils.Badges.BRAND_NAGASAKI :
+			case com.rockstargames.NativeUI.utils.Badges.BRAND_OBEY :
+			case com.rockstargames.NativeUI.utils.Badges.BRAND_OCELOT :
+			case com.rockstargames.NativeUI.utils.Badges.BRAND_OVERFLOD :
+			case com.rockstargames.NativeUI.utils.Badges.BRAND_PED :
+			case com.rockstargames.NativeUI.utils.Badges.BRAND_PEGASSI :
+			case com.rockstargames.NativeUI.utils.Badges.BRAND_PFISTER :
+			case com.rockstargames.NativeUI.utils.Badges.BRAND_PRINCIPE :
+			case com.rockstargames.NativeUI.utils.Badges.BRAND_PROGEN :
+			case com.rockstargames.NativeUI.utils.Badges.BRAND_SCHYSTER :
+			case com.rockstargames.NativeUI.utils.Badges.BRAND_SHITZU :
+			case com.rockstargames.NativeUI.utils.Badges.BRAND_SPEEDOPHILE :
+			case com.rockstargames.NativeUI.utils.Badges.BRAND_STANLEY :
+			case com.rockstargames.NativeUI.utils.Badges.BRAND_TRUFFADE :
+			case com.rockstargames.NativeUI.utils.Badges.BRAND_UBERMACHT :
+			case com.rockstargames.NativeUI.utils.Badges.BRAND_VAPID :
+			case com.rockstargames.NativeUI.utils.Badges.BRAND_VULCAR :
+			case com.rockstargames.NativeUI.utils.Badges.BRAND_WEENY :
+			case com.rockstargames.NativeUI.utils.Badges.BRAND_WESTERN :
+			case com.rockstargames.NativeUI.utils.Badges.BRAND_WESTERNMOTORCYCLE :
+			case com.rockstargames.NativeUI.utils.Badges.BRAND_WILLARD :
+			case com.rockstargames.NativeUI.utils.Badges.BRAND_ZIRCONIUM :
+				return "mpcarhud";
+			case com.rockstargames.NativeUI.utils.Badges.BRAND_GROTTI2 :
+			case com.rockstargames.NativeUI.utils.Badges.BRAND_LCC :
+			case com.rockstargames.NativeUI.utils.Badges.BRAND_PROGEN2 :
+			case com.rockstargames.NativeUI.utils.Badges.BRAND_RUNE :
+				return "mpcarhud2";
+			case com.rockstargames.NativeUI.utils.Badges.INFO :
+				return "shared";
+			default :
+				return "commonmenu";
+		}
+	}
+
 }

@@ -26,9 +26,18 @@
 		this.UIMenu = undefined;
 	}
 
-	function ADD_ITEM(id, str, sub, param1, param2, param3, param4, param5, param6, param7, param8, param9, param10)
+	function ADD_ITEM(id, str, sub, param1, param2, param3, param4, param5, param6, param7, param8, param9, param10, param11)
 	{
-		this.UIMenu.addItem(id,str,sub,param1,param2,param3,param4,param5,param6,param7,param8,param9,param10);
+		this.UIMenu.addItem(id,str,sub,param1,param2,param3,param4,param5,param6,param7,param8,param9,param10,param11);
+	}
+
+	function ADD_HERITAGE_WINDOW(mom, dad)
+	{
+		this.UIMenu.addWindow(mom,dad);
+	}
+	function UPDATE_HERITAGE_WINDOW(id, mom, dad)
+	{
+		this.UIMenu.windows[id].setIndex(mom,dad);
 	}
 
 	function SET_INPUT_EVENT(direction, item, val)
@@ -106,6 +115,7 @@
 				retVal.push(this.UIMenu.currentSelection);
 				retVal.push(_type);
 				retVal.push(this.UIMenu.currentItem.Select(posX, posY));
+				com.rockstargames.ui.game.GameInterface.call("PLAY_SOUND",com.rockstargames.ui.game.GameInterface.GENERIC_TYPE,"SELECT","HUD_FRONTEND_DEFAULT_SOUNDSET");
 				return retVal.toString();
 			}
 		}
@@ -123,6 +133,7 @@
 						retVal.push(i);
 						retVal.push(0);
 						retVal.push(_panel.Value);
+						com.rockstargames.ui.game.GameInterface.call("PLAY_SOUND",com.rockstargames.ui.game.GameInterface.GENERIC_TYPE,"SELECT","HUD_FRONTEND_DEFAULT_SOUNDSET");
 						return retVal.toString();
 					}
 				}
@@ -232,7 +243,7 @@
 
 	function ADD_STATISTIC_TO_PANEL(item, panel, _label, _value)
 	{
-		this.UIMenu.menuItems[item].panels[panel].addStat(_label);
+		this.UIMenu.menuItems[item].panels[panel].addStat(_label,_value);
 	}
 
 	function SET_PANEL_STATS_ITEM_VALUE(item, panel, statId, _value)

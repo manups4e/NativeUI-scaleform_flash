@@ -3,6 +3,8 @@
 	var _value = 0;
 	var leftArrow;
 	var rightArrow;
+	var customLeftArrow;
+	var customRightArrow;
 	var _max;
 	var _multiplier;
 	var _sliderBG;
@@ -12,13 +14,18 @@
 	var _sliderColor = com.rockstargames.ui.utils.HudColour.HUD_COLOUR_FREEMODE;
 	var arrow_loader;
 
-	function UIMenuSliderItem(str, substr, parentMenu, max, mult, startIndex, mainColor, highlightColor, textColor, textHighlightColor, sliderBGColor, sliderColor)
+	function UIMenuSliderItem(str, substr, parentMenu, max, mult, startIndex, mainColor, highlightColor, textColor, textHighlightColor, sliderBGColor, sliderColor, heritage)
 	{
 		super(parentMenu,str,substr);
 		this.itemMC = this.parentMC.attachMovie("UIMenuSliderItem", "sliderMenuItem_" + this._parentMenu.itemCount + 1, this.parentMC.getNextHighestDepth());
 		this.backgroundMC = this.itemMC.bgMC;
 		this.leftArrow = this.itemMC.leftArrow;
 		this.rightArrow = this.itemMC.rightArrow;
+		if (heritage)
+		{
+			this.leftArrow.gotoAndStop(2);
+			this.rightArrow.gotoAndStop(2);
+		}
 		this.leftTextTF = this.itemMC.labelMC.labelTF;
 		this.leftTextTF.antiAliasType = "advanced";
 		this.leftTextTF.selectable = false;
@@ -50,7 +57,14 @@
 		{
 			this._textHighlightColor = textHighlightColor;
 		}
-
+		if (sliderBGColor != undefined)
+		{
+			this._sliderBGColor = sliderBGColor;
+		}
+		if (sliderColor != undefined)
+		{
+			this._sliderColor = sliderColor;
+		}
 		com.rockstargames.ui.utils.UIText.setSizedText(this.leftTextTF,this.leftText,true,true);
 		com.rockstargames.ui.utils.Colour.ApplyHudColour(this._sliderBG,this._sliderBGColor);
 		com.rockstargames.ui.utils.Colour.ApplyHudColour(this._slider,this._sliderColor);
@@ -61,20 +75,6 @@
 		this.rightArrow.onRollOut = com.rockstargames.ui.utils.DelegateStar.create(this, this.mOutS, this.rightArrow);
 		this.itemMC.sliderMC.onRollOver = com.rockstargames.ui.utils.DelegateStar.create(this, this.mOverS, this.itemMC.sliderMC);
 		this.itemMC.sliderMC.onRollOut = com.rockstargames.ui.utils.DelegateStar.create(this, this.mOutS, this.itemMC.sliderMC);
-	}
-	function SetClip(targetMC, textureDict, textureName)
-	{
-		this.arrow_loader = new MovieClipLoader();
-		this.arrow_loader.addListener(this);
-		var _loc2_ = "img://" + textureDict + "/" + textureName;
-		this.arrow_loader.loadClip(_loc2_,targetMC);
-	}
-	function onLoadInit(target_mc)
-	{
-		target_mc._width = 16;
-		target_mc._height = 16;
-		//com.rockstargames.ui.utils.Colour.ApplyHudColour(target_mc,!this.highlighted ? this._textColor : this._textHighlightColor);   
-		delete this.arrow_loader;
 	}
 
 	function mOverS(mc)
@@ -154,8 +154,16 @@
 	function set highlighted(_h)
 	{
 		super.highlighted = _h;
-		this.leftArrow._visible = _h;
-		this.rightArrow._visible = _h;
+		if (this.leftArrow.currentFrame == 1)
+		{
+			this.leftArrow._visible = _h;
+			this.rightArrow._visible = _h;
+		}
+		else
+		{
+			com.rockstargames.ui.utils.Colour.ApplyHudColour(this.leftArrow,!_h ? com.rockstargames.ui.utils.HudColour.HUD_COLOUR_WHITE : com.rockstargames.ui.utils.HudColour.HUD_COLOUR_BLACK);
+			com.rockstargames.ui.utils.Colour.ApplyHudColour(this.rightArrow,!_h ? com.rockstargames.ui.utils.HudColour.HUD_COLOUR_WHITE : com.rockstargames.ui.utils.HudColour.HUD_COLOUR_BLACK);
+		}
 		for (var _panel in this.panels)
 		{
 			this.panels[_panel].isVisible = _h;

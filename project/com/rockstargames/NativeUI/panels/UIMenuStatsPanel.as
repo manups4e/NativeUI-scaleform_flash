@@ -24,7 +24,12 @@
 		var loc = this._items.push(statistic);
 		this.itemMC.bgMC._height = 25 * (this._items.length);
 		this.parentItem._parentMenu.updateItemsDrawing();
-		this.setStat(loc - 1,0);
+		var val = 0;
+		if (_value != undefined)
+		{
+			val = _value;
+		}
+		this.setStat(loc - 1,val);
 	}
 
 	function setStat(id, val)
@@ -74,7 +79,7 @@
 			bar.item4.progressMC._width = bar.item4.bgMC._width;
 			bar.item5.progressMC._width = bar.item5.bgMC._width / 20 * (_value - 80);
 		}
-		//this._items[id].statsBar.         
+		//this._items[id].statsBar.          
 		//this._slider._width = this._sliderBG._width / this._max * this._value;
 
 	}
