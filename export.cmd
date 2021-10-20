@@ -1,1 +1,0 @@
-C:\Users\manups4e\Desktop\gfxeporter\gfxexport.exe NATIVEUI.swf -i DDS -share_images -o "L:\FiveM\ManuGamemode\resources\[local]\[streamed]\scale\stream"
