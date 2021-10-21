@@ -85,8 +85,13 @@
 	function set highlighted(_h)
 	{
 		super.highlighted = _h;
-		SetRightBadge(com.rockstargames.NativeUI.utils.Badges.GetSpriteDictionary(this.rightBadgeId),this.rightBadgeId);
-		//com.rockstargames.ui.utils.Colour.ApplyHudColour(this.rightBadgeMC,!_h ? this._textColor : this._textHighlightColor);
+		if (this.rightBadgeMC != undefined)
+		{
+			var txd = com.rockstargames.NativeUI.utils.Badges.GetSpriteDictionary(this.rightBadgeId);
+			var sprite_name = com.rockstargames.NativeUI.utils.Badges.getSpriteNameById(this.rightBadgeId, _h);
+			this.SetClip(this.rightBadgeMC,txd,sprite_name);
+		}
+		//com.rockstargames.ui.utils.Colour.ApplyHudColour(this.rightBadgeMC,!_h ? this._textColor : this._textHighlightColor);  
 		com.rockstargames.ui.utils.Colour.ApplyHudColourToTF(this.rightTextTF,!_h ? this._textColor : this._textHighlightColor);
 		for (var _panel in this.panels)
 		{

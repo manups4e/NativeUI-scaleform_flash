@@ -225,6 +225,10 @@
 	{
 		this.UIMenu.menuItems[item].SetRightBadge(txd,icon);
 	}
+	function SET_RIGHT_LABEL(item, txt)
+	{
+		this.UIMenu.menuItems[item].SetRightText(txt);
+	}
 
 	function GET_VALUE_FROM_ITEM(item)
 	{
