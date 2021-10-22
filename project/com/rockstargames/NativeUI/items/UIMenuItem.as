@@ -7,28 +7,28 @@
 	var _data;
 	var txd_loader;
 
-	function UIMenuItem(str, substr, parentMenu, mainColor, highlightColor, textColor, textHighlightColor)
+	function UIMenuItem(str,substr,parentMenu,mainColor,highlightColor,textColor,textHighlightColor)
 	{
 		super(parentMenu,str,substr);
-		this.itemMC = this.parentMC.attachMovie("UIMenuItem", "menuItem_" + (this._parentMenu.itemCount + 1), this.parentMC.getNextHighestDepth());
+		this.itemMC = this.parentMC.attachMovie("UIMenuItem","menuItem_" + this._parentMenu.itemCount + 1,this.parentMC.getNextHighestDepth());
 		this.backgroundMC = this.itemMC.bgMC;
 		this.leftTextTF = this.itemMC.labelMC.labelTF;
 		this.leftTextTF.antiAliasType = "advanced";
 		this.leftTextTF.selectable = false;
 		this.rightTextTF = this.itemMC.RLabelMC.labelTF;
-		if (mainColor != undefined)
+		if ((mainColor != undefined))
 		{
 			this._mainColor = mainColor;
 		}
-		if (highlightColor != undefined)
+		if ((highlightColor != undefined))
 		{
 			this._highlightColor = highlightColor;
 		}
-		if (textColor != undefined)
+		if ((textColor != undefined))
 		{
 			this._textColor = textColor;
 		}
-		if (textHighlightColor != undefined)
+		if ((textHighlightColor != undefined))
 		{
 			this._textHighlightColor = textHighlightColor;
 		}
@@ -39,29 +39,30 @@
 
 	function SetRightText(str)
 	{
+		this.rightText = str;
 		this.setRightText(this.rightTextTF,str);
 	}
 
-	function SetRightBadge(txd, id)
+	function SetRightBadge(txd,id)
 	{
 		this.rightBadgeId = id;
 		if (this.rightBadgeId != com.rockstargames.NativeUI.utils.Badges.NONE)
 		{
-			this.itemMC.RLabelMC._x -= 24;
-			this.rightBadgeMC = this.itemMC.createEmptyMovieClip("badge_" + (this._parentMenu.itemCount + 1), this.itemMC.getNextHighestDepth());
-			var sprite_name = com.rockstargames.NativeUI.utils.Badges.getSpriteNameById(id, this.highlighted);
+			this.itemMC.RLabelMC._x -=  24;
+			this.rightBadgeMC = this.itemMC.createEmptyMovieClip((("badge_" + this._parentMenu.itemCount) + 1),this.itemMC.getNextHighestDepth());
+			var sprite_name = com.rockstargames.NativeUI.utils.Badges.getSpriteNameById(id,this.highlighted);
 			this.SetClip(this.rightBadgeMC,txd,sprite_name);
 		}
 		else
 		{
 			removeMovieClip(this.rightBadgeMC);
-			this.itemMC.RLabelMC._x += 24;
+			this.itemMC.RLabelMC._x +=  24;
 		}
 	}
 
-	function SetClip(targetMC, textureDict, textureName)
+	function SetClip(targetMC,textureDict,textureName)
 	{
-		this.txd_loader = new MovieClipLoader();
+		this.txd_loader = new MovieClipLoader  ;
 		this.txd_loader.addListener(this);
 		var _loc2_ = "img://" + textureDict + "/" + textureName;
 		this.txd_loader.loadClip(_loc2_,targetMC);
@@ -88,11 +89,14 @@
 		if (this.rightBadgeMC != undefined)
 		{
 			var txd = com.rockstargames.NativeUI.utils.Badges.GetSpriteDictionary(this.rightBadgeId);
-			var sprite_name = com.rockstargames.NativeUI.utils.Badges.getSpriteNameById(this.rightBadgeId, _h);
+			var sprite_name = com.rockstargames.NativeUI.utils.Badges.getSpriteNameById(this.rightBadgeId,_h);
 			this.SetClip(this.rightBadgeMC,txd,sprite_name);
 		}
-		//com.rockstargames.ui.utils.Colour.ApplyHudColour(this.rightBadgeMC,!_h ? this._textColor : this._textHighlightColor);  
-		com.rockstargames.ui.utils.Colour.ApplyHudColourToTF(this.rightTextTF,!_h ? this._textColor : this._textHighlightColor);
+		//com.rockstargames.ui.utils.Colour.ApplyHudColour(this.rightBadgeMC,!_h ? this._textColor : this._textHighlightColor);
+		if (this.rightText.substring(0,1) != "~")
+		{
+			com.rockstargames.ui.utils.Colour.ApplyHudColourToTF(this.rightTextTF,! _h ? this._textColor:this._textHighlightColor);
+		}
 		for (var _panel in this.panels)
 		{
 			this.panels[_panel].isVisible = _h;

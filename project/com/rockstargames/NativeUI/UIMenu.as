@@ -295,7 +295,7 @@
 				this.Footer = this._mainMC.attachMovie("Footer", "footer", this._mainMC.getNextHighestDepth());
 			}
 			this.Footer._visible = true;
-			this.Footer._y = this.BannerSprite._height + this.SubtitleSprite._height + windOff + (this.maxItemsOnScreen + 1) * 25;
+			this.Footer._y = this.BannerSprite._height + this.SubtitleSprite._height - 1 + windOff + (this.maxItemsOnScreen + 1) * 25;
 		}
 		for (var item in this.menuItems)
 		{
@@ -305,10 +305,10 @@
 		var count = 0;
 		for (var i = this._minItem; i <= this._maxItem; i++)
 		{
-			if ((i <= this.itemCount))
+			if (i <= this.itemCount)
 			{
 				this.menuItems[i].isVisible = true;
-				this.menuItems[i].itemMC._y = this.BannerSprite._height + this.SubtitleSprite._height + windOff + (count * 25);
+				this.menuItems[i].itemMC._y = this.BannerSprite._height + this.SubtitleSprite._height - 1 + windOff + count * 24.9;
 			}
 			count++;
 		}
