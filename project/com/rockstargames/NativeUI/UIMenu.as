@@ -252,7 +252,7 @@
 			this.currentItem.value--;
 			retVal = this.currentItem.value;
 		}
-		this.updateDescription();
+		this.updateItemsDrawing();
 		com.rockstargames.ui.game.GameInterface.call("PLAY_SOUND",com.rockstargames.ui.game.GameInterface.GENERIC_TYPE,"NAV_LEFT_RIGHT","HUD_FRONTEND_DEFAULT_SOUNDSET");
 		return retVal;
 	}
@@ -275,7 +275,7 @@
 			this.currentItem.value++;
 			retVal = this.currentItem.value;
 		}
-		this.updateDescription();
+		this.updateItemsDrawing();
 		com.rockstargames.ui.game.GameInterface.call("PLAY_SOUND",com.rockstargames.ui.game.GameInterface.GENERIC_TYPE,"NAV_LEFT_RIGHT","HUD_FRONTEND_DEFAULT_SOUNDSET");
 		return retVal;
 	}
@@ -457,7 +457,7 @@
 
 	function onLoadInit(target_mc)
 	{
-		if ((target_mc == this.BannerSprite.bannerBG))
+		if (target_mc == this.BannerSprite.bannerBG)
 		{
 			target_mc._x = 0;
 			target_mc._y = 0;
@@ -465,10 +465,10 @@
 			target_mc._height = 54.75;
 			//com.rockstargames.ui.utils.Colour.ApplyHudColour(target_mc,!this.highlighted ? this._textColor : this._textHighlightColor);
 		}
-		else if ((target_mc == this.DescriptionSprite.descBG))
+		else if (target_mc == this.DescriptionSprite.descBG)
 		{
 			target_mc._width = 288;
-			target_mc._height = 25;
+			target_mc._height = this.DescriptionSprite.descriptionMC._height + 5;
 		}
 		delete this.txd_loader;
 	}
