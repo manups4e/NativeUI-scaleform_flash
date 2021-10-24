@@ -27,13 +27,13 @@
 	static function jsonToArray(str)
 	{
 		var s = str;
-		var s = com.rockstargames.NativeUI.utils.ArrayUtils.replace(s, "[", "");
-		var s = com.rockstargames.NativeUI.utils.ArrayUtils.replace(s, "]", "");
+		var s = com.rockstargames.NativeUI.utils.ArrayUtils.Replace(s, "[", "");
+		var s = com.rockstargames.NativeUI.utils.ArrayUtils.Replace(s, "]", "");
 		var stringSplit = s.split(",");
 		return stringSplit;
 	}
 
-	static function replace(string, searchStr, replaceStr)
+	static function Replace(string, searchStr, replaceStr)
 	{
 		return string.split(searchStr).join(replaceStr);
 	}
