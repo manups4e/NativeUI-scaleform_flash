@@ -66,6 +66,10 @@
 			this._sliderColor = sliderColor;
 		}
 		com.rockstargames.ui.utils.UIText.setSizedText(this.leftTextTF,this.leftText,true,true);
+		if (this._textColor != -1 && this._textHighlightColor != -1)
+		{
+			com.rockstargames.ui.utils.Colour.ApplyHudColourToTF(this.leftTextTF,!this.highlighted ? this._textColor : this._textHighlightColor);
+		}
 		com.rockstargames.ui.utils.Colour.ApplyHudColour(this._sliderBG,this._sliderBGColor);
 		com.rockstargames.ui.utils.Colour.ApplyHudColour(this._slider,this._sliderColor);
 		this.initBaseMouseInterface();

@@ -44,6 +44,10 @@
 			this._textHighlightColor = textHighlightColor;
 		}
 		com.rockstargames.ui.utils.UIText.setSizedText(this.leftTextTF,this.leftText,true,true);
+		if (this._textColor != -1 && this._textHighlightColor != -1)
+		{
+			com.rockstargames.ui.utils.Colour.ApplyHudColourToTF(this.leftTextTF,!_h ? this._textColor : this._textHighlightColor);
+		}
 		this.initBaseMouseInterface();
 		this.leftArrow.onRollOver = com.rockstargames.ui.utils.DelegateStar.create(this, this.mOverLI, this.leftArrow);
 		this.leftArrow.onRollOut = com.rockstargames.ui.utils.DelegateStar.create(this, this.mOutLI, this.leftArrow);
@@ -97,7 +101,10 @@
 		this._index = 100000000 - (100000000 % this.itemList.length) + val;
 		this.setRightText(this.rightTextTF,this.itemList[this.index]);
 		leftArrow._x = (this.leftArrowPos + 5.15) - this.itemMC.RLabelMC.labelTF.textWidth;
-		com.rockstargames.ui.utils.Colour.ApplyHudColourToTF(this.rightTextTF,this._textHighlightColor);
+		if (this._textColor != -1 && this._textHighlightColor != -1)
+		{
+			com.rockstargames.ui.utils.Colour.ApplyHudColourToTF(this.rightTextTF,this._textHighlightColor);
+		}
 	}
 	function addPanel(_panel)
 	{
@@ -119,7 +126,10 @@
 		super.highlighted = _h;
 		this.leftArrow._visible = _h;
 		this.rightArrow._visible = _h;
-		com.rockstargames.ui.utils.Colour.ApplyHudColourToTF(this.rightTextTF,!_h ? this._textColor : this._textHighlightColor);
+		if (this._textColor != -1 && this._textHighlightColor != -1)
+		{
+			com.rockstargames.ui.utils.Colour.ApplyHudColourToTF(this.rightTextTF,!_h ? this._textColor : this._textHighlightColor);
+		}
 		for (var _panel in this.panels)
 		{
 			this.panels[_panel].isVisible = _h;
