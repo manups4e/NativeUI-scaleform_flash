@@ -2,4 +2,6 @@
 
 This is the main flash project to create and handle this scaleform menu.
 
+Make sure to visit the [Project Wiki](https://github.com/manups4e/NativeUI-scaleform_flash/wiki)
+
 ![NativeUI Example](https://i.imgur.com/EtR18jZ.png)
