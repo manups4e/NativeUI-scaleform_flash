@@ -497,7 +497,6 @@
 		this.DescriptionSprite.removeMovieClip();
 		this.SubtitleSprite.removeMovieClip();
 		this.Footer.removeMovieClip();
-		this.currentSelection = 0;
 	}
 
 	/*
