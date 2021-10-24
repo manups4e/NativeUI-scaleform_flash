@@ -70,9 +70,9 @@
 		return retVal;
 	}
 
-	function SET_CURRENT_ITEM(i)
+	function SET_CURRENT_ITEM(item)
 	{
-		this.UIMenu.currentSelection = i;
+		this.UIMenu.currentSelection = item;
 	}
 
 	function SET_INPUT_MOUSE_EVENT_SINGLE(posX, posY)
@@ -224,6 +224,17 @@
 	function SET_RIGHT_BADGE(item, txd, icon)
 	{
 		this.UIMenu.menuItems[item].SetRightBadge(txd,icon);
+	}
+
+	function SET_ITEM_LABELS(item, lbl, rtxt)
+	{
+		com.rockstargames.ui.utils.UIText.setSizedText(this.UIMenu.menuItems[item].leftTextTF,lbl,true,true);
+		this.UIMenu.menuItems[item].SetRightText(rtxt);
+	}
+
+	function SET_LEFT_LABEL(item, txt)
+	{
+		com.rockstargames.ui.utils.UIText.setSizedText(this.UIMenu.menuItems[item].leftTextTF,txt,true,true);
 	}
 	function SET_RIGHT_LABEL(item, txt)
 	{
