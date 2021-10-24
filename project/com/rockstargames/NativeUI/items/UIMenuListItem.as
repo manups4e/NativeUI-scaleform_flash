@@ -46,7 +46,7 @@
 		com.rockstargames.ui.utils.UIText.setSizedText(this.leftTextTF,this.leftText,true,true);
 		if (this._textColor != -1 && this._textHighlightColor != -1)
 		{
-			com.rockstargames.ui.utils.Colour.ApplyHudColourToTF(this.leftTextTF,!_h ? this._textColor : this._textHighlightColor);
+			com.rockstargames.ui.utils.Colour.ApplyHudColourToTF(this.leftTextTF,!this.highlighted ? this._textColor : this._textHighlightColor);
 		}
 		this.initBaseMouseInterface();
 		this.leftArrow.onRollOver = com.rockstargames.ui.utils.DelegateStar.create(this, this.mOverLI, this.leftArrow);
