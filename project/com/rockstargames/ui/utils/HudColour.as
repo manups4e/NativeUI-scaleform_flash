@@ -1,5 +1,6 @@
 ﻿class com.rockstargames.ui.utils.HudColour extends com.rockstargames.ui.utils.HudColourLite
 {
+	static var NONE = -1
 	static var HUD_COLOUR_PURE_WHITE = 0;
 	static var HUD_COLOUR_WHITE = 1;
 	static var HUD_COLOUR_BLACK = 2;

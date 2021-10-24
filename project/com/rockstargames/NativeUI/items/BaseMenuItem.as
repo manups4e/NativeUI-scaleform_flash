@@ -12,8 +12,8 @@
 	var parentMC;
 	var _mainColor = com.rockstargames.ui.utils.HudColour.HUD_COLOUR_PAUSE_BG;// HUD_COLOUR_PAUSE_BG
 	var _highlightColor = com.rockstargames.ui.utils.HudColour.HUD_COLOUR_WHITE;// HUD_COLOUR_WHITE
-	var _textColor = -1;
-	var _textHighlightColor = -1;
+	var _textColor = com.rockstargames.ui.utils.HudColour.NONE;
+	var _textHighlightColor = com.rockstargames.ui.utils.HudColour.NONE;
 	var _hovered = false;
 	var hover = -1;
 	var panels;
@@ -107,7 +107,7 @@
 	{
 		this._highlighted = _h;
 		com.rockstargames.ui.utils.Colour.ApplyHudColour(this.backgroundMC,!_h ? this._mainColor : this._highlightColor);
-		if (this._textColor != -1 && this._textHighlightColor != -1)
+		if (this._textColor != com.rockstargames.ui.utils.HudColour.NONE && this._textHighlightColor != com.rockstargames.ui.utils.HudColour.NONE)
 		{
 			com.rockstargames.ui.utils.Colour.ApplyHudColourToTF(this.leftTextTF,!_h ? this._textColor : this._textHighlightColor);
 		}

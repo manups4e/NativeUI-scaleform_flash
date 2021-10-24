@@ -35,7 +35,7 @@
 			this._textHighlightColor = textHighlightColor;
 		}
 		com.rockstargames.ui.utils.UIText.setSizedText(this.leftTextTF,this.leftText,true,true);
-		if (this._textColor != -1 && this._textHighlightColor != -1)
+		if (this._textColor != com.rockstargames.ui.utils.HudColour.NONE && this._textHighlightColor != com.rockstargames.ui.utils.HudColour.NONE)
 		{
 			com.rockstargames.ui.utils.Colour.ApplyHudColourToTF(this.leftTextTF,!this.highlighted ? this._textColor : this._textHighlightColor);
 		}
