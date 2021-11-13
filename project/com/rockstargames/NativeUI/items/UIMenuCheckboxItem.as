@@ -103,7 +103,6 @@
 		{
 			this.panels[_panel].isVisible = _h;
 		}
-
 	}
 
 	function getSprite(_highlighted, _style, _checked)

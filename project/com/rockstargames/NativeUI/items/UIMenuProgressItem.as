@@ -12,7 +12,7 @@
 	var _sliderColor = com.rockstargames.ui.utils.HudColour.HUD_COLOUR_FREEMODE;
 	var arrow_loader;
 
-	function UIMenuProgressItem(str, substr, parentMenu, max, mult, startIndex, mainColor, highlightColor, textColor, textHighlightColor, sliderColor, sliderBGColor)
+	function UIMenuProgressItem(str, substr, parentMenu, max, mult, startIndex, mainColor, highlightColor, textColor, textHighlightColor, sliderBGColor, sliderColor)
 	{
 		super(parentMenu,str,substr);
 		this.itemMC = this.parentMC.attachMovie("UIMenuProgressItem", "progressMenuItem_" + this._parentMenu.itemCount + 1, this.parentMC.getNextHighestDepth());

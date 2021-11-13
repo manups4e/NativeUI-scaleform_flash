@@ -31,6 +31,11 @@
 		this.UIMenu.addItem(id,str,sub,param1,param2,param3,param4,param5,param6,param7,param8,param9,param10,param11);
 	}
 
+	function ADD_PANEL(item, panelType, param1, param2, param3, param4, param5, param6, param7, param8, param9, param10)
+	{
+		this.UIMenu.addPanel(item,panelType,param1,param2,param3,param4,param5,param6,param7,param8,param9,param10);
+	}
+
 	function ADD_HERITAGE_WINDOW(mom, dad)
 	{
 		this.UIMenu.addWindow(mom,dad);
@@ -216,7 +221,7 @@
 		this.UIMenu.menuItems[listItemId].itemList.push(item);
 	}
 
-	function REMOVE_ITEM_FROM_LIST(item, idx)
+	function REMOVE_ITEM_FROM_ITEMLIST(item, idx)
 	{
 		this.UIMenu.menuItems[item].itemList.splice(idx,1);
 	}
@@ -241,19 +246,9 @@
 		this.UIMenu.menuItems[item].SetRightText(txt);
 	}
 
-	function GET_VALUE_FROM_ITEM(item)
-	{
-		return this.UIMenu.menuItems[item].value;
-	}
-
 	function GET_VALUE_FROM_PANEL(item, panel)
 	{
 		return this.UIMenu.menuItems[item].panels[panel].Value;
-	}
-
-	function ADD_PANEL(item, panelType, param1, param2, param3, param4, param5, param6, param7, param8, param9, param10)
-	{
-		this.UIMenu.addPanel(item,panelType,param1,param2,param3,param4,param5,param6,param7,param8,param9,param10);
 	}
 
 	function ADD_STATISTIC_TO_PANEL(item, panel, _label, _value)
@@ -314,6 +309,4 @@
 		this.UIMenu.menuItems[item].panels[panel].Coords = posX;
 		return this.UIMenu.menuItems[item].panels[panel].Value.toString();
 	}
-
-
 }

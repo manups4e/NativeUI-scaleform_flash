@@ -101,10 +101,7 @@
 		this._index = 100000000 - (100000000 % this.itemList.length) + val;
 		this.setRightText(this.rightTextTF,this.itemList[this.index]);
 		leftArrow._x = (this.leftArrowPos + 5.15) - this.itemMC.RLabelMC.labelTF.textWidth;
-		if (this._textColor != com.rockstargames.ui.utils.HudColour.NONE && this._textHighlightColor != com.rockstargames.ui.utils.HudColour.NONE)
-		{
-			com.rockstargames.ui.utils.Colour.ApplyHudColourToTF(this.rightTextTF,this._textHighlightColor);
-		}
+		com.rockstargames.ui.utils.Colour.ApplyHudColourToTF(this.rightTextTF,this._textHighlightColor);
 	}
 	function addPanel(_panel)
 	{
@@ -126,10 +123,7 @@
 		super.highlighted = _h;
 		this.leftArrow._visible = _h;
 		this.rightArrow._visible = _h;
-		if (this._textColor != com.rockstargames.ui.utils.HudColour.NONE && this._textHighlightColor != com.rockstargames.ui.utils.HudColour.NONE)
-		{
-			com.rockstargames.ui.utils.Colour.ApplyHudColourToTF(this.rightTextTF,!_h ? this._textColor : this._textHighlightColor);
-		}
+		com.rockstargames.ui.utils.Colour.ApplyHudColourToTF(this.rightTextTF,!_h ? this._textColor : this._textHighlightColor);
 		for (var _panel in this.panels)
 		{
 			this.panels[_panel].isVisible = _h;
