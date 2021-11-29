@@ -109,6 +109,9 @@
 			case 4 :
 				item = new com.rockstargames.NativeUI.items.UIMenuProgressItem(str, substr, this, param1, param2, param3, param4, param5, param6, param7, param8, param9);
 				break;
+			case 5 :
+				item = new com.rockstargames.NativeUI.items.UIMenuStatsItem(str, substr, this, param1, param2, param3);
+				break;
 			default :
 				item = new com.rockstargames.NativeUI.items.UIMenuItem(str, substr, this);
 		}
@@ -116,7 +119,7 @@
 		if (this.itemCount <= this.maxItemsOnScreen + 1)
 		{
 			item.itemMC._x = 0;
-			item.itemMC._y = this.BannerSprite._height + this.SubtitleSprite._height + this.itemCount - 1 * 25;
+			item.itemMC._y = this.BannerSprite._height + this.SubtitleSprite._height + this.itemCount - 1 * item.itemMC._height;
 		}
 		else
 		{
@@ -252,6 +255,11 @@
 			this.currentItem.value--;
 			retVal = this.currentItem.value;
 		}
+		else if (this.currentItem instanceof com.rockstargames.NativeUI.items.UIMenuStatsItem)
+		{
+			this.currentItem.barscale--;
+			retVal = this.currentItem.barscale;
+		}
 		this.updateItemsDrawing();
 		com.rockstargames.ui.game.GameInterface.call("PLAY_SOUND",com.rockstargames.ui.game.GameInterface.GENERIC_TYPE,"NAV_LEFT_RIGHT","HUD_FRONTEND_DEFAULT_SOUNDSET");
 		return retVal;
@@ -275,6 +283,11 @@
 			this.currentItem.value++;
 			retVal = this.currentItem.value;
 		}
+		else if (this.currentItem instanceof com.rockstargames.NativeUI.items.UIMenuStatsItem)
+		{
+			this.currentItem.barscale++;
+			retVal = this.currentItem.barscale;
+		}
 		this.updateItemsDrawing();
 		com.rockstargames.ui.game.GameInterface.call("PLAY_SOUND",com.rockstargames.ui.game.GameInterface.GENERIC_TYPE,"NAV_LEFT_RIGHT","HUD_FRONTEND_DEFAULT_SOUNDSET");
 		return retVal;
@@ -282,20 +295,12 @@
 
 	function updateItemsDrawing()
 	{
+		var _off = 0;
 		var windOff = 0;
 		if (this.windows.length > 0)
 		{
 			this.windows[0].itemMC._y = this.BannerSprite._height + this.SubtitleSprite._height;
 			windOff = 158;
-		}
-		if (this.itemCount > this.maxItemsOnScreen + 1)
-		{
-			if (this.Footer == undefined)
-			{
-				this.Footer = this._mainMC.attachMovie("Footer", "footer", this._mainMC.getNextHighestDepth());
-			}
-			this.Footer._visible = true;
-			this.Footer._y = this.BannerSprite._height + this.SubtitleSprite._height - 1 + windOff + (this.maxItemsOnScreen + 1) * 24.9;
 		}
 		for (var item in this.menuItems)
 		{
@@ -308,22 +313,40 @@
 			if (i <= this.itemCount)
 			{
 				this.menuItems[i].isVisible = true;
-				this.menuItems[i].itemMC._y = this.BannerSprite._height + this.SubtitleSprite._height - 1 + windOff + count * 24.9;
+				if (i == 0)
+				{
+					this.menuItems[i].itemMC._y = this.BannerSprite._height + this.SubtitleSprite._height - 1 + windOff + count * (this.menuItems[i].itemMC._height - 0.1);
+				}
+				else
+				{
+					this.menuItems[i].itemMC._y = this.menuItems[i - 1].itemMC._y + this.menuItems[i - 1].itemMC._height - 0.1;
+				}
+				_off = this.menuItems[i].itemMC._y + this.menuItems[i].itemMC._height;
 			}
 			count++;
 		}
 		this.currentItem.highlighted = true;
+
+		if (this.itemCount > this.maxItemsOnScreen + 1)
+		{
+			if (this.Footer == undefined)
+			{
+				this.Footer = this._mainMC.attachMovie("Footer", "footer", this._mainMC.getNextHighestDepth());
+			}
+			this.Footer._visible = true;
+			this.Footer._y = _off + 1;
+		}
 		if (this.currentItem.subtitle != undefined && this.currentItem.subtitle != "")
 		{
 			this.DescriptionSprite._visible = true;
 			com.rockstargames.ui.utils.UIText.setDescText(this.DescriptionSprite.descriptionMC.descText,this.currentItem.subtitle,true);
 			if (this.itemCount >= this.maxItemsOnScreen + 1)
 			{
-				this.DescriptionSprite._y = this.BannerSprite._height + this.SubtitleSprite._height + windOff + (this.maxItemsOnScreen + 1) * 24.9 + 1;
+				this.DescriptionSprite._y = _off + 1;
 			}
 			else
 			{
-				this.DescriptionSprite._y = this.BannerSprite._height + this.SubtitleSprite._height + windOff + (this.itemCount * 24.9) + 1;
+				this.DescriptionSprite._y = _off + 1;
 			}
 			this.DescriptionSprite.descBG._height = this.DescriptionSprite.descriptionMC._height + 5;
 			if (this.Footer._visible)
@@ -341,15 +364,7 @@
 		{
 			for (var i = 0; i < this.currentItem.panels.length; i++)
 			{
-				var offset = this.BannerSprite._height + this.SubtitleSprite._height + windOff;
-				if (this.itemCount >= this.maxItemsOnScreen + 1)
-				{
-					offset += (this.maxItemsOnScreen + 1) * 24.9 + 1;
-				}
-				else
-				{
-					offset += (this.itemCount * 24.9) + 1;
-				}
+				var offset = _off;
 				if (this.Footer._visible)
 				{
 					offset += this.Footer._height;
@@ -372,17 +387,34 @@
 
 	function updateDescription()
 	{
+		var count = 0;
+		var windOff = 0;
+		if (this.windows.length > 0)
+		{
+			this.windows[0].itemMC._y = this.BannerSprite._height + this.SubtitleSprite._height;
+			windOff = 158;
+		}
+		var offset = 0;
+		for (var i = this._minItem; i <= this._maxItem; i++)
+		{
+			if (i <= this.itemCount)
+			{
+				offset = this.BannerSprite._height + this.SubtitleSprite._height - 1 + windOff + count * (this.menuItems[i].itemMC._height - 0.1);
+			}
+			count++;
+		}
+
 		if (this.currentItem.subtitle != undefined && this.currentItem.subtitle != "")
 		{
 			this.DescriptionSprite._visible = true;
 			com.rockstargames.ui.utils.UIText.setDescText(this.DescriptionSprite.descriptionMC.descText,this.currentItem.subtitle,true);
 			if (this.itemCount >= this.maxItemsOnScreen + 1)
 			{
-				this.DescriptionSprite._y = this.BannerSprite._height + this.SubtitleSprite._height + (this.maxItemsOnScreen + 1) * 24.9 + 1;
+				this.DescriptionSprite._y = this.BannerSprite._height + this.SubtitleSprite._height + offset + 1;
 			}
 			else
 			{
-				this.DescriptionSprite._y = this.BannerSprite._height + this.SubtitleSprite._height + (this.itemCount * 24.9) + 1;
+				this.DescriptionSprite._y = this.BannerSprite._height + this.SubtitleSprite._height + offset + 1;
 			}
 			this.DescriptionSprite.descBG._height = this.DescriptionSprite.descriptionMC._height + 5;
 			if (this.Footer._visible)
