@@ -5,14 +5,12 @@
 	var rightArrow;
 	var _max;
 	var _multiplier;
-	var _sliderBG;
-	var _slider;
 	var divider;
-	var _sliderBGColor = com.rockstargames.ui.utils.HudColour.HUD_COLOUR_PAUSE_BG;
 	var _sliderColor = com.rockstargames.ui.utils.HudColour.HUD_COLOUR_FREEMODE;
+	var _slider;
 	var arrow_loader;
 
-	function UIMenuProgressItem(str, substr, parentMenu, max, mult, startIndex, mainColor, highlightColor, textColor, textHighlightColor, sliderBGColor, sliderColor)
+	function UIMenuProgressItem(str, substr, parentMenu, max, mult, startIndex, mainColor, highlightColor, textColor, textHighlightColor, sliderColor)
 	{
 		super(parentMenu,str,substr);
 		this.itemMC = this.parentMC.attachMovie("UIMenuProgressItem", "progressMenuItem_" + this._parentMenu.itemCount + 1, this.parentMC.getNextHighestDepth());
@@ -22,18 +20,9 @@
 		this.leftTextTF = this.itemMC.labelMC.labelTF;
 		this.leftTextTF.antiAliasType = "advanced";
 		this.leftTextTF.selectable = false;
-		this._sliderBG = this.itemMC.sliderMC.sliderBG;
-		this._slider = this.itemMC.sliderMC.slider;
+		this._slider = this.itemMC.attachMovie("GenericColourBar", "progress_bar", this.itemMC.getNextHighestDepth(), {_x:171.05, _y:9.25});
 		this._max = max;
 		this._multiplier = mult;
-		if (startIndex == undefined)
-		{
-			this.value = 0;
-		}
-		else
-		{
-			this.value = startIndex;
-		}
 		if (mainColor != undefined)
 		{
 			this._mainColor = mainColor;
@@ -50,13 +39,19 @@
 		{
 			this._textHighlightColor = textHighlightColor;
 		}
-		if (sliderBGColor != undefined)
-		{
-			this._sliderBGColor = sliderBGColor;
-		}
 		if (sliderColor != undefined)
 		{
 			this._sliderColor = sliderColor;
+		}
+		this._slider.init(this._sliderColor,100);
+
+		if (startIndex == undefined)
+		{
+			this.value = 0;
+		}
+		else
+		{
+			this.value = Math.max(0, Math.min(startIndex, max));
 		}
 
 		com.rockstargames.ui.utils.UIText.setSizedText(this.leftTextTF,this.leftText,true,true);
@@ -64,15 +59,14 @@
 		{
 			com.rockstargames.ui.utils.Colour.ApplyHudColourToTF(this.leftTextTF,!this.highlighted ? this._textColor : this._textHighlightColor);
 		}
-		com.rockstargames.ui.utils.Colour.ApplyHudColour(this._sliderBG,this._sliderBGColor);
-		com.rockstargames.ui.utils.Colour.ApplyHudColour(this._slider,this._sliderColor);
+
 		this.initBaseMouseInterface();
 		this.leftArrow.onRollOver = com.rockstargames.ui.utils.DelegateStar.create(this, this.mOverP, this.leftArrow);
 		this.leftArrow.onRollOut = com.rockstargames.ui.utils.DelegateStar.create(this, this.mOutP, this.leftArrow);
 		this.rightArrow.onRollOver = com.rockstargames.ui.utils.DelegateStar.create(this, this.mOverP, this.rightArrow);
 		this.rightArrow.onRollOut = com.rockstargames.ui.utils.DelegateStar.create(this, this.mOutP, this.rightArrow);
-		this.itemMC.sliderMC.onRollOver = com.rockstargames.ui.utils.DelegateStar.create(this, this.mOverP, this.itemMC.sliderMC);
-		this.itemMC.sliderMC.onRollOut = com.rockstargames.ui.utils.DelegateStar.create(this, this.mOutP, this.itemMC.sliderMC);
+		this._slider.onRollOver = com.rockstargames.ui.utils.DelegateStar.create(this, this.mOverP, this._slider);
+		this._slider.sliderMC.onRollOut = com.rockstargames.ui.utils.DelegateStar.create(this, this.mOutP, this._slider);
 	}
 
 	function mOverP(mc)
@@ -87,7 +81,7 @@
 			this._hovered = true;
 			this.hover = 1;
 		}
-		else if (mc == this.itemMC.sliderMC)
+		else if (mc == this._slider)
 		{
 			this._hovered = true;
 			this.hover = 2;
@@ -138,21 +132,8 @@
 	}
 	function set value(val)
 	{
-		if (val > this._max)
-		{
-			this._value = this._max;
-			this._slider._width = 0;
-		}
-		else if (val < 0)
-		{
-			this._value = 0;
-			this._slider._width = this._sliderBG._width;
-		}
-		else
-		{
-			this._value = val;
-		}
-		this._slider._width = this._sliderBG._width / this._max * this._value;
+		this._value = Math.max(0, Math.min(val, this._max));
+		this._slider.setPercentageBar(this._value,true,0,this._max);
 	}
 
 	function get multiplier()
@@ -191,7 +172,7 @@
 		}
 		if (this.hover == 2)
 		{
-			var val = (posX - 178) / this._sliderBG._width * this._max;
+			var val = (posX - 178) / 100 * this._max;
 			this.value = val;
 		}
 		return this.value;
