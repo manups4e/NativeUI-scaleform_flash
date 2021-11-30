@@ -119,7 +119,7 @@
 		if (this.itemCount <= this.maxItemsOnScreen + 1)
 		{
 			item.itemMC._x = 0;
-			item.itemMC._y = this.BannerSprite._height + this.SubtitleSprite._height + this.itemCount - 1 * item.itemMC._height;
+			item.itemMC._y = this.BannerSprite._height + this.SubtitleSprite._height + (this.itemCount - 1) * item.itemMC._height;
 		}
 		else
 		{
@@ -313,14 +313,15 @@
 			if (i <= this.itemCount)
 			{
 				this.menuItems[i].isVisible = true;
-				if (i == 0)
+				if (count == 0)
 				{
-					this.menuItems[i].itemMC._y = this.BannerSprite._height + this.SubtitleSprite._height - 1 + windOff + count * (this.menuItems[i].itemMC._height - 0.1);
+					this.menuItems[i].itemMC._y = this.BannerSprite._height + (this.SubtitleSprite._height - 1) + windOff;
 				}
-				else
+				else if (count > 0)
 				{
 					this.menuItems[i].itemMC._y = this.menuItems[i - 1].itemMC._y + this.menuItems[i - 1].itemMC._height - 0.1;
 				}
+				//this.menuItems[i].itemMC._y = this.BannerSprite._height + (this.SubtitleSprite._height - 1) + windOff + (count * 25 - 0.1) + (this.menuItems[i-1] instanceof com.rockstargames.NativeUI.items.UIMenuStatsItem ? 15 : 0); 
 				_off = this.menuItems[i].itemMC._y + this.menuItems[i].itemMC._height;
 			}
 			count++;
@@ -351,7 +352,7 @@
 			this.DescriptionSprite.descBG._height = this.DescriptionSprite.descriptionMC._height + 5;
 			if (this.Footer._visible)
 			{
-				this.DescriptionSprite._y += this.Footer._height;
+				this.DescriptionSprite._y += this.Footer._height + 1;
 			}
 		}
 		else
