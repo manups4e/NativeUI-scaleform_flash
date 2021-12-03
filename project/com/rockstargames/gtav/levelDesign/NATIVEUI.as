@@ -80,31 +80,6 @@
 		this.UIMenu.currentSelection = item;
 	}
 
-	function SET_ITEM_VALUE(item, _val)
-	{
-		var _item = this.UIMenu.menuItems[item];
-		if (_item instanceof com.rockstargames.NativeUI.items.UIMenuListItem)
-		{
-			_item.index = _val;
-		}
-		else if (_item instanceof com.rockstargames.NativeUI.items.UIMenuCheckboxItem)
-		{
-			_item.Checked = _val;
-		}
-		else if (_item instanceof com.rockstargames.NativeUI.items.UIMenuSliderItem)
-		{
-			_item.value = _val;
-		}
-		else if (_item instanceof com.rockstargames.NativeUI.items.UIMenuProgressItem)
-		{
-			_item.value = _val;
-		}
-		else if (_item instanceof com.rockstargames.NativeUI.items.UIMenuStatsItem)
-		{
-			_item.barscale = _val;
-		}
-	}
-
 	function SET_INPUT_MOUSE_EVENT_SINGLE(posX, posY)
 	{
 		var retVal = new Array();
@@ -249,6 +224,38 @@
 	function REMOVE_ITEM_FROM_ITEMLIST(listItemId, idx)
 	{
 		this.UIMenu.menuItems[listItemId].itemList.splice(idx,1);
+	}
+
+	function UPDATE_LISTITEM_LIST(item, list, index)
+	{
+		this.UIMenu.menuItems[item].itemList = [];
+		this.UIMenu.menuItems[item].itemList = list.split(",");
+		this.SET_ITEM_VALUE(item,index);
+	}
+
+	function SET_ITEM_VALUE(item, _val)
+	{
+		var _item = this.UIMenu.menuItems[item];
+		if (_item instanceof com.rockstargames.NativeUI.items.UIMenuListItem)
+		{
+			_item.index = _val;
+		}
+		else if (_item instanceof com.rockstargames.NativeUI.items.UIMenuCheckboxItem)
+		{
+			_item.Checked = _val;
+		}
+		else if (_item instanceof com.rockstargames.NativeUI.items.UIMenuSliderItem)
+		{
+			_item.value = _val;
+		}
+		else if (_item instanceof com.rockstargames.NativeUI.items.UIMenuProgressItem)
+		{
+			_item.value = _val;
+		}
+		else if (_item instanceof com.rockstargames.NativeUI.items.UIMenuStatsItem)
+		{
+			_item.barscale = _val;
+		}
 	}
 
 	function SET_RIGHT_BADGE(item, txd, icon)
