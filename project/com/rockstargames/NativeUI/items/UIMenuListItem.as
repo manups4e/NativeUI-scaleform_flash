@@ -101,7 +101,15 @@
 		this._index = 100000000 - (100000000 % this.itemList.length) + val;
 		this.setRightText(this.rightTextTF,this.itemList[this.index]);
 		leftArrow._x = (this.leftArrowPos + 5.15) - this.itemMC.RLabelMC.labelTF.textWidth;
-		com.rockstargames.ui.utils.Colour.ApplyHudColourToTF(this.rightTextTF,this._textHighlightColor);
+		if (this.highlighted)
+		{
+			com.rockstargames.ui.utils.Colour.ApplyHudColourToTF(this.rightTextTF,this._textHighlightColor);
+		}
+		else
+		{
+			com.rockstargames.ui.utils.Colour.ApplyHudColourToTF(this.rightTextTF,this._textColor);
+
+		}
 	}
 	function addPanel(_panel)
 	{
