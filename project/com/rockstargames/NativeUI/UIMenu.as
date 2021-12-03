@@ -295,9 +295,6 @@
 
 	function updateItemsDrawing()
 	{
-
-		var _off = this.itemCount > this._maxItem ? this.menuItems[this._maxItem].itemMC._y + this.menuItems[this._maxItem].itemMC._height : this.menuItems[this.itemCount - 1].itemMC._y + this.menuItems[this.itemCount - 1].itemMC._height;
-
 		var windOff = 0;
 		if (this.windows.length > 0)
 		{
@@ -326,6 +323,7 @@
 			}
 			count++;
 		}
+		var _off = this.itemCount > this.maxItemsOnScreen + 1 ? this.menuItems[this._maxItem].itemMC._y + this.menuItems[this._maxItem].itemMC._height : this.menuItems[this.itemCount - 1].itemMC._y + this.menuItems[this.itemCount - 1].itemMC._height;
 		this.currentItem.highlighted = true;
 
 		if (this.itemCount > this.maxItemsOnScreen + 1)
