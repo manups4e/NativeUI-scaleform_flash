@@ -1,12 +1,17 @@
-﻿class com.rockstargames.gtav.levelDesign.NATIVEUI extends com.rockstargames.ui.core.BaseScreenLayout
+﻿class com.rockstargames.gtav.levelDesign.SCALEFORMUI extends com.rockstargames.ui.core.BaseScreenLayout
 {
 	var _customBannerLoaded = false;
 	var UIMenu;
+	var DispConf;
+	var offset = [];
+	var iActualWidth;
 
-	function NATIVEUI()
+	function SCALEFORMUI()
 	{
 		super();
 		_global.gfxExtensions = true;
+		this.DispConf = new com.rockstargames.ui.utils.DisplayConfig();
+		this.DispConf = this.getDisplayConfig(true);
 	}
 
 	function INITIALISE(mc)
@@ -15,9 +20,36 @@
 		this.getDisplayConfig(true);
 	}
 
+	function initScreenLayout()
+	{
+		this.offset[0] = this.FOUR_THREE_PADDING + this.DispConf.safeLeft * this.DispConf.screenWidth;
+		this.offset[1] = this.DispConf.safeTop * this.DispConf.screenHeight;
+	}
+
+	function SET_DISPLAY_CONFIG(_screenWidthPixels, _screenHeightPixels, _safeTopPercent, _safeBottomPercent, _safeLeftPercent, _safeRightPercent, _isWideScreen, _isCircleAccept, _isAsian, _actualWidth, _actualHeight)
+	{
+		this.DispConf.isCircleAccept = _isCircleAccept;
+		this.DispConf.isWideScreen = _isWideScreen;
+		this.DispConf.safeBottom = _safeBottomPercent;
+		this.DispConf.safeLeft = _safeLeftPercent;
+		this.DispConf.safeRight = _safeRightPercent;
+		this.DispConf.safeTop = _safeTopPercent;
+		this.DispConf.screenHeight = _screenHeightPixels;
+		this.DispConf.screenWidth = _screenWidthPixels;
+		if (_actualWidth / _actualHeight > 1.5)
+		{
+			this.iActualWidth = 1280;
+		}
+		else
+		{
+			this.iActualWidth = 890;
+		}
+		this.initScreenLayout();
+	}
+
 	function CREATE_MENU(title, subtitle, txd, txn)
 	{
-		this.UIMenu = new com.rockstargames.NativeUI.UIMenu(this.CONTENT, title, subtitle, txd, txn);
+		this.UIMenu = new com.rockstargames.ScaleformUI.UIMenu(this.CONTENT, title, subtitle, txd, txn, offset);
 	}
 
 	function CLEAR_ALL()
@@ -53,7 +85,7 @@
 			case com.rockstargames.ui.game.GamePadConstants.CROSS :
 
 				var _item = this.UIMenu.menuItems[item];
-				if (_item instanceof com.rockstargames.NativeUI.items.UIMenuCheckboxItem)
+				if (_item instanceof com.rockstargames.ScaleformUI.items.UIMenuCheckboxItem)
 				{
 					_item.Checked = val;
 					retVal = _item.Checked;
@@ -100,19 +132,19 @@
 					this.UIMenu.currentSelection = i;
 				}
 				var _type = 0;
-				if (this.UIMenu.currentItem instanceof com.rockstargames.NativeUI.items.UIMenuListItem)
+				if (this.UIMenu.currentItem instanceof com.rockstargames.ScaleformUI.items.UIMenuListItem)
 				{
 					_type = 1;
 				}
-				else if (this.UIMenu.currentItem instanceof com.rockstargames.NativeUI.items.UIMenuCheckboxItem)
+				else if (this.UIMenu.currentItem instanceof com.rockstargames.ScaleformUI.items.UIMenuCheckboxItem)
 				{
 					_type = 2;
 				}
-				else if (this.UIMenu.currentItem instanceof com.rockstargames.NativeUI.items.UIMenuSliderItem)
+				else if (this.UIMenu.currentItem instanceof com.rockstargames.ScaleformUI.items.UIMenuSliderItem)
 				{
 					_type = 3;
 				}
-				else if (this.UIMenu.currentItem instanceof com.rockstargames.NativeUI.items.UIMenuProgressItem)
+				else if (this.UIMenu.currentItem instanceof com.rockstargames.ScaleformUI.items.UIMenuProgressItem)
 				{
 					_type = 4;
 				}
@@ -132,7 +164,7 @@
 				var _panel = this.UIMenu.currentItem.panels[i];
 				if (_panel._hovered)
 				{
-					if (_panel instanceof com.rockstargames.NativeUI.panels.UIMenuColorPanel)
+					if (_panel instanceof com.rockstargames.ScaleformUI.panels.UIMenuColorPanel)
 					{
 						retVal.push("pan");
 						retVal.push(i);
@@ -162,11 +194,11 @@
 			if (item._hovered)
 			{
 				var _type = 0;
-				if (this.UIMenu.currentItem instanceof com.rockstargames.NativeUI.items.UIMenuSliderItem)
+				if (this.UIMenu.currentItem instanceof com.rockstargames.ScaleformUI.items.UIMenuSliderItem)
 				{
 					_type = 3;
 				}
-				else if (this.UIMenu.currentItem instanceof com.rockstargames.NativeUI.items.UIMenuProgressItem)
+				else if (this.UIMenu.currentItem instanceof com.rockstargames.ScaleformUI.items.UIMenuProgressItem)
 				{
 					_type = 4;
 				}
@@ -189,16 +221,16 @@
 				if (_panel._hovered)
 				{
 					var _panType = 0;
-					if (_panel instanceof com.rockstargames.NativeUI.panels.UIMenuColorPanel)
+					if (_panel instanceof com.rockstargames.ScaleformUI.panels.UIMenuColorPanel)
 					{
 						_panType = 0;
 					}
-					else if (_panel instanceof com.rockstargames.NativeUI.panels.UIMenuPercentagePanel)
+					else if (_panel instanceof com.rockstargames.ScaleformUI.panels.UIMenuPercentagePanel)
 					{
 						_panType = 1;
 						_panel.Coords = posX;
 					}
-					else if (_panel instanceof com.rockstargames.NativeUI.panels.UIMenuGridPanel)
+					else if (_panel instanceof com.rockstargames.ScaleformUI.panels.UIMenuGridPanel)
 					{
 						_panType = 2;
 						_panel.Coords = new Array(posX, posY);
@@ -233,26 +265,42 @@
 		this.SET_ITEM_VALUE(item,index);
 	}
 
+	function UPDATE_ITEM(item, substr, mainColor, highlightColor, textColor, textHighlightColor, sliderBGColor, sliderColor)
+	{
+		var _selectedItem = UIMenu.menuItems[item];
+		_selectedItem.subtitle = substr;
+		_selectedItem._mainColor = mainColor;
+		_selectedItem._highlightColor = highlightColor;
+		_selectedItem._textColor = textColor;
+		_selectedItem._textHighlightColor = textHighlightColor;
+		if (_selectedItem instanceof com.rockstargames.ScaleformUI.items.UIMenuProgressItem || _selectedItem instanceof com.rockstargames.ScaleformUI.items.UIMenuSliderItem)
+		{
+			_selectedItem._sliderColor = sliderColor;
+			_selectedItem._sliderBGColor = sliderBGColor;
+		}
+		this.UIMenu.updateItemsDrawing();
+	}
+
 	function SET_ITEM_VALUE(item, _val)
 	{
 		var _item = this.UIMenu.menuItems[item];
-		if (_item instanceof com.rockstargames.NativeUI.items.UIMenuListItem)
+		if (_item instanceof com.rockstargames.ScaleformUI.items.UIMenuListItem)
 		{
 			_item.index = _val;
 		}
-		else if (_item instanceof com.rockstargames.NativeUI.items.UIMenuCheckboxItem)
+		else if (_item instanceof com.rockstargames.ScaleformUI.items.UIMenuCheckboxItem)
 		{
 			_item.Checked = _val;
 		}
-		else if (_item instanceof com.rockstargames.NativeUI.items.UIMenuSliderItem)
+		else if (_item instanceof com.rockstargames.ScaleformUI.items.UIMenuSliderItem)
 		{
 			_item.value = _val;
 		}
-		else if (_item instanceof com.rockstargames.NativeUI.items.UIMenuProgressItem)
+		else if (_item instanceof com.rockstargames.ScaleformUI.items.UIMenuProgressItem)
 		{
 			_item.value = _val;
 		}
-		else if (_item instanceof com.rockstargames.NativeUI.items.UIMenuStatsItem)
+		else if (_item instanceof com.rockstargames.ScaleformUI.items.UIMenuStatsItem)
 		{
 			_item.barscale = _val;
 		}

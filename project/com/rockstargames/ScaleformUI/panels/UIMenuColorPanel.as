@@ -1,4 +1,4 @@
-﻿class com.rockstargames.NativeUI.panels.UIMenuColorPanel extends com.rockstargames.NativeUI.panels.BasePanel
+﻿class com.rockstargames.ScaleformUI.panels.UIMenuColorPanel extends com.rockstargames.ScaleformUI.panels.BasePanel
 {
 	var colorItems;
 	var colorsArray;
@@ -24,11 +24,11 @@
 		this.selectedColors = new Array();
 		if (type == 0)
 		{
-			this.colorsArray = com.rockstargames.NativeUI.utils.ColorPanelColors.HAIR_COLORS;
+			this.colorsArray = com.rockstargames.ScaleformUI.utils.ColorPanelColors.HAIR_COLORS;
 		}
 		else
 		{
-			this.colorsArray = com.rockstargames.NativeUI.utils.ColorPanelColors.MAKEUP_COLORS;
+			this.colorsArray = com.rockstargames.ScaleformUI.utils.ColorPanelColors.MAKEUP_COLORS;
 		}
 		this.itemCount = this.colorsArray.length;
 		this.itemMC = parentItem._parentMenu._mainMC.attachMovie("UIMenuColorPanel", "colorPanel_" + parentItem.itemMC._name + "_" + (parentItem.panels.length + 1), parentItem._parentMenu._mainMC.getNextHighestDepth());

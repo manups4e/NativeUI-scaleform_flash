@@ -1,4 +1,4 @@
-﻿class com.rockstargames.NativeUI.panels.UIMenuPercentagePanel extends com.rockstargames.NativeUI.panels.BasePanel
+﻿class com.rockstargames.ScaleformUI.panels.UIMenuPercentagePanel extends com.rockstargames.ScaleformUI.panels.BasePanel
 {
 	var _sliderBG;
 	var _slider;

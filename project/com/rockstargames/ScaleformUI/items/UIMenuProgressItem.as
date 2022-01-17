@@ -1,4 +1,4 @@
-﻿class com.rockstargames.NativeUI.items.UIMenuProgressItem extends com.rockstargames.NativeUI.items.BaseMenuItem
+﻿class com.rockstargames.ScaleformUI.items.UIMenuProgressItem extends com.rockstargames.ScaleformUI.items.BaseMenuItem
 {
 	var _value = 0;
 	var leftArrow;

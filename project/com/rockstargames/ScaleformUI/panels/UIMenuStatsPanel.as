@@ -1,4 +1,4 @@
-﻿class com.rockstargames.NativeUI.panels.UIMenuStatsPanel extends com.rockstargames.NativeUI.panels.BasePanel
+﻿class com.rockstargames.ScaleformUI.panels.UIMenuStatsPanel extends com.rockstargames.ScaleformUI.panels.BasePanel
 {
 	var _items;
 	function UIMenuStatsPanel(parentItem)

@@ -1,4 +1,4 @@
-﻿class com.rockstargames.NativeUI.items.BaseMenuItem
+﻿class com.rockstargames.ScaleformUI.items.BaseMenuItem
 {
 	var disabledItemColor = [163, 159, 148];
 	var isActive = true;

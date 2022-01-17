@@ -1,4 +1,4 @@
-﻿class com.rockstargames.NativeUI.items.UIMenuStatsItem extends com.rockstargames.NativeUI.items.BaseMenuItem
+﻿class com.rockstargames.ScaleformUI.items.UIMenuStatsItem extends com.rockstargames.ScaleformUI.items.BaseMenuItem
 {
 	var barMC;
 	var bgMC;
@@ -77,6 +77,11 @@
 		}
 
 		this.highlighted = this._highlighted;
+	}
+	
+	function addPanel(_panel)
+	{
+		this.panels.push(_panel);
 	}
 
 	function set barscale(bi)

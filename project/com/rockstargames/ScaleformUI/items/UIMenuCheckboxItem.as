@@ -1,4 +1,4 @@
-﻿class com.rockstargames.NativeUI.items.UIMenuCheckboxItem extends com.rockstargames.NativeUI.items.BaseMenuItem
+﻿class com.rockstargames.ScaleformUI.items.UIMenuCheckboxItem extends com.rockstargames.ScaleformUI.items.BaseMenuItem
 {
 	static var CHECKBOX_STYLE_CROSS = 0;
 	static var CHECKBOX_STYLE_TICK = 1;
@@ -107,7 +107,7 @@
 
 	function getSprite(_highlighted, _style, _checked)
 	{
-		return _highlighted ? (_checked ? (_style == com.rockstargames.NativeUI.items.UIMenuCheckboxItem.CHECKBOX_STYLE_TICK ? "shop_box_tickb" : "shop_box_crossb") : "shop_box_blankb") : _checked ? (_style == com.rockstargames.NativeUI.items.UIMenuCheckboxItem.CHECKBOX_STYLE_TICK ? "shop_box_tick" : "shop_box_cross") : "shop_box_blank";
+		return _highlighted ? (_checked ? (_style == com.rockstargames.ScaleformUI.items.UIMenuCheckboxItem.CHECKBOX_STYLE_TICK ? "shop_box_tickb" : "shop_box_crossb") : "shop_box_blankb") : _checked ? (_style == com.rockstargames.ScaleformUI.items.UIMenuCheckboxItem.CHECKBOX_STYLE_TICK ? "shop_box_tick" : "shop_box_cross") : "shop_box_blank";
 	}
 
 	function get highlighted()

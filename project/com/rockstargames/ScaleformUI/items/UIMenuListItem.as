@@ -1,4 +1,4 @@
-﻿class com.rockstargames.NativeUI.items.UIMenuListItem extends com.rockstargames.NativeUI.items.BaseMenuItem
+﻿class com.rockstargames.ScaleformUI.items.UIMenuListItem extends com.rockstargames.ScaleformUI.items.BaseMenuItem
 {
 	var _index;
 	var rightTextTF;

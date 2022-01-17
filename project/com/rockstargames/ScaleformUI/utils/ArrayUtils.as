@@ -1,4 +1,4 @@
-﻿class com.rockstargames.NativeUI.utils.ArrayUtils
+﻿class com.rockstargames.ScaleformUI.utils.ArrayUtils
 {
 	static function findInArray(str, array)
 	{
@@ -27,8 +27,8 @@
 	static function jsonToArray(str)
 	{
 		var s = str;
-		var s = com.rockstargames.NativeUI.utils.ArrayUtils.Replace(s, "[", "");
-		var s = com.rockstargames.NativeUI.utils.ArrayUtils.Replace(s, "]", "");
+		var s = com.rockstargames.ScaleformUI.utils.ArrayUtils.Replace(s, "[", "");
+		var s = com.rockstargames.ScaleformUI.utils.ArrayUtils.Replace(s, "]", "");
 		var stringSplit = s.split(",");
 		return stringSplit;
 	}

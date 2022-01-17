@@ -1,4 +1,4 @@
-﻿class com.rockstargames.NativeUI.windows.UIMenuHeritageWindow
+﻿class com.rockstargames.ScaleformUI.windows.UIMenuHeritageWindow
 {
 	var itemMC;
 	var _parentMenu;

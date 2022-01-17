@@ -1,10 +1,10 @@
-﻿class com.rockstargames.NativeUI.items.UIMenuItem extends com.rockstargames.NativeUI.items.BaseMenuItem
+﻿class com.rockstargames.ScaleformUI.items.UIMenuItem extends com.rockstargames.ScaleformUI.items.BaseMenuItem
 {
 	var rightTextTF;
 	var rightText;
 	//var rightTextColor = this._textColor;
 	var rightBadgeMC;
-	var rightBadgeId = com.rockstargames.NativeUI.utils.Badges.NONE;
+	var rightBadgeId = com.rockstargames.ScaleformUI.utils.Badges.NONE;
 	var _data;
 	var txd_loader;
 
@@ -52,11 +52,11 @@
 	function SetRightBadge(txd, id)
 	{
 		this.rightBadgeId = id;
-		if (this.rightBadgeId != com.rockstargames.NativeUI.utils.Badges.NONE)
+		if (this.rightBadgeId != com.rockstargames.ScaleformUI.utils.Badges.NONE)
 		{
 			this.itemMC.RLabelMC._x -= 24;
 			this.rightBadgeMC = this.itemMC.createEmptyMovieClip((("badge_" + this._parentMenu.itemCount) + 1), this.itemMC.getNextHighestDepth());
-			var sprite_name = com.rockstargames.NativeUI.utils.Badges.getSpriteNameById(id, this.highlighted);
+			var sprite_name = com.rockstargames.ScaleformUI.utils.Badges.getSpriteNameById(id, this.highlighted);
 			this.SetClip(this.rightBadgeMC,txd,sprite_name);
 		}
 		else
@@ -98,8 +98,8 @@
 		}
 		if (this.rightBadgeMC != undefined)
 		{
-			var txd = com.rockstargames.NativeUI.utils.Badges.GetSpriteDictionary(this.rightBadgeId);
-			var sprite_name = com.rockstargames.NativeUI.utils.Badges.getSpriteNameById(this.rightBadgeId, _h);
+			var txd = com.rockstargames.ScaleformUI.utils.Badges.GetSpriteDictionary(this.rightBadgeId);
+			var sprite_name = com.rockstargames.ScaleformUI.utils.Badges.getSpriteNameById(this.rightBadgeId, _h);
 			this.SetClip(this.rightBadgeMC,txd,sprite_name);
 		}
 		for (var _panel in this.panels)

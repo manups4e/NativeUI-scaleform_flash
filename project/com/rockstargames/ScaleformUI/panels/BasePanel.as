@@ -1,4 +1,4 @@
-﻿class com.rockstargames.NativeUI.panels.BasePanel
+﻿class com.rockstargames.ScaleformUI.panels.BasePanel
 {
 	var parentItem;
 	var _enabled;

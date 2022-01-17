@@ -1,4 +1,4 @@
-﻿class com.rockstargames.NativeUI.panels.UIMenuGridPanel extends com.rockstargames.NativeUI.panels.BasePanel
+﻿class com.rockstargames.ScaleformUI.panels.UIMenuGridPanel extends com.rockstargames.ScaleformUI.panels.BasePanel
 {
 	var padding:Number = 0;
 	var mx:Number = 0;
