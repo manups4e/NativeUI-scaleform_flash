@@ -114,7 +114,7 @@
 				item = new com.rockstargames.ScaleformUI.items.UIMenuProgressItem(str, substr, this, param1, param2, param3, param4, param5, param6, param7, param8, param9, param10, param11, param12);
 				break;
 			case 5 :
-				item = new com.rockstargames.ScaleformUI.items.UIMenuStatsItem(str, substr, this, param1, param2, param3, param4, param5);
+				item = new com.rockstargames.ScaleformUI.items.UIMenuStatsItem(str, substr, this, param1, param2, param3, param4, param5, param6, param7, param8, param9);
 				break;
 			default :
 				item = new com.rockstargames.ScaleformUI.items.UIMenuItem(str, substr, this);

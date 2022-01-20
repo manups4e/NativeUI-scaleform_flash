@@ -10,7 +10,7 @@
 	var max = 100;
 	var _index;
 
-	function UIMenuStatsItem(str, substr, parentMenu, _value, _type, color, _enabled, _blink)
+	function UIMenuStatsItem(str, substr, parentMenu, _value, _type, barColor, mainColor, highlightColor, textColor, textHighlightColor, _enabled, _blink)
 	{
 		super(parentMenu,str,substr, _enabled);
 		this.itemMC = this.parentMC.attachMovie("characterStatsCardItem", "characterStatsCardItem_" + this._parentMenu.itemCount + 1, this.parentMC.getNextHighestDepth());
@@ -23,6 +23,23 @@
 		this.barMC._y = this.darkbarMC._y = this.itemMC.maskMC._y;
 		this.type == _type;
 		this._index = _value;
+		if (mainColor != undefined)
+		{
+			this._mainColor = mainColor;
+		}
+		if (highlightColor != undefined)
+		{
+			this._highlightColor = highlightColor;
+		}
+		if (textColor != undefined)
+		{
+			this._textColor = textColor;
+		}
+		if (textHighlightColor != undefined)
+		{
+			this._textHighlightColor = textHighlightColor;
+		}
+
 		this.blinkDesc = _blink;
 		if (_type == 0)
 		{
@@ -44,11 +61,12 @@
 			this.itemMC.bgMC._height = 46;
 		}
 		com.rockstargames.ui.utils.UIText.setSizedText(this.leftTextTF,str);
+		com.rockstargames.ui.utils.Colour.ApplyHudColourToTF(this.leftTextTF,this._enabled ? (!this.highlighted ? this._textColor : this._textHighlightColor) : com.rockstargames.ui.utils.HudColour.HUD_COLOUR_GREY);
 		this.itemMC.labelMC.valueTF._x = 280 - this.itemMC.labelMC.valueTF.textWidth;
 		var __reg5 = com.rockstargames.ui.utils.HudColour.HUD_COLOUR_FREEMODE;
-		if (color != undefined)
+		if (barColor != undefined)
 		{
-			__reg5 = color;
+			__reg5 = barColor;
 		}
 		var __reg4 = 100;
 		if (_value != undefined)
