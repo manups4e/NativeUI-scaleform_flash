@@ -715,4 +715,15 @@
 		}
 	}
 
+	static function BadgeToColor(badge, selected)
+	{
+		switch (badge)
+		{
+			case com.rockstargames.ScaleformUI.utils.Badges.LOCK :
+			case com.rockstargames.ScaleformUI.utils.Badges.TICK :
+			case com.rockstargames.ScaleformUI.utils.Badges.CROWN :
+				return selected ? com.rockstargames.ui.utils.HudColour.HUD_COLOUR_BLACK : com.rockstargames.ui.utils.HudColour.HUD_COLOUR_WHITE;
+		}
+	}
+
 }

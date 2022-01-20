@@ -16,9 +16,11 @@
 	var _textHighlightColor = com.rockstargames.ui.utils.HudColour.NONE;
 	var _hovered = false;
 	var hover = -1;
+	var _enabled = true;
 	var panels;
+	var blinkDesc = false;
 
-	function BaseMenuItem(parent, str, substr)
+	function BaseMenuItem(parent, str, substr, _enabled)
 	{
 		this._parentMenu = parent;
 		this.parentMC = this._parentMenu._mainMC;
@@ -26,6 +28,8 @@
 		this.subtitle = substr;
 		this.panels = new Array();
 		this._hovered = false;
+		this.Enabled = _enabled;
+		this.blinkDesc = false;
 	}
 
 	function initBaseMouseInterface()
@@ -107,10 +111,7 @@
 	{
 		this._highlighted = _h;
 		com.rockstargames.ui.utils.Colour.ApplyHudColour(this.backgroundMC,!_h ? this._mainColor : this._highlightColor);
-		if (this._textColor != com.rockstargames.ui.utils.HudColour.NONE && this._textHighlightColor != com.rockstargames.ui.utils.HudColour.NONE)
-		{
-			com.rockstargames.ui.utils.Colour.ApplyHudColourToTF(this.leftTextTF,!_h ? this._textColor : this._textHighlightColor);
-		}
+		com.rockstargames.ui.utils.Colour.ApplyHudColourToTF(this.leftTextTF,this._enabled ? (!_h ? this._textColor : this._textHighlightColor) : com.rockstargames.ui.utils.HudColour.HUD_COLOUR_GREY);
 	}
 
 	function get highlighted()
@@ -133,5 +134,14 @@
 	function get isVisible()
 	{
 		return this.itemMC._visible;
+	}
+
+	function set Enabled(e)
+	{
+		this._enabled = e;
+	}
+	function get Enabled()
+	{
+		return this._enabled;
 	}
 }

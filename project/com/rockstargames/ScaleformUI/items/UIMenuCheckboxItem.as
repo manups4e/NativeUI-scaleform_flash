@@ -7,9 +7,9 @@
 	var _checked;
 	var txd_loader;
 
-	function UIMenuCheckboxItem(str, substr, parentMenu, style, _active, mainColor, highlightColor, textColor, textHighlightColor)
+	function UIMenuCheckboxItem(str, substr, parentMenu, style, _active, mainColor, highlightColor, textColor, textHighlightColor, _enabled, _blink)
 	{
-		super(parentMenu,str,substr);
+		super(parentMenu,str,substr,_enabled);
 		this.itemMC = this.parentMC.attachMovie("UIMenuCheckboxItem", "checkboxMenuItem_" + this._parentMenu.itemCount + 1, this.parentMC.getNextHighestDepth());
 		this.backgroundMC = this.itemMC.bgMC;
 		this.leftTextTF = this.itemMC.labelMC.labelTF;
@@ -18,6 +18,7 @@
 		this.checkbox = this.itemMC.createEmptyMovieClip("checkBox_" + this._parentMenu.itemCount + 1, this.itemMC.getNextHighestDepth());
 		this.tickStyle = style;
 		this.Checked = _active;
+		this.blinkDesc = _blink;
 		if (mainColor != undefined)
 		{
 			this._mainColor = mainColor;
@@ -35,10 +36,7 @@
 			this._textHighlightColor = textHighlightColor;
 		}
 		com.rockstargames.ui.utils.UIText.setSizedText(this.leftTextTF,this.leftText,true,true);
-		if (this._textColor != com.rockstargames.ui.utils.HudColour.NONE && this._textHighlightColor != com.rockstargames.ui.utils.HudColour.NONE)
-		{
-			com.rockstargames.ui.utils.Colour.ApplyHudColourToTF(this.leftTextTF,!this.highlighted ? this._textColor : this._textHighlightColor);
-		}
+		com.rockstargames.ui.utils.Colour.ApplyHudColourToTF(this.leftTextTF,this._enabled ? (!this.highlighted ? this._textColor : this._textHighlightColor) : com.rockstargames.ui.utils.HudColour.HUD_COLOUR_GREY);
 		this.initBaseMouseInterface();
 	}
 
@@ -72,7 +70,10 @@
 		target_mc._height = 24;
 		target_mc._x = 261.5;
 		target_mc._y = 0.5;
-		//com.rockstargames.ui.utils.Colour.ApplyHudColour(target_mc,!this.highlighted ? this._textColor : this._textHighlightColor);
+		if (!this._enabled)
+		{
+			com.rockstargames.ui.utils.Colour.ApplyHudColour(target_mc,com.rockstargames.ui.utils.HudColour.HUD_COLOUR_GREY);
+		}
 		this.checkbox.onRollOver = com.rockstargames.ui.utils.DelegateStar.create(this, this.mOverBox, this.checkbox);
 		this.checkbox.onRollOut = com.rockstargames.ui.utils.DelegateStar.create(this, this.mOutBox, this.checkbox);
 		delete this.txd_loader;
@@ -99,9 +100,12 @@
 		super.highlighted = _h;
 		var sprite_name = this.getSprite(_h, this.tickStyle, this.Checked);
 		this.SetClip(this.checkbox,"commonmenu",sprite_name);
-		for (var _panel in this.panels)
+		if (this._enabled)
 		{
-			this.panels[_panel].isVisible = _h;
+			for (var _panel in this.panels)
+			{
+				this.panels[_panel].isVisible = _h;
+			}
 		}
 	}
 

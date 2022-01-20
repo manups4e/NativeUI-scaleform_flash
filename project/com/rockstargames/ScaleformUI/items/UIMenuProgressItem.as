@@ -10,9 +10,9 @@
 	var _slider;
 	var arrow_loader;
 
-	function UIMenuProgressItem(str, substr, parentMenu, max, mult, startIndex, mainColor, highlightColor, textColor, textHighlightColor, sliderColor)
+	function UIMenuProgressItem(str, substr, parentMenu, max, mult, startIndex, mainColor, highlightColor, textColor, textHighlightColor, sliderColor, _enabled, _blink)
 	{
-		super(parentMenu,str,substr);
+		super(parentMenu,str,substr,_enabled);
 		this.itemMC = this.parentMC.attachMovie("UIMenuProgressItem", "progressMenuItem_" + this._parentMenu.itemCount + 1, this.parentMC.getNextHighestDepth());
 		this.backgroundMC = this.itemMC.bgMC;
 		this.leftArrow = this.itemMC.leftArrow;
@@ -23,6 +23,7 @@
 		this._slider = this.itemMC.attachMovie("GenericColourBar", "progress_bar", this.itemMC.getNextHighestDepth(), {_x:171.05, _y:9.25});
 		this._max = max;
 		this._multiplier = mult;
+		this.blinkDesc = _blink;
 		if (mainColor != undefined)
 		{
 			this._mainColor = mainColor;
@@ -57,7 +58,7 @@
 		com.rockstargames.ui.utils.UIText.setSizedText(this.leftTextTF,this.leftText,true,true);
 		if (this._textColor != com.rockstargames.ui.utils.HudColour.NONE && this._textHighlightColor != com.rockstargames.ui.utils.HudColour.NONE)
 		{
-			com.rockstargames.ui.utils.Colour.ApplyHudColourToTF(this.leftTextTF,!this.highlighted ? this._textColor : this._textHighlightColor);
+			com.rockstargames.ui.utils.Colour.ApplyHudColourToTF(this.leftTextTF,this._enabled ? (!this.highlighted ? this._textColor : this._textHighlightColor) : com.rockstargames.ui.utils.HudColour.HUD_COLOUR_GREY);
 		}
 
 		this.initBaseMouseInterface();
@@ -150,9 +151,14 @@
 		super.highlighted = _h;
 		this.leftArrow._visible = _h;
 		this.rightArrow._visible = _h;
-		for (var _panel in this.panels)
+		com.rockstargames.ui.utils.Colour.ApplyHudColour(this.leftArrow,!this._enabled ? com.rockstargames.ui.utils.HudColour.HUD_COLOUR_GREY : com.rockstargames.ui.utils.HudColour.HUD_COLOUR_BLACK);
+		com.rockstargames.ui.utils.Colour.ApplyHudColour(this.rightArrow,!this._enabled ? com.rockstargames.ui.utils.HudColour.HUD_COLOUR_GREY : com.rockstargames.ui.utils.HudColour.HUD_COLOUR_BLACK);
+		if (this._enabled)
 		{
-			this.panels[_panel].isVisible = _h;
+			for (var _panel in this.panels)
+			{
+				this.panels[_panel].isVisible = _h;
+			}
 		}
 	}
 

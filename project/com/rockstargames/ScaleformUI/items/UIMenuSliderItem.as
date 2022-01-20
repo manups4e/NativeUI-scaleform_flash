@@ -14,9 +14,9 @@
 	var _sliderColor = com.rockstargames.ui.utils.HudColour.HUD_COLOUR_FREEMODE;
 	var arrow_loader;
 
-	function UIMenuSliderItem(str, substr, parentMenu, max, mult, startIndex, mainColor, highlightColor, textColor, textHighlightColor, sliderBGColor, sliderColor, heritage)
+	function UIMenuSliderItem(str, substr, parentMenu, max, mult, startIndex, mainColor, highlightColor, textColor, textHighlightColor, sliderBGColor, sliderColor, heritage, _enabled, _blink)
 	{
-		super(parentMenu,str,substr);
+		super(parentMenu,str,substr,_enabled);
 		this.itemMC = this.parentMC.attachMovie("UIMenuSliderItem", "sliderMenuItem_" + this._parentMenu.itemCount + 1, this.parentMC.getNextHighestDepth());
 		this.backgroundMC = this.itemMC.bgMC;
 		this.leftArrow = this.itemMC.leftArrow;
@@ -33,6 +33,7 @@
 		this._slider = this.itemMC.sliderMC.slider;
 		this._max = max;
 		this._multiplier = mult;
+		this.blinkDesc = _blink;
 		if (startIndex == undefined)
 		{
 			this.value = 0;
@@ -68,7 +69,7 @@
 		com.rockstargames.ui.utils.UIText.setSizedText(this.leftTextTF,this.leftText,true,true);
 		if (this._textColor != com.rockstargames.ui.utils.HudColour.NONE && this._textHighlightColor != com.rockstargames.ui.utils.HudColour.NONE)
 		{
-			com.rockstargames.ui.utils.Colour.ApplyHudColourToTF(this.leftTextTF,!this.highlighted ? this._textColor : this._textHighlightColor);
+			com.rockstargames.ui.utils.Colour.ApplyHudColourToTF(this.leftTextTF,this._enabled ? (!this.highlighted ? this._textColor : this._textHighlightColor) : com.rockstargames.ui.utils.HudColour.HUD_COLOUR_GREY);
 		}
 		com.rockstargames.ui.utils.Colour.ApplyHudColour(this._sliderBG,this._sliderBGColor);
 		com.rockstargames.ui.utils.Colour.ApplyHudColour(this._slider,this._sliderColor);
@@ -162,15 +163,28 @@
 		{
 			this.leftArrow._visible = _h;
 			this.rightArrow._visible = _h;
+			com.rockstargames.ui.utils.Colour.ApplyHudColour(this.leftArrow,!this._enabled ? com.rockstargames.ui.utils.HudColour.HUD_COLOUR_GREY : com.rockstargames.ui.utils.HudColour.HUD_COLOUR_BLACK);
+			com.rockstargames.ui.utils.Colour.ApplyHudColour(this.rightArrow,!this._enabled ? com.rockstargames.ui.utils.HudColour.HUD_COLOUR_GREY : com.rockstargames.ui.utils.HudColour.HUD_COLOUR_BLACK);
 		}
 		else
 		{
-			com.rockstargames.ui.utils.Colour.ApplyHudColour(this.leftArrow,!_h ? com.rockstargames.ui.utils.HudColour.HUD_COLOUR_WHITE : com.rockstargames.ui.utils.HudColour.HUD_COLOUR_BLACK);
-			com.rockstargames.ui.utils.Colour.ApplyHudColour(this.rightArrow,!_h ? com.rockstargames.ui.utils.HudColour.HUD_COLOUR_WHITE : com.rockstargames.ui.utils.HudColour.HUD_COLOUR_BLACK);
+			if (this._enabled)
+			{
+				com.rockstargames.ui.utils.Colour.ApplyHudColour(this.leftArrow,!_h ? com.rockstargames.ui.utils.HudColour.HUD_COLOUR_WHITE : com.rockstargames.ui.utils.HudColour.HUD_COLOUR_BLACK);
+				com.rockstargames.ui.utils.Colour.ApplyHudColour(this.rightArrow,!_h ? com.rockstargames.ui.utils.HudColour.HUD_COLOUR_WHITE : com.rockstargames.ui.utils.HudColour.HUD_COLOUR_BLACK);
+			}
+			else
+			{
+				com.rockstargames.ui.utils.Colour.ApplyHudColour(this.leftArrow,com.rockstargames.ui.utils.HudColour.HUD_COLOUR_GREY);
+				com.rockstargames.ui.utils.Colour.ApplyHudColour(this.rightArrow,com.rockstargames.ui.utils.HudColour.HUD_COLOUR_GREY);
+			}
 		}
-		for (var _panel in this.panels)
+		if (this._enabled)
 		{
-			this.panels[_panel].isVisible = _h;
+			for (var _panel in this.panels)
+			{
+				this.panels[_panel].isVisible = _h;
+			}
 		}
 	}
 

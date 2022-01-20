@@ -9,9 +9,9 @@
 	var stringItems;
 	var arrow_loader;
 
-	function UIMenuListItem(str, substr, parentMenu, listItems, __index, mainColor, highlightColor, textColor, textHighlightColor)
+	function UIMenuListItem(str, substr, parentMenu, listItems, __index, mainColor, highlightColor, textColor, textHighlightColor, _enabled, _blink)
 	{
-		super(parentMenu,str,substr);
+		super(parentMenu,str,substr,_enabled);
 		this.itemMC = this.parentMC.attachMovie("UIMenuListItem", "listMenuItem_" + this._parentMenu.itemCount + 1, this.parentMC.getNextHighestDepth());
 		this.backgroundMC = this.itemMC.bgMC;
 		this.itemList = listItems.split(",");
@@ -25,6 +25,7 @@
 		this.rightTextTF.selectable = false;
 		this.index = __index;
 		this.stringItems = listItems;
+		this.blinkDesc = _blink;
 		leftArrow._x = (this.leftArrowPos + 5.15) - this.itemMC.RLabelMC.labelTF.textWidth;
 
 		if (mainColor != undefined)
@@ -44,10 +45,7 @@
 			this._textHighlightColor = textHighlightColor;
 		}
 		com.rockstargames.ui.utils.UIText.setSizedText(this.leftTextTF,this.leftText,true,true);
-		if (this._textColor != com.rockstargames.ui.utils.HudColour.NONE && this._textHighlightColor != com.rockstargames.ui.utils.HudColour.NONE)
-		{
-			com.rockstargames.ui.utils.Colour.ApplyHudColourToTF(this.leftTextTF,!this.highlighted ? this._textColor : this._textHighlightColor);
-		}
+		com.rockstargames.ui.utils.Colour.ApplyHudColourToTF(this.leftTextTF,this._enabled ? (!this.highlighted ? this._textColor : this._textHighlightColor) : com.rockstargames.ui.utils.HudColour.HUD_COLOUR_GREY);
 		this.initBaseMouseInterface();
 		this.leftArrow.onRollOver = com.rockstargames.ui.utils.DelegateStar.create(this, this.mOverLI, this.leftArrow);
 		this.leftArrow.onRollOut = com.rockstargames.ui.utils.DelegateStar.create(this, this.mOutLI, this.leftArrow);
@@ -87,7 +85,6 @@
 	{
 		target_mc._width = 18;
 		target_mc._height = 18;
-		//com.rockstargames.ui.utils.Colour.ApplyHudColour(target_mc,!this.highlighted ? this._textColor : this._textHighlightColor); 
 		delete this.arrow_loader;
 	}
 
@@ -101,15 +98,7 @@
 		this._index = 100000000 - (100000000 % this.itemList.length) + val;
 		this.setRightText(this.rightTextTF,this.itemList[this.index]);
 		leftArrow._x = (this.leftArrowPos + 5.15) - this.itemMC.RLabelMC.labelTF.textWidth;
-		if (this.highlighted)
-		{
-			com.rockstargames.ui.utils.Colour.ApplyHudColourToTF(this.rightTextTF,this._textHighlightColor);
-		}
-		else
-		{
-			com.rockstargames.ui.utils.Colour.ApplyHudColourToTF(this.rightTextTF,this._textColor);
-
-		}
+		com.rockstargames.ui.utils.Colour.ApplyHudColourToTF(this.rightTextTF,this._enabled ? (!this.highlighted ? this._textColor : this._textHighlightColor) : com.rockstargames.ui.utils.HudColour.HUD_COLOUR_GREY);
 	}
 	function addPanel(_panel)
 	{
@@ -131,10 +120,15 @@
 		super.highlighted = _h;
 		this.leftArrow._visible = _h;
 		this.rightArrow._visible = _h;
-		com.rockstargames.ui.utils.Colour.ApplyHudColourToTF(this.rightTextTF,!_h ? this._textColor : this._textHighlightColor);
-		for (var _panel in this.panels)
+		com.rockstargames.ui.utils.Colour.ApplyHudColour(this.leftArrow,!this._enabled ? com.rockstargames.ui.utils.HudColour.HUD_COLOUR_GREY : com.rockstargames.ui.utils.HudColour.HUD_COLOUR_BLACK);
+		com.rockstargames.ui.utils.Colour.ApplyHudColour(this.rightArrow,!this._enabled ? com.rockstargames.ui.utils.HudColour.HUD_COLOUR_GREY : com.rockstargames.ui.utils.HudColour.HUD_COLOUR_BLACK);
+		com.rockstargames.ui.utils.Colour.ApplyHudColourToTF(this.rightTextTF,this._enabled ? (!this.highlighted ? this._textColor : this._textHighlightColor) : com.rockstargames.ui.utils.HudColour.HUD_COLOUR_GREY);
+		if (this._enabled)
 		{
-			this.panels[_panel].isVisible = _h;
+			for (var _panel in this.panels)
+			{
+				this.panels[_panel].isVisible = _h;
+			}
 		}
 	}
 	function Select()

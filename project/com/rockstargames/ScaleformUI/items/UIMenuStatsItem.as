@@ -10,9 +10,9 @@
 	var max = 100;
 	var _index;
 
-	function UIMenuStatsItem(str, substr, parentMenu, _value, _type, color)
+	function UIMenuStatsItem(str, substr, parentMenu, _value, _type, color, _enabled, _blink)
 	{
-		super(parentMenu,str,substr);
+		super(parentMenu,str,substr, _enabled);
 		this.itemMC = this.parentMC.attachMovie("characterStatsCardItem", "characterStatsCardItem_" + this._parentMenu.itemCount + 1, this.parentMC.getNextHighestDepth());
 		this.backgroundMC = this.itemMC.bgMC;
 		this.leftTextTF = this.itemMC.labelMC.titleTF;
@@ -23,6 +23,7 @@
 		this.barMC._y = this.darkbarMC._y = this.itemMC.maskMC._y;
 		this.type == _type;
 		this._index = _value;
+		this.blinkDesc = _blink;
 		if (_type == 0)
 		{
 			this.itemMC.maskMC._visible = this.itemMC.darkmaskMC._visible = true;
@@ -76,7 +77,7 @@
 			this.darkbarMC.percent(__reg7,false);
 		}
 
-		this.highlighted = this._highlighted;
+		//this.highlighted = this._highlighted;
 	}
 	
 	function addPanel(_panel)
@@ -105,6 +106,4 @@
 	{
 		return this._index;
 	}
-
-
 }
