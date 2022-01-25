@@ -68,4 +68,15 @@
 			this.mc.barfillMC._width = _loc2_;
 		}
 	}
+	function setBarColour(hudColourEnum)
+	{
+		var _loc2_ = new com.rockstargames.ui.utils.HudColour();
+		com.rockstargames.ui.utils.Colour.setHudColour(hudColourEnum,_loc2_);
+		
+		com.rockstargames.ui.utils.Colour.Colourise(this.mc.barfillMC,_loc2_.r,_loc2_.g,_loc2_.b,_loc2_.a);
+		com.rockstargames.ui.utils.Colour.Colourise(this.mc.baralphaMC,_loc2_.r,_loc2_.g,_loc2_.b,30);
+		var _loc3_ = new com.rockstargames.ui.utils.HudColour();
+		com.rockstargames.ui.utils.Colour.setHudColour(com.rockstargames.ui.utils.HudColour.HUD_COLOUR_BLACK,_loc3_);
+		com.rockstargames.ui.utils.Colour.Colourise(this.mc.blackMC,_loc3_.r,_loc3_.g,_loc3_.b,50);
+	}
 }
