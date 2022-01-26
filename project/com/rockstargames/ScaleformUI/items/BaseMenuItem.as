@@ -110,7 +110,33 @@
 	function set highlighted(_h)
 	{
 		this._highlighted = _h;
-		com.rockstargames.ui.utils.Colour.ApplyHudColour(this.backgroundMC,!_h ? this._mainColor : this._highlightColor);
+		if (!_h)
+		{
+			if (this._hovered)
+			{
+				if (!this.highlighted)
+				{
+					if (this._mainColor == com.rockstargames.ui.utils.HudColour.HUD_COLOUR_PAUSE_BG)
+					{
+						com.rockstargames.ui.utils.Colour.ApplyHudColour(this.backgroundMC,com.rockstargames.ui.utils.HudColour.HUD_COLOUR_MENU_HIGHLIGHT);
+					}
+					else
+					{
+						var col = new com.rockstargames.ui.utils.HudColour();
+						com.rockstargames.ui.utils.Colour.setHudColour(this._mainColor,col);
+						com.rockstargames.ui.utils.Colour.Colourise(this.backgroundMC,col.r,col.g,col.b,col.a - 20);
+					}
+				}
+			}
+			else
+			{
+				com.rockstargames.ui.utils.Colour.ApplyHudColour(this.backgroundMC,this._mainColor);
+			}
+		}
+		else
+		{
+			com.rockstargames.ui.utils.Colour.ApplyHudColour(this.backgroundMC,this._highlightColor);
+		}
 		com.rockstargames.ui.utils.Colour.ApplyHudColourToTF(this.leftTextTF,this._enabled ? (!_h ? this._textColor : this._textHighlightColor) : com.rockstargames.ui.utils.HudColour.HUD_COLOUR_GREY);
 	}
 
