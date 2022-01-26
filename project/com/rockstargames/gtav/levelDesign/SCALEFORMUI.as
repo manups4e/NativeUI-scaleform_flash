@@ -89,8 +89,8 @@
 				{
 					if (_item._enabled)
 					{
-						_item.Checked = val;
-						retVal = _item.Checked;
+						_item.Value = val;
+						retVal = _item.Value;
 					}
 				}
 				break;
@@ -181,31 +181,6 @@
 		{
 			limit = this.UIMenu._maxItem;
 		}
-
-		for (var i = this.UIMenu._minItem; i <= limit; i++)
-		{
-			var item = this.UIMenu.menuItems[i];
-			if (item._hovered)
-			{
-				if (item._enabled)
-				{
-					var _type = 0;
-					if (this.UIMenu.currentItem._type == 3 || this.UIMenu.currentItem._type == 4)
-					{
-						_type = this.UIMenu.currentItem._type;
-					}
-					if (_type == 3 || _type == 4)
-					{
-						retVal.push("it");
-						retVal.push(this.UIMenu.currentSelection);
-						retVal.push(_type);
-						retVal.push(this.UIMenu.currentItem.Select(posX, posY));
-						return retVal.toString();
-					}
-				}
-			}
-		}
-
 		if (this.UIMenu.currentItem.panels.length > 0)
 		{
 			for (var i = 0; i < this.UIMenu.currentItem.panels.length; i++)
