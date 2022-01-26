@@ -9,7 +9,6 @@
 	var _checked;
 	var rightTextTF;
 	var rightText;
-	//var rightTextColor = this._textColor;
 	var rightBadgeMC;
 	var rightBadgeId = com.rockstargames.ScaleformUI.utils.Badges.NONE;
 	var _data;
@@ -25,7 +24,6 @@
 	var _highlighted;
 	var txd_loader;
 	var _checkBoxHovered;
-	var _hovered;
 	var leftArrow;
 	var rightArrow;
 	var _max;
@@ -35,8 +33,8 @@
 	var _slider;
 	var customLeftArrow;
 	var customRightArrow;
-	// leftarrow x = 160.80
-	// slider separator x = 220.1, y = 8.30
+	var hover = -1;
+
 	function UIMenuItem(id, str, substr, parentMenu, param1, param2, param3, param4, param5, param6, param7, param8, param9, param10, param11, param12, param13)
 	{
 		super(parentMenu,str,substr,param1);
@@ -87,6 +85,7 @@
 				this._textColor = param8;
 				this._textHighlightColor = param9;
 				this._sliderColor = param10;
+				this._multiplier = param4;
 				this.itemMC.rightArrow._visible = this.itemMC.leftArrow._visible = true;
 				var steps = param3;
 				if (steps == "" || steps == undefined)
@@ -134,6 +133,7 @@
 				this._textHighlightColor = param9;
 				this._sliderColor = param10;
 				this.itemMC.rightArrow._visible = this.itemMC.leftArrow._visible = true;
+				this._multiplier = param4;
 				var steps = param3;
 				if (steps == "" || steps == undefined)
 				{
@@ -166,8 +166,13 @@
 			com.rockstargames.ui.utils.Colour.ApplyHudColourToTF(this.leftTextTF,!this.highlighted ? this._textColor : this._textHighlightColor);
 		}
 		this.initBaseMouseInterface();
-
-		// DA RIVEDERE:
+		this.itemMC.leftArrow.onRollOver = com.rockstargames.ui.utils.DelegateStar.create(this, this.mOverI, this.itemMC.leftArrow);
+		this.itemMC.leftArrow.onRollOut = com.rockstargames.ui.utils.DelegateStar.create(this, this.mOutI, this.itemMC.leftArrow);
+		this.itemMC.rightArrow.onRollOver = com.rockstargames.ui.utils.DelegateStar.create(this, this.mOverI, this.itemMC.rightArrow);
+		this.itemMC.rightArrow.onRollOut = com.rockstargames.ui.utils.DelegateStar.create(this, mOutI, this.itemMC.rightArrow);
+		this.checkbox.onRollOver = com.rockstargames.ui.utils.DelegateStar.create(this, this.mOverI, this.checkbox);
+		this.checkbox.onRollOut = com.rockstargames.ui.utils.DelegateStar.create(this, mOutI, this.checkbox);
+		// DA RIVEDERE:         
 		// this.blinkDesc = _blink;
 
 	}
@@ -367,6 +372,39 @@
 		}
 	}
 
+	function mOverI(mc)
+	{
+		if (mc == this.itemMC.leftArrow)
+		{
+			this.hover = 0;
+		}
+		else if (mc == this.itemMC.rightArrow)
+		{
+			this.hover = 1;
+		}
+		if (this._type == 2)
+		{
+			if (!this.highlighted)
+			{
+				this.hover = 1;
+			}
+		}
+	}
+	function mOutI(mc)
+	{
+		if (this._type == 2)
+		{
+			if (this.highlighted)
+			{
+				this.hover = -1;
+			}
+		}
+		else
+		{
+			this.hover = -1;
+		}
+	}
+
 	function get Value()
 	{
 		var ret;
@@ -406,5 +444,55 @@
 				this.barscale = value;
 				break;
 		}
+	}
+
+	function Select(posX, posY)
+	{
+		if (this.highlighted)
+		{
+			switch (this._type)
+			{
+				case 1 :
+					if (this.hover == 0)
+					{
+						this.textIndex--;
+					}
+					else if (this.hover == 1)
+					{
+						this.textIndex++;
+					}
+					break;
+				case 2 :
+					if (this.hover == 1)
+					{
+						this.Checked = !this.Checked;
+					}
+					break;
+				case 3 :
+					switch (this.hover)
+					{
+						case 0 :
+							this.sliderscale -= this._multiplier;
+							break;
+						case 1 :
+							this.sliderscale += this._multiplier;
+							break;
+					}
+					break;
+
+				case 4 :
+					switch (this.hover)
+					{
+						case 0 :
+							this.barscale--;
+							break;
+						case 1 :
+							this.barscale++;
+							break;
+					}
+					break;
+			}
+		}
+		return this.Value;
 	}
 }
