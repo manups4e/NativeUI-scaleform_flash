@@ -144,7 +144,7 @@
 					retVal.push("it");
 					retVal.push(this.UIMenu.currentSelection);
 					retVal.push(_type);
-					retVal.push(this.UIMenu.currentItem.Select(posX, posY));
+					retVal.push(this.UIMenu.currentItem.Select());
 					com.rockstargames.ui.game.GameInterface.call("PLAY_SOUND",com.rockstargames.ui.game.GameInterface.GENERIC_TYPE,"SELECT","HUD_FRONTEND_DEFAULT_SOUNDSET");
 					return retVal.toString();
 				}
@@ -170,6 +170,7 @@
 				}
 			}
 		}
+		return retVal.push("-1").toString();
 	}
 
 	function SET_INPUT_MOUSE_EVENT_CONTINUE(posX, posY)
@@ -238,10 +239,15 @@
 		this.UIMenu.menuItems[item].Enabled = disable;
 	}
 
-	function UPDATE_ITEM(item, substr, mainColor, highlightColor, textColor, textHighlightColor, sliderColor)
+	function UPDATE_ITEM_DESCRIPTION(item, substr)
 	{
 		var _selectedItem = UIMenu.menuItems[item];
 		_selectedItem.subtitle = substr;
+		this.UIMenu.updateItemsDrawing();
+	}
+	
+	function UPDATE_COLORS(item, mainColor, highlightColor, textColor, textHighlightColor, sliderColor){
+		var _selectedItem = UIMenu.menuItems[item];
 		_selectedItem._mainColor = mainColor;
 		_selectedItem._highlightColor = highlightColor;
 		if (_selectedItem.Enabled)

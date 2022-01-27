@@ -59,7 +59,11 @@
 			case 0 :// base item
 				this.itemMC.RLabelMC._x = 271.95;
 				this.itemMC.RLabelMC._visible = true;
-				break;
+				this._mainColor = param3;
+				this._highlightColor = param4;
+				this._textColor = param5;
+				this._textHighlightColor = param6;
+			break;
 			case 1 :// list item
 				this.itemMC.RLabelMC._visible = true;
 				this.multiListItems = param3.split(",");
@@ -446,7 +450,7 @@
 		}
 	}
 
-	function Select(posX, posY)
+	function Select()
 	{
 		if (this.highlighted)
 		{

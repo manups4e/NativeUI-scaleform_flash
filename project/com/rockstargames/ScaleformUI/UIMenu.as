@@ -27,6 +27,7 @@
 	var txd_loader;
 	var mouseOn;
 	var _menuOff = [];
+	var blipLayer;
 
 	function UIMenu(mc, title, subtitle, txd, txn, offset)
 	{
@@ -230,7 +231,7 @@
 	function goLeft()
 	{
 		var retVal = -1;
-		if (this.currentItem._type == 1 ||this.currentItem._type == 3 || this.currentItem._type == 4)
+		if (this.currentItem._type == 1 || this.currentItem._type == 3 || this.currentItem._type == 4)
 		{
 			this.currentItem.Value--;
 			retVal = this.currentItem.Value;
@@ -248,7 +249,7 @@
 	function goRight()
 	{
 		var retVal = -1;
-		if (this.currentItem._type == 1 ||this.currentItem._type == 3 || this.currentItem._type == 4)
+		if (this.currentItem._type == 1 || this.currentItem._type == 3 || this.currentItem._type == 4)
 		{
 			this.currentItem.Value++;
 			retVal = this.currentItem.Value;
@@ -352,9 +353,18 @@
 		if (this.currentItem.subtitle != undefined && this.currentItem.subtitle != "")
 		{
 			this.DescriptionSprite._visible = true;
-			com.rockstargames.ui.utils.UIText.setDescText(this.DescriptionSprite.descriptionMC.descText,this.currentItem.subtitle,true);
+			var textBlips = new com.rockstargames.ui.utils.Text();
+			//com.rockstargames.ui.utils.UIText.setDescText(this.DescriptionSprite.descriptionMC.descText,this.currentItem.subtitle,true);
+			if (this.blipLayer)
+			{
+				this.blipLayer.removeMovieClip();
+			}
+			this.blipLayer = this.DescriptionSprite.descriptionMC.createEmptyMovieClip("blipLayer", 1000);
+			this.DescriptionSprite.descriptionMC.descText.wordWrap = true;
+			this.DescriptionSprite.descriptionMC.descText.autoSize = true;
+			textBlips.setTextWithIcons(this.currentItem.subtitle,this.blipLayer,this.DescriptionSprite.descriptionMC.descText,0,13,2,false);
+
 			this.DescriptionSprite._y = offset + 1;
-			this.DescriptionSprite.bgMC._height = this.DescriptionSprite.descriptionMC._height + 5;
 			if (this.currentItem.blinkDesc)
 			{
 				if (this.DescriptionSprite.iMC._currentframe == 1)
@@ -366,7 +376,7 @@
 			{
 				this.DescriptionSprite.iMC.gotoAndStop(1);
 			}
-
+			this.DescriptionSprite.bgMC._height = this.DescriptionSprite.descriptionMC.descText.textHeight + 12;
 		}
 		else
 		{
