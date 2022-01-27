@@ -9,8 +9,8 @@
 	var min = 0;
 	var max = 100;
 	var _index;
-
-	function UIMenuStatsItem(str, substr, parentMenu, _value, _type, barColor, mainColor, highlightColor, textColor, textHighlightColor, _enabled, _blink)
+	var _type = 5;
+	function UIMenuStatsItem(id, str, substr, parentMenu, _enabled, _blink, _value, _type, barColor, mainColor, highlightColor, textColor, textHighlightColor)
 	{
 		super(parentMenu,str,substr, _enabled);
 		this.itemMC = this.parentMC.attachMovie("characterStatsCardItem", "characterStatsCardItem_" + this._parentMenu.itemCount + 1, this.parentMC.getNextHighestDepth());
