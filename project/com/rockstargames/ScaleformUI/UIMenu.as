@@ -93,12 +93,13 @@
 		this.itemsBG = this._mainMC.attachMovie("backgroundBody", "backgroundBody_" + this._mainMC.getNextHighestDepth(), this._mainMC.getNextHighestDepth());
 		this.itemsBG._x = 0 + _menuOff.x;
 		this.itemsBG._y = this.BannerSprite._height + this.SubtitleSprite._height - 1;
+		this.itemsBG.bgMC._height = 0;
 		com.rockstargames.ui.utils.Colour.ApplyHudColour(this.itemsBG.bgMC,com.rockstargames.ui.utils.HudColour.HUD_COLOUR_PAUSE_BG);
 		this.itemsBG.bgMC._alpha = 0;
 		this.scrollableContent = this.itemsBG.createEmptyMovieClip("viewContainer", this.itemsBG.getNextHighestDepth());
 		this.itemsBG.setMask(this.itemsBG.maskMC);
 		//this.itemsBG._visible = false;
-		this._itemsOffset = this.itemsBG._y + this.itemsBG._height;
+		this._itemsOffset = this.itemsBG._y + this.itemsBG.bgMC._height;
 
 		this.Footer = this._mainMC.attachMovie("Footer", "footer", this._mainMC.getNextHighestDepth());
 		this.Footer._visible = false;
@@ -134,7 +135,12 @@
 		{
 			item.itemMC._y = this.menuItems[this.itemCount - 1].itemMC._y + this.menuItems[this.itemCount - 1].itemMC._height;
 		}
-
+		this.itemsBG.bgMC._height += item.itemMC._height;
+		if (this.itemsBG.bgMC._height > 175)
+		{
+			this.itemsBG.bgMC._height = 175;
+		}
+		this._itemsOffset = this.itemsBG._y + this.itemsBG.bgMC._height;
 		this.currentSelection = _selectedItem;
 		this.updateItemsDrawing();
 	}
@@ -363,8 +369,8 @@
 		{
 			this.windows[0].itemMC._y = this.BannerSprite._height + this.SubtitleSprite._height;
 			windOff = 158;
-			this.itemsBG._y += windOff;
-			this._itemsOffset = this.itemsBG._y + this.itemsBG._height;
+			this.itemsBG._y = this.windows[0].itemMC._y + 158;
+			this._itemsOffset = this.itemsBG._y + this.itemsBG.bgMC._height;
 		}
 		/*
 		for (var item in this.menuItems)
@@ -402,14 +408,6 @@
 
 	function updateDescription()
 	{
-		var windOff = 0;
-		if (this.windows.length > 0)
-		{
-			this.windows[0].itemMC._y = this.BannerSprite._height + this.SubtitleSprite._height;
-			windOff = 158;
-			this.itemsBG._y += windOff;
-			this._itemsOffset = this.itemsBG._y + this.itemsBG._height;
-		}
 		var offset = this._itemsOffset;
 		if (this.itemCount > this.maxItemsOnScreen + 1)
 		{
