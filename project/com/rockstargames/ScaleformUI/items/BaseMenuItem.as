@@ -23,7 +23,7 @@
 	function BaseMenuItem(parent, str, substr, _enabled)
 	{
 		this._parentMenu = parent;
-		this.parentMC = this._parentMenu._mainMC;
+		this.parentMC = this._parentMenu.scrollableContent;
 		this.leftText = str;
 		this.subtitle = substr;
 		this.panels = new Array();

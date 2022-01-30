@@ -54,7 +54,7 @@
 
 	function set Value(val)
 	{
-		if ((val > this._max))
+		if (val > this._max)
 		{
 			this._value = this._max;
 			this._slider._width = 0;

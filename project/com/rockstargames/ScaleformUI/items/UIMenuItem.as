@@ -63,7 +63,7 @@
 				this._highlightColor = param4;
 				this._textColor = param5;
 				this._textHighlightColor = param6;
-			break;
+				break;
 			case 1 :// list item
 				this.itemMC.RLabelMC._visible = true;
 				this.multiListItems = param3.split(",");
@@ -173,9 +173,9 @@
 		this.itemMC.leftArrow.onRollOver = com.rockstargames.ui.utils.DelegateStar.create(this, this.mOverI, this.itemMC.leftArrow);
 		this.itemMC.leftArrow.onRollOut = com.rockstargames.ui.utils.DelegateStar.create(this, this.mOutI, this.itemMC.leftArrow);
 		this.itemMC.rightArrow.onRollOver = com.rockstargames.ui.utils.DelegateStar.create(this, this.mOverI, this.itemMC.rightArrow);
-		this.itemMC.rightArrow.onRollOut = com.rockstargames.ui.utils.DelegateStar.create(this, mOutI, this.itemMC.rightArrow);
+		this.itemMC.rightArrow.onRollOut = com.rockstargames.ui.utils.DelegateStar.create(this, this.mOutI, this.itemMC.rightArrow);
 		this.checkbox.onRollOver = com.rockstargames.ui.utils.DelegateStar.create(this, this.mOverI, this.checkbox);
-		this.checkbox.onRollOut = com.rockstargames.ui.utils.DelegateStar.create(this, mOutI, this.checkbox);
+		this.checkbox.onRollOut = com.rockstargames.ui.utils.DelegateStar.create(this, this.mOutI, this.checkbox);
 		// DA RIVEDERE:         
 		// this.blinkDesc = _blink;
 
@@ -302,7 +302,6 @@
 		this.selectedValue = this.multiListItems[this.multiListIndex];
 		this.rightText = this.selectedValue;
 		com.rockstargames.ui.utils.UIText.setSizedText(this.rightTextTF,this.rightText);
-		com.rockstargames.ui.utils.Colour.ApplyHudColourToTF(this.rightTextTF,this._enabled ? (!this.highlighted ? this._textColor : this._textHighlightColor) : com.rockstargames.ui.utils.HudColour.HUD_COLOUR_GREY);
 		this.rightTextTF.autoSize = true;
 		this.itemMC.RLabelMC._x = this.itemMC.rightArrow._x - this.rightTextTF._width;
 		this.itemMC.leftArrow._x = this.rightTextTF._x - 6;
@@ -334,7 +333,6 @@
 			{
 				if (this._type == 1)
 				{
-					this.textIndex = this.selectedIndex;
 					this.itemMC.rightArrow._visible = this.itemMC.leftArrow._visible = true;
 					this.itemMC.RLabelMC._x = this.itemMC.rightArrow._x - this.rightTextTF._width;
 					this.itemMC.leftArrow._x = this.itemMC.RLabelMC._x - 6;
@@ -354,7 +352,6 @@
 			{
 				if (this._type == 1)
 				{
-					this.textIndex = this.selectedIndex;
 					this.itemMC.rightArrow._visible = this.itemMC.leftArrow._visible = false;
 					this.itemMC.RLabelMC._x = 288 - this.rightTextTF._width - 2;
 				}
@@ -378,20 +375,23 @@
 
 	function mOverI(mc)
 	{
-		if (mc == this.itemMC.leftArrow)
+		if (this._type == 2)
+		{
+			if (this.highlighted)
+			{
+				this.hover = 1;
+				this._hovered = true;
+			}
+		}
+		else if (mc == this.itemMC.leftArrow)
 		{
 			this.hover = 0;
+			this._hovered = true;
 		}
 		else if (mc == this.itemMC.rightArrow)
 		{
 			this.hover = 1;
-		}
-		if (this._type == 2)
-		{
-			if (!this.highlighted)
-			{
-				this.hover = 1;
-			}
+			this._hovered = true;
 		}
 	}
 	function mOutI(mc)
@@ -401,11 +401,13 @@
 			if (this.highlighted)
 			{
 				this.hover = -1;
+				this._hovered = false;
 			}
 		}
 		else
 		{
 			this.hover = -1;
+			this._hovered = false;
 		}
 	}
 
@@ -450,7 +452,7 @@
 		}
 	}
 
-	function Select()
+	function Select(posX, posY)
 	{
 		if (this.highlighted)
 		{

@@ -36,7 +36,7 @@
 		this.DispConf.safeTop = _safeTopPercent;
 		this.DispConf.screenHeight = _screenHeightPixels;
 		this.DispConf.screenWidth = _screenWidthPixels;
-		if (_actualWidth / _actualHeight > 1.5)
+		if (((_actualWidth / _actualHeight) > 1.5))
 		{
 			this.iActualWidth = 1280;
 		}
@@ -47,9 +47,9 @@
 		this.initScreenLayout();
 	}
 
-	function CREATE_MENU(title, subtitle, txd, txn)
+	function CREATE_MENU(title, subtitle, txd, txn, enableAnim, animType)
 	{
-		this.UIMenu = new com.rockstargames.ScaleformUI.UIMenu(this.CONTENT, title, subtitle, txd, txn, offset);
+		this.UIMenu = new com.rockstargames.ScaleformUI.UIMenu(this.CONTENT, title, subtitle, txd, txn, enableAnim, animType, offset);
 	}
 
 	function CLEAR_ALL()
@@ -60,12 +60,22 @@
 
 	function ADD_ITEM(id, str, sub, param1, param2, param3, param4, param5, param6, param7, param8, param9, param10, param11, param12, param13)
 	{
-		this.UIMenu.addItem(id,str,sub,param1,param2,param3,param4,param5,param6,param7,param8,param9,param10,param11,param12, param13);
+		this.UIMenu.addItem(id,str,sub,param1,param2,param3,param4,param5,param6,param7,param8,param9,param10,param11,param12,param13);
 	}
 
 	function ADD_PANEL(item, panelType, param1, param2, param3, param4, param5, param6, param7, param8, param9, param10)
 	{
 		this.UIMenu.addPanel(item,panelType,param1,param2,param3,param4,param5,param6,param7,param8,param9,param10);
+	}
+
+	function ENABLE_SCROLLING_ANIMATION(enable)
+	{
+		this.UIMenu.EnableAnim = enable;
+	}
+
+	function CHANGE_SCROLLING_ANIMATION_TYPE(type)
+	{
+		this.UIMenu.AnimType = type;
 	}
 
 	function ADD_HERITAGE_WINDOW(mom, dad)
@@ -158,7 +168,7 @@
 				var _panel = this.UIMenu.currentItem.panels[i];
 				if (_panel._hovered)
 				{
-					if (_panel instanceof com.rockstargames.ScaleformUI.panels.UIMenuColorPanel)
+					if ((_panel instanceof com.rockstargames.ScaleformUI.panels.UIMenuColorPanel))
 					{
 						retVal.push("pan");
 						retVal.push(i);
@@ -170,7 +180,7 @@
 				}
 			}
 		}
-		return retVal.push("-1").toString();
+		return "none";
 	}
 
 	function SET_INPUT_MOUSE_EVENT_CONTINUE(posX, posY)
@@ -190,21 +200,21 @@
 				if (_panel._hovered)
 				{
 					var _panType = 0;
-					if (_panel instanceof com.rockstargames.ScaleformUI.panels.UIMenuColorPanel)
+					if ((_panel instanceof com.rockstargames.ScaleformUI.panels.UIMenuColorPanel))
 					{
 						_panType = 0;
 					}
-					else if (_panel instanceof com.rockstargames.ScaleformUI.panels.UIMenuPercentagePanel)
+					else if ((_panel instanceof com.rockstargames.ScaleformUI.panels.UIMenuPercentagePanel))
 					{
 						_panType = 1;
 						_panel.Coords = posX;
 					}
-					else if (_panel instanceof com.rockstargames.ScaleformUI.panels.UIMenuGridPanel)
+					else if ((_panel instanceof com.rockstargames.ScaleformUI.panels.UIMenuGridPanel))
 					{
 						_panType = 2;
 						_panel.Coords = new Array(posX, posY);
 					}
-					if (_panType == 1 || _panType == 2)
+					if (((_panType == 1) || _panType == 2))
 					{
 						retVal.push("pan");
 						retVal.push(i);
@@ -215,6 +225,7 @@
 				}
 			}
 		}
+		return "none";
 	}
 
 	function ADD_ITEM_TO_ITEMLIST(listItemId, item)
@@ -237,6 +248,7 @@
 	function ENABLE_ITEM(item, disable)
 	{
 		this.UIMenu.menuItems[item].Enabled = disable;
+		this.UIMenu.updateItemsDrawing();
 	}
 
 	function UPDATE_ITEM_DESCRIPTION(item, substr)
@@ -245,8 +257,9 @@
 		_selectedItem.subtitle = substr;
 		this.UIMenu.updateItemsDrawing();
 	}
-	
-	function UPDATE_COLORS(item, mainColor, highlightColor, textColor, textHighlightColor, sliderColor){
+
+	function UPDATE_COLORS(item, mainColor, highlightColor, textColor, textHighlightColor, sliderColor)
+	{
 		var _selectedItem = UIMenu.menuItems[item];
 		_selectedItem._mainColor = mainColor;
 		_selectedItem._highlightColor = highlightColor;
@@ -270,7 +283,7 @@
 		{
 			_item.Value = _val;
 		}
-		else if (_item instanceof com.rockstargames.ScaleformUI.items.UIMenuStatsItem)
+		else if ((_item instanceof com.rockstargames.ScaleformUI.items.UIMenuStatsItem))
 		{
 			_item.barscale = _val;
 		}
@@ -283,8 +296,11 @@
 
 	function SET_ITEM_LABELS(item, lbl, rtxt)
 	{
-		com.rockstargames.ui.utils.UIText.setSizedText(this.UIMenu.menuItems[item].leftTextTF,lbl,true,true);
-		this.UIMenu.menuItems[item].SetRightText(rtxt);
+		if (this.UIMenu.menuItems[item]._type == 0)
+		{
+			com.rockstargames.ui.utils.UIText.setSizedText(this.UIMenu.menuItems[item].leftTextTF,lbl,true,true);
+			this.UIMenu.menuItems[item].SetRightText(rtxt);
+		}
 	}
 	function SET_BLINK_DESC(item, blink)
 	{
@@ -297,7 +313,10 @@
 	}
 	function SET_RIGHT_LABEL(item, txt)
 	{
-		this.UIMenu.menuItems[item].SetRightText(txt);
+		if (this.UIMenu.menuItems[item]._type == 0)
+		{
+			this.UIMenu.menuItems[item].SetRightText(txt);
+		}
 	}
 
 	function GET_VALUE_FROM_PANEL(item, panel)
