@@ -10,9 +10,10 @@
 	var max = 100;
 	var _index;
 	var _type = 5;
-	function UIMenuStatsItem(id, str, substr, parentMenu, _enabled, _blink, _value, _type, barColor, mainColor, highlightColor, textColor, textHighlightColor)
+	function UIMenuStatsItem(id, str, substr, parentMenu, _enabled, _blink, _value, __type, barColor, mainColor, highlightColor, textColor, textHighlightColor)
 	{
 		super(parentMenu,str,substr, _enabled);
+		this._type = id;
 		this.itemMC = this.parentMC.attachMovie("characterStatsCardItem", "characterStatsCardItem_" + this._parentMenu.itemCount + 1, this.parentMC.getNextHighestDepth());
 		this.backgroundMC = this.itemMC.bgMC;
 		this.leftTextTF = this.itemMC.labelMC.titleTF;
@@ -21,7 +22,7 @@
 		this.darkbarMC = this.itemMC.attachMovie("GenericColourBar", "barMC", this.itemMC.getNextHighestDepth());
 		this.barMC._x = this.darkbarMC._x = this.itemMC.maskMC._x;
 		this.barMC._y = this.darkbarMC._y = this.itemMC.maskMC._y;
-		this.type == _type;
+		this.type == __type;
 		this._index = _value;
 		if (mainColor != undefined)
 		{
@@ -41,7 +42,7 @@
 		}
 
 		this.blinkDesc = _blink;
-		if (_type == 0)
+		if (__type == 0)
 		{
 			this.itemMC.maskMC._visible = this.itemMC.darkmaskMC._visible = true;
 			this.barMC.mc.baralphaMC._visible = false;
@@ -51,7 +52,7 @@
 			this.darkbarMC.setMask(this.itemMC.darkmaskMC);
 			this.itemMC.bgMC._height = 40;
 		}
-		else if (_type == 1)
+		else if (__type == 1)
 		{
 			this.itemMC.maskMC._visible = this.itemMC.darkmaskMC._visible = false;
 			this.barMC.mc.baralphaMC._visible = true;

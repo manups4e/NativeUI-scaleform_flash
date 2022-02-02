@@ -49,11 +49,12 @@
 
 	function CREATE_MENU(title, subtitle, txd, txn, enableAnim, animType)
 	{
-		this.UIMenu = new com.rockstargames.ScaleformUI.UIMenu(this.CONTENT, title, subtitle, txd, txn, enableAnim, animType, offset);
+		this.UIMenu = new com.rockstargames.ScaleformUI.UIMenu(this.CONTENT, title, subtitle, txd, txn, enableAnim, animType, this._customBannerLoaded, offset);
 	}
 
 	function CLEAR_ALL()
 	{
+		this._customBannerLoaded = this.UIMenu._bannerLoaded;
 		this.UIMenu.Clear();
 		this.UIMenu = undefined;
 	}
@@ -78,13 +79,25 @@
 		this.UIMenu.AnimType = type;
 	}
 
-	function ADD_HERITAGE_WINDOW(mom, dad)
+	function ADD_WINDOW(id, param0, param1, param2, param3, param4, param5, param6, param7, param8, param9)
 	{
-		this.UIMenu.addWindow(mom,dad);
+		this.UIMenu.addWindow(id,param0,param1,param2,param3,param4,param5,param6,param7,param8,param9);
 	}
 	function UPDATE_HERITAGE_WINDOW(id, mom, dad)
 	{
 		this.UIMenu.windows[id].setIndex(mom,dad);
+	}
+	function UPDATE_DETAILS_WINDOW_VALUES(id, _det0, _det1, _det2, txd, txn, x, y, w, h)
+	{
+		this.UIMenu.windows[id].setValues(_det0,_det1,_det2,txd,txn,x,y,w,h);
+	}
+	function ADD_STATS_DETAILS_WINDOW_STATWHEEL(id, pctComplete, statColourEnum)
+	{
+		this.UIMenu.windows[id].addStatToWheel(pctComplete,statColourEnum);
+	}
+	function UPDATE_STATS_DETAILS_WINDOW_STATWHEEL(id, statId, pctComplete, statColourEnum)
+	{
+		this.UIMenu.windows[id].updateStatistic(statId,pctComplete,statColourEnum);
 	}
 
 	function SET_INPUT_EVENT(direction, item, val)
@@ -382,4 +395,41 @@
 		this.UIMenu.menuItems[item].panels[panel].Coords = posX;
 		return this.UIMenu.menuItems[item].panels[panel].Value.toString();
 	}
+
+	function ADD_TXD_REF_RESPONSE(txd, strRef, success)
+	{
+		if (success == true)
+		{
+			var pMC = this.CONTENT;
+			var il = com.rockstargames.ui.media.ImageLoaderMC(eval(pMC + "." + strRef));
+			if (pMC != undefined)
+			{
+				il.displayTxdResponse(txd);
+			}
+		}
+	}
+
+	function TXD_HAS_LOADED(txd, success, strRef)
+	{
+		if (success == true)
+		{
+			var pMC = this.CONTENT;
+			var il = com.rockstargames.ui.media.ImageLoaderMC(eval(pMC + "." + strRef));
+			if (pMC != undefined)
+			{
+				il.displayTxdResponse(txd,success);
+			}
+		}
+	}
+
+	function TXD_ALREADY_LOADED(txd, strRef)
+	{
+		var pMC = this.CONTENT;
+		var il = com.rockstargames.ui.media.ImageLoaderMC(eval(pMC + "." + strRef));
+		if (pMC != undefined)
+		{
+			il.displayTxdResponse(txd,true);
+		}
+	}
+
 }

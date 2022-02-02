@@ -4,7 +4,7 @@
 	var _parentMenu;
 	var momIdx;
 	var dadIdx;
-	var heritageLoader;
+
 	var _background;
 	var _momSprite;
 	var _dadSprite;
@@ -23,7 +23,10 @@
 		{
 			this.dadIdx = dad;
 		}
-		this.SetClip(this._background,"pause_menu_pages_char_mom_dad","mumdadbg");
+		this._background = this.itemMC.attachMovie("txdLoader", "heritageBG", this.itemMC.getNextHighestDepth());
+		this._dadSprite = this.itemMC.attachMovie("txdLoader", "heritageDad", this.itemMC.getNextHighestDepth(), {_x:124});
+		this._momSprite = this.itemMC.attachMovie("txdLoader", "heritageMom", this.itemMC.getNextHighestDepth(), {_x:20});
+		this.SetClip(this._background,"pause_menu_pages_char_mom_dad","mumdadbg",288,158);
 		this.setIndex(this.momIdx,this.dadIdx);
 	}
 
@@ -47,33 +50,40 @@
 		{
 			this.dadIdx = 0;
 		}
-		this.SetClip(this._momSprite,"char_creator_portraits",this.momIdx < 21 ? "female_" + this.momIdx : "special_female_" + (this.momIdx - 21));
-		this.SetClip(this._dadSprite,"char_creator_portraits",this.dadIdx < 21 ? "male_" + this.dadIdx : "special_male_" + (this.dadIdx - 21));
+		this.SetClip(this._dadSprite,"char_creator_portraits",this.dadIdx < 21 ? "male_" + this.dadIdx : "special_male_" + (this.dadIdx - 21),144,158,this.dadLoaded);
+		this.SetClip(this._momSprite,"char_creator_portraits",this.momIdx < 21 ? "female_" + this.momIdx : "special_female_" + (this.momIdx - 21),144,158,this.momLoaded);
 	}
 
-	function SetClip(targetMC, textureDict, textureName)
+	function SetClip(targetMC, textureDict, textureName, w, h, x, y, callback)
 	{
-		this.heritageLoader = new MovieClipLoader();
-		this.heritageLoader.addListener(this);
-		var _loc2_ = "img://" + textureDict + "/" + textureName;
-		this.heritageLoader.loadClip(_loc2_,targetMC);
+		if (targetMC.textureFilename != textureDict && targetMC.textureDict != textureName)
+		{
+			/*
+			if (targetMC.isLoaded)
+			{
+			targetMC.removeTxdRef();
+			}
+			*/
+			targetMC.init("ScaleformUI",textureDict,textureName,w,h);
+			var _loc7_ = 2;
+			var _loc5_ = String(targetMC).split(".");
+			var _loc8_ = _loc5_.slice(_loc5_.length - _loc7_).join(".");
+			com.rockstargames.ui.tweenStar.TweenStarLite.removeTweenOf(targetMC);
+			targetMC._alpha = 100;
+			targetMC.addTxdRef(_loc8_,callback,this);
+		}
 	}
-
-	function onLoadInit(target_mc)
+	function momLoaded()
 	{
-		if (target_mc == this._background)
-		{
-			target_mc._x = 0;
-			target_mc._width = 288;
-			target_mc._height = 158;
-			//com.rockstargames.ui.utils.Colour.ApplyHudColour(target_mc,!this.highlighted ? this._textColor : this._textHighlightColor);
-		}
-		else if (target_mc == this._momSprite || target_mc == this._dadSprite)
-		{
-			target_mc._width = 144;
-			target_mc._height = 158;
-		}
-		delete this.heritageLoader;
+		this._momSprite._x = 20;
 	}
-
+	function dadLoaded()
+	{
+		this._dadSprite._x = 124;
+	}
+	
+	function Clear()
+	{
+		this.itemMC.removeMovieClip();
+	}
 }
