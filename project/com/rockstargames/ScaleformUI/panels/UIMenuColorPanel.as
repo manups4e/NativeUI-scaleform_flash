@@ -228,4 +228,8 @@
 			}
 		}
 	}
+	function Clear()
+	{
+		this.itemMC.removeMovieClip();
+	}
 }

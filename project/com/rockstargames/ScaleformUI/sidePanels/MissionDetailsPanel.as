@@ -188,4 +188,17 @@
 	{
 		return this.itemMC._visible;
 	}
+
+	function Clear()
+	{
+		if (this.descItems.length > 0)
+		{
+			for (var dd in this.descItems)
+			{
+				this.descItems[dd].Clear();
+			}
+		}
+		this.itemMC.removeMovieClip();
+
+	}
 }

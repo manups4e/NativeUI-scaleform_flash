@@ -241,6 +241,13 @@
 		this.currentAngle = 0;
 		this.itemMC.statWheelMC.wheelMC.clear();
 		this.totalStats = 0;
+		if (this.leftEmblemMC != undefined)
+		{
+			if (this.leftEmblemMC.isLoaded)
+			{
+				this.leftEmblemMC.removeTxdRef();
+			}
+		}
 		this.itemMC.removeMovieClip();
 	}
 }

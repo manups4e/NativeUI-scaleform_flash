@@ -86,6 +86,27 @@
 
 	function Clear()
 	{
+		if (this._background != undefined)
+		{
+			if (this._background.isLoaded)
+			{
+				this._background.removeTxdRef();
+			}
+		}
+		if (this._dadSprite != undefined)
+		{
+			if (this._dadSprite.isLoaded)
+			{
+				this._dadSprite.removeTxdRef();
+			}
+		}
+		if (this._momSprite != undefined)
+		{
+			if (this._momSprite.isLoaded)
+			{
+				this._momSprite.removeTxdRef();
+			}
+		}
 		this.itemMC.removeMovieClip();
 	}
 }

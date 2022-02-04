@@ -80,4 +80,9 @@
 	{
 		return this._slider._x + this._slider._width;
 	}
+	function Clear()
+	{
+		this.itemMC.removeMovieClip();
+	}
+
 }

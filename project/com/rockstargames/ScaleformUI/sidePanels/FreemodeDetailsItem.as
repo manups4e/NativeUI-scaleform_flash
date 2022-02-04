@@ -159,4 +159,16 @@
 		return this._highlighted;
 	}
 
+	function Clear()
+	{
+		if (this.badgeLoader != undefined)
+		{
+			if (this.badgeLoader.isLoaded)
+			{
+				this.badgeLoader.removeTxdRef();
+			}
+		}
+		this.itemMC.removeMovieClip();
+	}
+
 }

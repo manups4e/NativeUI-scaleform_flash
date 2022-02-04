@@ -527,4 +527,24 @@
 		}
 		return this.Value;
 	}
+
+	function Clear()
+	{
+		if (this.rightBadgeMC != undefined)
+		{
+			if (this.rightBadgeMC.isLoaded)
+			{
+				this.rightBadgeMC.removeTxdRef();
+			}
+		}
+		for (var pan in this.panels)
+		{
+			this.panels[pan].Clear();
+		}
+		if (this.sidePanel != undefined)
+		{
+			this.sidePanel.Clear();
+		}
+		this.itemMC.removeMovieClip();
+	}
 }

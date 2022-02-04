@@ -79,8 +79,14 @@
 			bar.item4.progressMC._width = bar.item4.bgMC._width;
 			bar.item5.progressMC._width = bar.item5.bgMC._width / 20 * (_value - 80);
 		}
-		//this._items[id].statsBar.          
+		//this._items[id].statsBar.           
 		//this._slider._width = this._sliderBG._width / this._max * this._value;
 
 	}
+
+	function Clear()
+	{
+		this.itemMC.removeMovieClip();
+	}
+
 }

@@ -49,7 +49,7 @@
 		}
 		else
 		{
-			_grid  = this.gridMC.attachMovie("txdLoader", "gridPanel", this.gridMC.getNextHighestDepth());
+			_grid = this.gridMC.attachMovie("txdLoader", "gridPanel", this.gridMC.getNextHighestDepth());
 			this.SetClip(_grid,"pause_menu_pages_char_mom_dad","nose_grid");
 		}
 		this.gridMC.onRollOver = com.rockstargames.ui.utils.DelegateStar.create(this, this.mOverGP, this.gridMC);
@@ -166,7 +166,8 @@
 			var coords = val;
 			if (this.type == 0)
 			{
-				var offset = ((this.itemMC._y + this.my) - this.padding * 2) - (this.gridMC.gridPanel._height / 2) - this.padding;
+				this.my = this.gridMC._height - this.padding * 2;
+				var offset = ((this.itemMC._y + this.my) - this.padding * 2) - (this.gridMC._height / 2) - this.padding;
 				coords[1] -= offset;
 			}
 			var valX = (coords[0] - this.gridMC._x - this.padding) / this.mx;
@@ -183,4 +184,17 @@
 	{
 		return this.Value.toString();
 	}
+
+	function Clear()
+	{
+		if (this.gridMC.gridPanel != undefined)
+		{
+			if (this.gridMC.gridPanel.isLoaded)
+			{
+				this.gridMC.gridPanel.removeTxdRef();
+			}
+		}
+		this.itemMC.removeMovieClip();
+	}
+
 }
