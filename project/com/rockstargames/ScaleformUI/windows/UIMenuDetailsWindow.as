@@ -25,6 +25,7 @@
 		this._parentMenu = parentMenu;
 		this.itemMC = this._parentMenu._mainMC.attachMovie("UIMenuDetailsWindow", "detailsWindow_" + this._parentMenu._mainMC.getNextHighestDepth(), this._parentMenu._mainMC.getNextHighestDepth());
 		this._background = this.itemMC.headerBGMC;
+
 		this.detail0 = this.itemMC.item0TF;
 		this.detail1 = this.itemMC.item1TF;
 		this.detail2 = this.itemMC.item2TF;
@@ -185,9 +186,9 @@
 		this.totalStats = 0;
 		this.itemMC.statWheelMC.createEmptyMovieClip("wheelMC",this.itemMC.getNextHighestDepth(),{_x:0, _y:0});
 		this.itemMC.statWheelMC.wheelMC.setMask(this.itemMC.statWheelMC.maskMC);
-		for(var i in this.statsMaxDegrees)
+		for (var i in this.statsMaxDegrees)
 		{
-			this.totalStats = this.totalStats + this.statsMaxDegrees[i].Percentage ;
+			this.totalStats = this.totalStats + this.statsMaxDegrees[i].Percentage;
 		}
 		for (var stat in this.statsMaxDegrees)
 		{
@@ -234,7 +235,7 @@
 	{
 		this.itemMC.statWheelMC.wheelMC.lineTo(Math.sin(angle * this.PI_OVER_180) * this.wheelRadius,(-Math.cos(angle * this.PI_OVER_180)) * this.wheelRadius);
 	}
-	
+
 	function Clear()
 	{
 		this.currentAngle = 0;
