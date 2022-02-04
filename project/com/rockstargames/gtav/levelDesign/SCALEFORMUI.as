@@ -1,6 +1,5 @@
 ﻿class com.rockstargames.gtav.levelDesign.SCALEFORMUI extends com.rockstargames.ui.core.BaseScreenLayout
 {
-	var _customBannerLoaded = false;
 	var UIMenu;
 	var DispConf;
 	var offset = [];
@@ -47,14 +46,14 @@
 		this.initScreenLayout();
 	}
 
-	function CREATE_MENU(title, subtitle, txd, txn, enableAnim, animType)
+	function CREATE_MENU(title, subtitle, x, y, txd, txn, enableAnim, animType)
 	{
-		this.UIMenu = new com.rockstargames.ScaleformUI.UIMenu(this.CONTENT, title, subtitle, txd, txn, enableAnim, animType, this._customBannerLoaded, offset);
+		var off = [x, y];
+		this.UIMenu = new com.rockstargames.ScaleformUI.UIMenu(this.CONTENT, title, subtitle, x, y, txd, txn, enableAnim, animType);
 	}
 
 	function CLEAR_ALL()
 	{
-		this._customBannerLoaded = this.UIMenu._bannerLoaded;
 		this.UIMenu.Clear();
 		this.UIMenu = undefined;
 	}
@@ -99,6 +98,37 @@
 	{
 		this.UIMenu.windows[id].updateStatistic(statId,pctComplete,statColourEnum);
 	}
+	function ADD_SIDE_PANEL_TO_ITEM(item, panelType, param1, param2, param3, param4, param5, param6, param7, param8, param9, param10)
+	{
+		this.UIMenu.addSidePanel(item,panelType,param1,param2,param3,param4,param5,param6,param7,param8,param9,param10);
+	}
+	function REMOVE_SIDE_PANEL_TO_ITEM(item)
+	{
+		if (this.UIMenu.menuItems[item].sidePanel != undefined)
+		{
+			if (this.UIMenu.menuItems[item].sidePanel.descItems.length > 0)
+			{
+				for (var dd in this.UIMenu.menuItems[item].sidePanel.descItems)
+				{
+					this.UIMenu.menuItems[item].sidePanel.descItems[dd].itemMC.removeMovieClip();
+				}
+			}
+			this.UIMenu.menuItems[item].sidePanel.itemMC.removeMovieClip();
+		}
+	}
+	function UPDATE_MISSION_DETAILS_PANEL_IMG(item, txd, txn)
+	{
+		this.UIMenu.menuItems[item].sidePanel.setPicture(txd,txn);
+	}
+	function ADD_MISSION_DETAILS_DESC_ITEM(item, itemType, textLeft, textRight, param3, param4, param5, param6)
+	{
+		this.UIMenu.menuItems[item].sidePanel.AddItem(itemType,textLeft,textRight,param3,param4,param5,param6);
+	}
+	function REMOVE_MISSION_DETAILS_DESC_ITEM(item, id)
+	{
+		this.UIMenu.menuItems[item].sidePanel.RemoveItem(id);
+	}
+
 
 	function SET_INPUT_EVENT(direction, item, val)
 	{
