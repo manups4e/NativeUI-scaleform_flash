@@ -713,6 +713,7 @@
 			default :
 				return "commonmenu";
 		}
+		return "commonmenu";
 	}
 
 	static function BadgeToColor(badge, selected)
