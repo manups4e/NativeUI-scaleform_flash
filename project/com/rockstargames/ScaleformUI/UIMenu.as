@@ -54,7 +54,10 @@
 		this.BannerSprite._y = 0 + this._menuOff[1];
 		this.BannerSprite._width = 288;
 		this.BannerSprite._height = 65;
-		var banner = this.BannerSprite.bannerBG.attachMovie("txdLoader", "bannerSprite", this.BannerSprite.bannerBG.getNextHighestDepth());
+		this._bannerTxd = txd;
+		this._bannerTexture = txn;
+
+		var banner = this.BannerSprite.bannerBG.attachMovie("txdLoader", "bannerSprite_"+ this.BannerSprite.bannerBG.getNextHighestDepth(), this.BannerSprite.bannerBG.getNextHighestDepth());
 		var _alreadyLoaded = true;
 		if (banner.textureFilename != txn && banner.textureDict != txd)
 		{

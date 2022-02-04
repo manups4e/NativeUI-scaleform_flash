@@ -332,9 +332,9 @@
 		}
 	}
 
-	function SET_RIGHT_BADGE(item, txd, icon)
+	function SET_RIGHT_BADGE(item, icon)
 	{
-		this.UIMenu.menuItems[item].SetRightBadge(txd,icon);
+		this.UIMenu.menuItems[item].SetRightBadge(icon);
 	}
 
 	function SET_ITEM_LABELS(item, lbl, rtxt)
