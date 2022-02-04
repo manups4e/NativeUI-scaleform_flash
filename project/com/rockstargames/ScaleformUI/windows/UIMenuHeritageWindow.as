@@ -54,24 +54,26 @@
 		this.SetClip(this._momSprite,"char_creator_portraits",this.momIdx < 21 ? "female_" + this.momIdx : "special_female_" + (this.momIdx - 21),144,158,this.momLoaded);
 	}
 
-	function SetClip(targetMC, textureDict, textureName, w, h, x, y, callback)
+	function SetClip(targetMC, textureDict, textureName, w, h, callback)
 	{
-		if (targetMC.textureFilename != textureDict && targetMC.textureDict != textureName)
+		var _loaded = true;
+		if (targetMC.textureFilename != textureName && targetMC.textureDict != textureDict)
 		{
-			/*
-			if (targetMC.isLoaded)
-			{
-			targetMC.removeTxdRef();
-			}
-			*/
-			targetMC.init("ScaleformUI",textureDict,textureName,w,h);
-			var _loc7_ = 2;
-			var _loc5_ = String(targetMC).split(".");
-			var _loc8_ = _loc5_.slice(_loc5_.length - _loc7_).join(".");
-			com.rockstargames.ui.tweenStar.TweenStarLite.removeTweenOf(targetMC);
-			targetMC._alpha = 100;
-			targetMC.addTxdRef(_loc8_,callback,this);
+			_loaded = false;
 		}
+		/*
+		if (targetMC.isLoaded)
+		{
+		targetMC.removeTxdRef();
+		}
+		*/ 
+		targetMC.init("ScaleformUI",textureDict,textureName,w,h);
+		var _loc7_ = 2;
+		var _loc5_ = String(targetMC).split(".");
+		var _loc8_ = _loc5_.slice(_loc5_.length - _loc7_).join(".");
+		com.rockstargames.ui.tweenStar.TweenStarLite.removeTweenOf(targetMC);
+		targetMC._alpha = 100;
+		targetMC.requestTxdRef(_loc8_,_loaded,callback,this);
 	}
 	function momLoaded()
 	{
@@ -81,7 +83,7 @@
 	{
 		this._dadSprite._x = 124;
 	}
-	
+
 	function Clear()
 	{
 		this.itemMC.removeMovieClip();
