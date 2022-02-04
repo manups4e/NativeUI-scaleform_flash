@@ -129,7 +129,7 @@
 	function SetClip(targetMC, textureDict, textureName, w, h, x, y, callback)
 	{
 		var _loc12_ = true;
-		if (targetMC.textureFilename != textureDict && targetMC.textureDict != textureName)
+		if (targetMC.textureFilename != textureName && targetMC.textureDict != textureDict)
 		{
 			var _loc12_ = false;
 		}
@@ -139,7 +139,7 @@
 		var _loc8_ = _loc5_.slice(_loc5_.length - _loc7_).join(".");
 		com.rockstargames.ui.tweenStar.TweenStarLite.removeTweenOf(targetMC);
 		targetMC._alpha = 100;
-		targetMC.requestTxdRef(_loc8_,false,callback,this);
+		targetMC.requestTxdRef(_loc8_,_loc12_,callback,this);
 	}
 
 
