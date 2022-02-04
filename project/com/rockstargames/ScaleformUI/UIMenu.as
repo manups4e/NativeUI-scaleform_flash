@@ -37,7 +37,7 @@
 	var EnableAnim;
 	var AnimType;
 
-	function UIMenu(mc, title, subtitle, x, y, txd, txn, enableAnim, animType)
+	function UIMenu(mc, title, subtitle, alternative, x, y, txd, txn, enableAnim, animType)
 	{
 		this._menuOff = new Array(x, y);
 		this.menuItems = new Array();
@@ -57,7 +57,7 @@
 		this._bannerTxd = txd;
 		this._bannerTexture = txn;
 
-		var banner = this.BannerSprite.bannerBG.attachMovie("txdLoader", "bannerSprite_"+ this.BannerSprite.bannerBG.getNextHighestDepth(), this.BannerSprite.bannerBG.getNextHighestDepth());
+		var banner = this.BannerSprite.bannerBG.attachMovie("txdLoader", "bannerSprite", this.BannerSprite.bannerBG.getNextHighestDepth());
 		var _alreadyLoaded = true;
 		if (banner.textureFilename != txn && banner.textureDict != txd)
 		{
@@ -76,16 +76,29 @@
 		com.rockstargames.ui.tweenStar.TweenStarLite.removeTweenOf(banner);
 		banner._alpha = 100;
 		banner.requestTxdRef(_loc8_,_alreadyLoaded,this.bannerLoaded,this);
-
-		var bannerFont = new TextFormat("$Font5", 31);
-		bannerFont.align = "center";
-		this.BannerTitle = this.BannerSprite.titleMC.labelTF;
-		this.BannerTitle.embedFonts = true;
-		this.BannerTitle.antiAliasType = "advanced";
-		this.BannerTitle.selectable = false;
 		if (this._menuTitle != undefined && this._menuTitle != "")
 		{
-			com.rockstargames.ui.utils.UIText.setSizedText(this.BannerTitle,this._menuTitle,true,true,31,31);
+			if (!alternative)
+			{
+				var bannerFont = new TextFormat("$Font5", 31);
+				bannerFont.align = "center";
+				this.BannerTitle = this.BannerSprite.titleMC.labelTF;
+				this.BannerTitle.embedFonts = true;
+				this.BannerTitle.antiAliasType = "advanced";
+				this.BannerTitle.selectable = false;
+				com.rockstargames.ui.utils.UIText.setSizedText(this.BannerSprite.titleMC.labelTF,this._menuTitle,true,true,31,31);
+			}
+			else
+			{
+				var bannerFont = new TextFormat("$Font2_cond_NOT_GAMERNAME", 31);
+				bannerFont.align = "left";
+				bannerFont.bold = true;
+				this.BannerTitle = this.BannerSprite.titleMC.labelTF2;
+				this.BannerTitle.embedFonts = true;
+				this.BannerTitle.antiAliasType = "advanced";
+				this.BannerTitle.selectable = false;
+				com.rockstargames.ui.utils.UIText.setSizedText(this.BannerSprite.titleMC.labelTF2,this._menuTitle,true,true,31,31);
+			}
 		}
 
 		this.SubtitleSprite = this._mainMC.attachMovie("SubtitleSprite", "subtitleSprite", this._mainMC.getNextHighestDepth());
@@ -598,22 +611,7 @@
 	{
 		for (var it in this.menuItems)
 		{
-			for (var pan in this.menuItems[it].panels)
-			{
-				this.menuItems[it].panels[pan].itemMC.removeMovieClip();
-			}
-			if (this.menuItems[it].sidePanel != undefined)
-			{
-				if (this.menuItems[it].sidePanel.descItems.length > 0)
-				{
-					for (var dd in this.menuItems[it].sidePanel.descItems)
-					{
-						this.menuItems[it].sidePanel.descItems[dd].itemMC.removeMovieClip();
-					}
-				}
-				this.menuItems[it].sidePanel.itemMC.removeMovieClip();
-			}
-			this.menuItems[it].itemMC.removeMovieClip();
+			this.menuItems[it].Clear();
 		}
 		this.menuItems = new Array();
 		if (this.windows.length > 0)
@@ -624,6 +622,7 @@
 			}
 			this.windows = new Array();
 		}
+		this.BannerSprite.bannerBG.bannerSprite.removeTxdRef();
 		this.BannerSprite.removeMovieClip();
 		this.BodySprite.removeMovieClip();
 		this.DescriptionSprite.removeMovieClip();
@@ -633,5 +632,7 @@
 
 	function bannerLoaded()
 	{
+		this.BannerSprite.bannerBG.bannerSprite._alpha = 0;
+		com.rockstargames.ui.tweenStar.TweenStarLite.to(this.BannerSprite.bannerBG.bannerSprite,0.2,{_alpha:100});
 	}
 }

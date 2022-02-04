@@ -46,10 +46,10 @@
 		this.initScreenLayout();
 	}
 
-	function CREATE_MENU(title, subtitle, x, y, txd, txn, enableAnim, animType)
+	function CREATE_MENU(title, subtitle, x, y, alternative, txd, txn, enableAnim, animType)
 	{
 		var off = [x, y];
-		this.UIMenu = new com.rockstargames.ScaleformUI.UIMenu(this.CONTENT, title, subtitle, x, y, txd, txn, enableAnim, animType);
+		this.UIMenu = new com.rockstargames.ScaleformUI.UIMenu(this.CONTENT, title, subtitle, alternative, x, y, txd, txn, enableAnim, animType);
 	}
 
 	function CLEAR_ALL()
