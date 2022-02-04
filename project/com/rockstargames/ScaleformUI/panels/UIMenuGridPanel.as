@@ -26,6 +26,7 @@
 		this.backgroundMC = this.itemMC.bgMC;
 		this.dotMC = this.itemMC.dotMC;
 		this.gridMC = this.itemMC.gridMC;
+		var _grid;
 		if (animate != undefined)
 		{
 			if (animate)
@@ -48,7 +49,8 @@
 		}
 		else
 		{
-			this.SetClip(this.gridMC,"pause_menu_pages_char_mom_dad","nose_grid");
+			_grid  = this.gridMC.attachMovie("txdLoader", "gridPanel", this.gridMC.getNextHighestDepth());
+			this.SetClip(_grid,"pause_menu_pages_char_mom_dad","nose_grid");
 		}
 		this.gridMC.onRollOver = com.rockstargames.ui.utils.DelegateStar.create(this, this.mOverGP, this.gridMC);
 		this.gridMC.onRollOut = com.rockstargames.ui.utils.DelegateStar.create(this, this.mOutGP, this.gridMC);
@@ -95,12 +97,26 @@
 		this.hovered = false;
 		this._hovered = false;
 	}
-	function SetClip(targetMC, textureDict, textureName)
+	function SetClip(targetMC, textureDict, textureName, w, h, callback)
 	{
-		this.txd_loader = new MovieClipLoader();
-		this.txd_loader.addListener(this);
-		var _loc2_ = "img://" + textureDict + "/" + textureName;
-		this.txd_loader.loadClip(_loc2_,targetMC);
+		var _loaded = true;
+		if (targetMC.textureFilename != textureName && targetMC.textureDict != textureDict)
+		{
+			_loaded = false;
+		}
+		/*
+		if (targetMC.isLoaded)
+		{
+		targetMC.removeTxdRef();
+		}
+		*/ 
+		targetMC.init("ScaleformUI",textureDict,textureName,w,h);
+		var _loc7_ = 3;
+		var _loc5_ = String(targetMC).split(".");
+		var _loc8_ = _loc5_.slice(_loc5_.length - _loc7_).join(".");
+		com.rockstargames.ui.tweenStar.TweenStarLite.removeTweenOf(targetMC);
+		targetMC._alpha = 100;
+		targetMC.requestTxdRef(_loc8_,_loaded,callback,this);
 	}
 	function onLoadInit(target_mc)
 	{
@@ -150,7 +166,7 @@
 			var coords = val;
 			if (this.type == 0)
 			{
-				var offset = ((this.itemMC._y + this.my) - this.padding * 2) - (this.gridMC._height / 2) - this.padding;
+				var offset = ((this.itemMC._y + this.my) - this.padding * 2) - (this.gridMC.gridPanel._height / 2) - this.padding;
 				coords[1] -= offset;
 			}
 			var valX = (coords[0] - this.gridMC._x - this.padding) / this.mx;
