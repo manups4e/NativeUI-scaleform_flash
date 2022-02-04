@@ -48,7 +48,7 @@
 		this.rightTextTF = this.itemMC.RLabelMC.labelTF;
 		this.rightText = "";
 		this._type = id;
-		this.rightBadgeMC = this.itemMC.attachMovie("txdLoader", "badge", this.itemMC.getNextHighestDepth());
+
 		if (str != undefined)
 		{
 			this.leftTextTF.autoSize = "none";
@@ -194,6 +194,7 @@
 		this.rightBadgeId = id;
 		if (this.rightBadgeId != com.rockstargames.ScaleformUI.utils.Badges.NONE)
 		{
+			this.rightBadgeMC = this.itemMC.attachMovie("txdLoader", "badge", this.itemMC.getNextHighestDepth());
 			var sprite_name = com.rockstargames.ScaleformUI.utils.Badges.getSpriteNameById(id, this.highlighted);
 			var sprite_txd = com.rockstargames.ScaleformUI.utils.Badges.GetSpriteDictionary(id);
 			this.SetClip(this.rightBadgeMC,sprite_txd,sprite_name,24,24,this.badgeLoaded);
@@ -224,10 +225,13 @@
 	}
 	function badgeLoaded()
 	{
+		this.rightBadgeMC._visible = true;
 		this.rightBadgeMC._width = 24;
 		this.rightBadgeMC._height = 24;
 		this.rightBadgeMC._x = 263.5;
 		this.rightBadgeMC._y = 0.5;
+		//this.rightBadgeMC._alpha = 0;
+		//com.rockstargames.ui.tweenStar.TweenStarLite.to(this.rightBadgeMC,0.2,{_alpha:100});
 	}
 
 	function addPanel(_panel)
