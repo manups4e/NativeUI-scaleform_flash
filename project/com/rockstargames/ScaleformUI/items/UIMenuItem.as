@@ -232,6 +232,16 @@
 		return _highlighted ? (_checked ? (_style == com.rockstargames.ScaleformUI.items.UIMenuCheckboxItem.CHECKBOX_STYLE_TICK ? "shop_box_tickb" : "shop_box_crossb") : "shop_box_blankb") : _checked ? (_style == com.rockstargames.ScaleformUI.items.UIMenuCheckboxItem.CHECKBOX_STYLE_TICK ? "shop_box_tick" : "shop_box_cross") : "shop_box_blank";
 	}
 
+	function addSidePanel(panel)
+	{
+		this.sidePanel = panel;
+	}
+	function removeSidePanel(panel)
+	{
+		this.sidePanel.itemMC.removeMovieClip();
+	}
+
+
 	function set Checked(val)
 	{
 		this._checked = val;
@@ -369,6 +379,10 @@
 			for (var _panel in this.panels)
 			{
 				this.panels[_panel].isVisible = _h;
+			}
+			if (this.sidePanel != undefined)
+			{
+				this.sidePanel.isVisible = _h;
 			}
 		}
 	}

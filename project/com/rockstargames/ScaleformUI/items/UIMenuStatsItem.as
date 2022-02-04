@@ -12,7 +12,7 @@
 	var _type = 5;
 	function UIMenuStatsItem(id, str, substr, parentMenu, _enabled, _blink, _value, __type, barColor, mainColor, highlightColor, textColor, textHighlightColor)
 	{
-		super(parentMenu,str,substr, _enabled);
+		super(parentMenu,str,substr,_enabled);
 		this._type = id;
 		this.itemMC = this.parentMC.attachMovie("characterStatsCardItem", "characterStatsCardItem_" + this._parentMenu.itemCount + 1, this.parentMC.getNextHighestDepth());
 		this.backgroundMC = this.itemMC.bgMC;
@@ -95,14 +95,23 @@
 			var __reg7 = com.rockstargames.gtav.utils.GTAVUIUtils.getAdjustedSegmentPct(__reg3, 54, 2, 5);
 			this.darkbarMC.percent(__reg7,false);
 		}
-
-		//this.highlighted = this._highlighted;
+		//this.highlighted = this._highlighted; 
 	}
-	
+
 	function addPanel(_panel)
 	{
 		this.panels.push(_panel);
 	}
+
+	function addSidePanel(panel)
+	{
+		this.sidePanel = panel;
+	}
+	function removeSidePanel(panel)
+	{
+		this.sidePanel.itemMC.removeMovieClip();
+	}
+
 
 	function set barscale(bi)
 	{

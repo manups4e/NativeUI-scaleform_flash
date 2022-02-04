@@ -19,6 +19,7 @@
 	var _enabled = true;
 	var panels;
 	var blinkDesc = false;
+	var sidePanel;
 
 	function BaseMenuItem(parent, str, substr, _enabled)
 	{
