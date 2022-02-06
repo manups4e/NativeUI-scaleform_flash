@@ -16,24 +16,38 @@
 	var titleTF;
 	var colorType;
 
-	function UIMenuColorPanel(parentItem, title, type, index)
+	function UIMenuColorPanel(parentItem, title, type, index, colors)
 	{
 		super(parentItem);
 		this.itemCount = 0;
 		this.colorItems = new Array();
 		this.selectedColors = new Array();
-		if (type == 0)
+		this._title = title;
+		switch (type)
 		{
-			this.colorsArray = com.rockstargames.ScaleformUI.utils.ColorPanelColors.HAIR_COLORS;
-		}
-		else
-		{
-			this.colorsArray = com.rockstargames.ScaleformUI.utils.ColorPanelColors.MAKEUP_COLORS;
+			case 0 :
+				this.colorsArray = com.rockstargames.ScaleformUI.utils.ColorPanelColors.HAIR_COLORS;
+				break;
+			case 1 :
+				this.colorsArray = com.rockstargames.ScaleformUI.utils.ColorPanelColors.MAKEUP_COLORS;
+				break;
+			case 2 :
+				this.colorsArray = new Array();
+				var arr = colors.split(",");
+				for (var i = 0; i < arr.length; i++)
+				{
+					var _loc5_ = new com.rockstargames.ui.utils.HudColour();
+					var col = com.rockstargames.ui.utils.HudColour[arr[i]];
+					com.rockstargames.ui.utils.Colour.setHudColour(col,_loc5_);
+					var item = {i:i, r:_loc5_.r, g:_loc5_.g, b:_loc5_.b, a:_loc5_.a};
+					this.colorsArray.push(item);
+					this.visibleItems = this.colorsArray.length > 9 ? 9 : this.colorsArray.length;
+				}
+				break;
 		}
 		this.itemCount = this.colorsArray.length;
 		this.itemMC = parentItem._parentMenu._mainMC.attachMovie("UIMenuColorPanel", "colorPanel_" + parentItem.itemMC._name + "_" + (parentItem.panels.length + 1), parentItem._parentMenu._mainMC.getNextHighestDepth());
 		this.backgroundMC = this.itemMC.bgMC;
-		this._title = title;
 		com.rockstargames.ui.utils.Colour.ApplyHudColour(this.itemMC.bgMC,com.rockstargames.ui.utils.HudColour.HUD_COLOUR_PAUSE_BG);
 		this.titleTF = this.itemMC.titleMC.titleTF;
 		this.leftArrow = this.itemMC.attachMovie("hairColourArrow", "leftArMC_" + this.itemMC._name, this.itemMC.getNextHighestDepth(), {_x:7.35, _y:12.6});
@@ -136,15 +150,15 @@
 	function goLeft()
 	{
 		this.currentSelection--;
-		if (this.selector._x == this.colorItems[0]._x)
+		if (this.selector._x == this.colorItems[0]._x and this.visibleItems == 9)
 		{
 			var lowest = this.selectedColors[0].i;
 			var newLowestValue = lowest - 1;
 			if (newLowestValue < 0)
 			{
-				newLowestValue = 63;
+				newLowestValue = this.colorsArray.length - 1;
 			}
-			this.selectedColors = this.selectedColors.slice(0, 8);
+			this.selectedColors = this.selectedColors.slice(0, this.visibleItems - 1);
 			this.selectedColors.splice(0,0,this.colorsArray[newLowestValue]);
 		}
 		this.updateColors();
@@ -152,16 +166,16 @@
 	function goRight()
 	{
 		this.currentSelection++;
-		if (this.selector._x == this.colorItems[8]._x)
+		if (this.selector._x == this.colorItems[this.visibleItems - 1]._x and this.visibleItems == 9)
 		{
-			var highestValue = this.selectedColors[8].i;
+			var highestValue = this.selectedColors[this.visibleItems - 1].i;
 			var newHighValue = highestValue + 1;
-			if (newHighValue > 63)
+			if (newHighValue > this.colorsArray.length - 1)
 			{
 				newHighValue = 0;
 			}
-			this.selectedColors = this.selectedColors.slice(1, 9);
-			this.selectedColors[8] = this.colorsArray[newHighValue];
+			this.selectedColors = this.selectedColors.slice(1, this.visibleItems);
+			this.selectedColors[this.visibleItems - 1] = this.colorsArray[newHighValue];
 		}
 		this.updateColors();
 	}
@@ -208,13 +222,13 @@
 		for (var i = 0; i < this.visibleItems; i++)
 		{
 			var vl = i + val;
-			if (vl > 63)
+			if (vl > this.colorsArray.length - 1)
 			{
-				vl -= 63;
+				vl -= this.colorsArray.length - 1;
 			}
 			else if (vl < 0)
 			{
-				vl += 63;
+				vl += this.colorsArray.length - 1;
 			}
 			this.selectedColors[i] = this.colorsArray[vl];
 			var color = this.selectedColors[i];
