@@ -180,7 +180,7 @@
 		switch (id)
 		{
 			case 0 :
-				panel = new com.rockstargames.ScaleformUI.panels.UIMenuColorPanel(selectItem, param1, param2, param3);
+				panel = new com.rockstargames.ScaleformUI.panels.UIMenuColorPanel(selectItem, param1, param2, param3, param4);
 				break;
 			case 1 :
 				panel = new com.rockstargames.ScaleformUI.panels.UIMenuPercentagePanel(selectItem, param1, param2, param3, param4);
@@ -329,6 +329,17 @@
 				this._activeItem = 1000 - (1000 % this.itemCount);
 				this._activeItem += this.itemCount - 1;
 				this.ScrollMenu(-1,true);
+				if (this.currentItem._type == 6)
+				{
+					if (this.currentItem.jumpable)
+					{
+						this._activeItem--;
+						if (this.scrollableContent._y < -this.currentItem.itemMC._y)
+						{
+							this.ScrollMenu(-1);
+						}
+					}
+				}
 			}
 			else
 			{
@@ -337,11 +348,29 @@
 				{
 					this.ScrollMenu(-1);
 				}
+				if (this.currentItem._type == 6)
+				{
+					if (this.currentItem.jumpable)
+					{
+						this._activeItem--;
+						if (this.scrollableContent._y < -this.currentItem.itemMC._y)
+						{
+							this.ScrollMenu(-1);
+						}
+					}
+				}
 			}
 		}
 		else
 		{
 			this._activeItem--;
+			if (this.currentItem._type == 6)
+			{
+				if (this.currentItem.jumpable)
+				{
+					this._activeItem--;
+				}
+			}
 		}
 		this.updateItemsDrawing();
 		com.rockstargames.ui.game.GameInterface.call("PLAY_SOUND",com.rockstargames.ui.game.GameInterface.GENERIC_TYPE,"NAV_UP_DOWN","HUD_FRONTEND_DEFAULT_SOUNDSET");
@@ -356,6 +385,17 @@
 			{
 				this._activeItem = 1000 - (1000 % this.itemCount);
 				this.ScrollMenu(1,true);
+				if (this.currentItem._type == 6)
+				{
+					if (this.currentItem.jumpable)
+					{
+						this._activeItem++;
+						if (this.scrollableContent._y < -this.currentItem.itemMC._y)
+						{
+							this.ScrollMenu(1);
+						}
+					}
+				}
 			}
 			else
 			{
@@ -364,11 +404,23 @@
 				{
 					this.ScrollMenu(1);
 				}
+				if (this.currentItem.jumpable)
+				{
+					this._activeItem++;
+					if (this.scrollableContent._y < -this.currentItem.itemMC._y)
+					{
+						this.ScrollMenu(1);
+					}
+				}
 			}
 		}
 		else
 		{
 			this._activeItem++;
+			if (this.currentItem.jumpable)
+			{
+				this._activeItem++;
+			}
 		}
 		this.updateItemsDrawing();
 		com.rockstargames.ui.game.GameInterface.call("PLAY_SOUND",com.rockstargames.ui.game.GameInterface.GENERIC_TYPE,"NAV_UP_DOWN","HUD_FRONTEND_DEFAULT_SOUNDSET");
