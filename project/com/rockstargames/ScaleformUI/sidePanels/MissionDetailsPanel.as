@@ -25,62 +25,62 @@
 		this.panelTitle = panelTitle;
 		this.panelTitleColour = panelColour;
 		this._titleType = titleType;
-		if (titleType == 0)
+		switch (titleType)
 		{
-			this.itemMC.gotoAndStop(1);
-			this.itemMC.BannerSprite._width = 288;
-			this.itemMC.BannerSprite._height = 65;
-			var banner = this.itemMC.BannerSprite.bannerBG.attachMovie("txdLoader", "internbannerSprite_" + this.itemMC.BannerSprite.bannerBG.getNextHighestDepth(), this.itemMC.BannerSprite.bannerBG.getNextHighestDepth());
-			var alreadyLoaded = true;
-			if (banner.textureFilename != this.menu._bannerTexture && banner.textureDict != this.menu._bannerTxd)
-			{
-				alreadyLoaded = false;
-			}
-			if (banner.isLoaded)
-			{
-				banner.removeTxdRef();
-			}
-			banner.init("ScaleformUI",this.menu._bannerTxd,this.menu._bannerTexture,288,54.75);
-			var _loc7_ = 4;
-			var _loc5_ = String(banner).split(".");
-			var _loc8_ = _loc5_.slice(_loc5_.length - _loc7_).join(".");
-			com.rockstargames.ui.tweenStar.TweenStarLite.removeTweenOf(banner);
-			banner._alpha = 100;
-			banner.requestTxdRef(_loc8_,alreadyLoaded,undefined,this);
+			case 0 :
+				this.itemMC.gotoAndStop(1);
+				this.itemMC.BannerSprite._width = 288;
+				this.itemMC.BannerSprite._height = 65;
+				var banner = this.itemMC.BannerSprite.bannerBG.attachMovie("txdLoader", "internbannerSprite_" + this.itemMC.BannerSprite.bannerBG.getNextHighestDepth(), this.itemMC.BannerSprite.bannerBG.getNextHighestDepth());
+				var alreadyLoaded = true;
+				if (banner.textureFilename != this.menu._bannerTexture && banner.textureDict != this.menu._bannerTxd)
+				{
+					alreadyLoaded = false;
+				}
+				if (banner.isLoaded)
+				{
+					banner.removeTxdRef();
+				}
+				banner.init("ScaleformUI",this.menu._bannerTxd,this.menu._bannerTexture,288,54.75);
+				var _loc7_ = 4;
+				var _loc5_ = String(banner).split(".");
+				var _loc8_ = _loc5_.slice(_loc5_.length - _loc7_).join(".");
+				com.rockstargames.ui.tweenStar.TweenStarLite.removeTweenOf(banner);
+				banner._alpha = 100;
+				banner.requestTxdRef(_loc8_,alreadyLoaded,undefined,this);
 
-			var bannerFont = new TextFormat("$Font5", 31);
-			bannerFont.align = "center";
-			this.BannerTitle = this.itemMC.BannerSprite.titleMC.labelTF;
-			this.BannerTitle.embedFonts = true;
-			this.BannerTitle.antiAliasType = "advanced";
-			this.BannerTitle.selectable = false;
-			if (this.panelTitle != undefined && this.panelTitle != "")
-			{
-				com.rockstargames.ui.utils.UIText.setSizedText(this.BannerTitle,this.panelTitle,true,true,31,31);
-			}
-		}
-		else if (titleType == 1)
-		{
-			this.itemMC.gotoAndStop(2);
-			this.itemMC.BannerSprite.bannerBG._alpha = 100;
-			com.rockstargames.ui.utils.Colour.ApplyHudColour(this.itemMC.BannerSprite.bannerBG,this.panelTitleColour);
+				var bannerFont = new TextFormat("$Font5", 31);
+				bannerFont.align = "center";
+				this.BannerTitle = this.itemMC.BannerSprite.titleMC.labelTF;
+				this.BannerTitle.embedFonts = true;
+				this.BannerTitle.antiAliasType = "advanced";
+				this.BannerTitle.selectable = false;
+				if (this.panelTitle != undefined && this.panelTitle != "")
+				{
+					com.rockstargames.ui.utils.UIText.setSizedText(this.BannerTitle,this.panelTitle,true,true,31,31);
+				}
+				break;
+			case 1 :
+				this.itemMC.gotoAndStop(2);
+				this.itemMC.BannerSprite.bannerBG._alpha = 100;
+				com.rockstargames.ui.utils.Colour.ApplyHudColour(this.itemMC.BannerSprite.bannerBG,this.panelTitleColour);
 
-			this.BannerTitle = this.itemMC.BannerSprite.titleMC.labelTF;
-			if (this.panelTitle != undefined && this.panelTitle != "")
-			{
-				com.rockstargames.ui.utils.UIText.setSizedText(this.BannerTitle,this.panelTitle,true,true,12,12);
-			}
-			com.rockstargames.ui.utils.Colour.ApplyHudColourToTF(this.BannerTitle,com.rockstargames.ui.utils.HudColour.HUD_COLOUR_BLACK);
-		}
-		else if (titleType == 2)
-		{
-			this.itemMC.BannerSprite._visible = false;
-			this.titleFreemode = this.itemMC.attachMovie("freemodeTitleItem", "freemodeTitleItemMC", 1);
-			this.titleFreemode._y = this.itemMC.descBG._y - this.titleFreemode.getHeight();
-			this.titleFreemode.highlightTitle(false);
-			com.rockstargames.ui.utils.UIText.setSizedText(this.titleFreemode.itemTextLeft,this.panelTitle,true,false,0,23);
-			com.rockstargames.ui.utils.UIText.setSizedText(this.titleFreemode.labelMC.titleshadowTF,this.panelTitle,true,false,0,23);
-			this.titleFreemode.snapBGGrid(this.titleFreemode.bgMC);
+				this.BannerTitle = this.itemMC.BannerSprite.titleMC.labelTF;
+				if (this.panelTitle != undefined && this.panelTitle != "")
+				{
+					com.rockstargames.ui.utils.UIText.setSizedText(this.BannerTitle,this.panelTitle,true,true,12,12);
+				}
+				com.rockstargames.ui.utils.Colour.ApplyHudColourToTF(this.BannerTitle,com.rockstargames.ui.utils.HudColour.HUD_COLOUR_BLACK);
+				break;
+			case 2 :
+				this.itemMC.BannerSprite._visible = false;
+				this.titleFreemode = this.itemMC.attachMovie("freemodeTitleItem", "freemodeTitleItemMC", 1);
+				this.titleFreemode._y = this.itemMC.descBG._y - this.titleFreemode.getHeight();
+				this.titleFreemode.highlightTitle(false);
+				com.rockstargames.ui.utils.UIText.setSizedText(this.titleFreemode.itemTextLeft,this.panelTitle,true,false,0,23);
+				com.rockstargames.ui.utils.UIText.setSizedText(this.titleFreemode.labelMC.titleshadowTF,this.panelTitle,true,false,0,23);
+				this.titleFreemode.snapBGGrid(this.titleFreemode.bgMC);
+				break;
 		}
 
 		com.rockstargames.ui.utils.Colour.ApplyHudColour(this.itemMC.descBG,com.rockstargames.ui.utils.HudColour.HUD_COLOUR_PAUSE_BG);
@@ -103,6 +103,7 @@
 		{
 			this.setPicture(txd,txn);
 		}
+		this.updateDescBG();
 	}
 
 	function setPicture(txd, txn)
