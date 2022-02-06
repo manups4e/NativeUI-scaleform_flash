@@ -34,6 +34,7 @@
 	var customLeftArrow;
 	var customRightArrow;
 	var hover = -1;
+	var jumpable = false;
 
 	function UIMenuItem(id, str, substr, parentMenu, param1, param2, param3, param4, param5, param6, param7, param8, param9, param10, param11, param12, param13)
 	{
@@ -48,6 +49,7 @@
 		this.rightTextTF = this.itemMC.RLabelMC.labelTF;
 		this.rightText = "";
 		this._type = id;
+		this.jumpable = false;
 
 		if (str != undefined)
 		{
@@ -76,7 +78,7 @@
 				break;
 			case 2 :// checkbox item
 				this.itemMC.RLabelMC._visible = false;
-				this.checkbox = this.itemMC.createEmptyMovieClip("checkBox_" + this.itemMC.getNextHighestDepth(), this.itemMC.getNextHighestDepth());
+				this.checkbox = this.itemMC.attachMovie("txdLoader", "checkBox", this.itemMC.getNextHighestDepth());
 				this.tickStyle = param3;
 				this.Checked = param4;
 				this._mainColor = param5;
@@ -165,6 +167,18 @@
 				this.itemMC.RLabelMC._visible = false;
 				this.barscale = param5;
 				break;
+			case 6 :// separator
+				this.itemMC.RLabelMC._visible = false;
+				this.itemMC.rightArrow._visible = this.itemMC.leftArrow._visible = false;
+				this.leftTextTF.autoSize = "center";
+				this.itemMC.labelMC._x = this.itemMC.labelMC._x + 70;
+				com.rockstargames.ui.utils.UIText.setSizedText(this.leftTextTF,str,true);
+				this.jumpable = param3;
+				this._mainColor = param4;
+				this._highlightColor = param5;
+				this._textColor = param6;
+				this._textHighlightColor = param7;
+				break;
 		}
 		if (this._textColor != com.rockstargames.ui.utils.HudColour.NONE && this._textHighlightColor != com.rockstargames.ui.utils.HudColour.NONE)
 		{
@@ -223,6 +237,7 @@
 		targetMC._alpha = 100;
 		targetMC.requestTxdRef(_loc8_,_loc12_,callback,this);
 	}
+
 	function badgeLoaded()
 	{
 		this.rightBadgeMC._visible = true;
@@ -232,6 +247,27 @@
 		this.rightBadgeMC._y = 0.5;
 		//this.rightBadgeMC._alpha = 0;
 		//com.rockstargames.ui.tweenStar.TweenStarLite.to(this.rightBadgeMC,0.2,{_alpha:100});
+	}
+	function badgeLoaded_withAnim()
+	{
+		this.badgeLoaded();
+		this.rightBadgeMC._alpha = 0;
+		com.rockstargames.ui.tweenStar.TweenStarLite.to(this.rightBadgeMC,0.2,{_alpha:100});
+	}
+	
+	function checkLoaded(){
+		this.checkbox._width = 24;
+		this.checkbox._height = 24;
+		this.checkbox._x = 263.5;
+		this.checkbox._y = 0.5;
+		this.checkbox._visible = true;
+		//this.rightBadgeMC._alpha = 0;
+		//com.rockstargames.ui.tweenStar.TweenStarLite.to(this.rightBadgeMC,0.2,{_alpha:100});
+	}
+	function checkLoaded_withAnim(){
+		this.checkLoaded();
+		this.checkbox._alpha = 0;
+		com.rockstargames.ui.tweenStar.TweenStarLite.to(this.checkbox,0.2,{_alpha:100});
 	}
 
 	function addPanel(_panel)
@@ -258,7 +294,7 @@
 	{
 		this._checked = val;
 		var sprite_name = this.getSprite(this._highlighted, this.tickStyle, this._checked);
-		this.SetClip(this.checkbox,"commonmenu",sprite_name);
+		this.SetClip(this.checkbox,"commonmenu",sprite_name,24,24,this.checkLoaded_withAnim);
 	}
 
 	function get Checked()
@@ -367,7 +403,7 @@
 				else if (this._type == 2)
 				{
 					var sprite_name = this.getSprite(true, this.tickStyle, this.Checked);
-					this.SetClip(this.checkbox,"commonmenu",sprite_name);
+					this.SetClip(this.checkbox,"commonmenu",sprite_name,24,24,this.checkLoaded);
 				}
 			}
 			else
@@ -385,7 +421,7 @@
 				else if (this._type == 2)
 				{
 					var sprite_name = this.getSprite(false, this.tickStyle, this.Checked);
-					this.SetClip(this.checkbox,"commonmenu",sprite_name);
+					this.SetClip(this.checkbox,"commonmenu",sprite_name,24,24,this.checkLoaded);
 				}
 			}
 			for (var _panel in this.panels)
