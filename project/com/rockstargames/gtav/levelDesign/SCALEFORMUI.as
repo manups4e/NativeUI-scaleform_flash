@@ -330,6 +330,7 @@
 		{
 			_item.barscale = _val;
 		}
+		this.UIMenu.updateItemsDrawing();
 	}
 
 	function SET_RIGHT_BADGE(item, icon)
