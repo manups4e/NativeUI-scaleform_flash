@@ -211,7 +211,7 @@
 				var _panel = this.UIMenu.currentItem.panels[i];
 				if (_panel._hovered)
 				{
-					if ((_panel instanceof com.rockstargames.ScaleformUI.panels.UIMenuColorPanel))
+					if (_panel instanceof com.rockstargames.ScaleformUI.panels.UIMenuColorPanel)
 					{
 						retVal.push("pan");
 						retVal.push(i);
@@ -221,6 +221,18 @@
 						return retVal.toString();
 					}
 				}
+			}
+		}
+
+		if (this.UIMenu.currentItem.sidePanel != undefined)
+		{
+			if (this.UIMenu.currentItem.sidePanel instanceof com.rockstargames.ScaleformUI.sidePanels.ColourPickerPanel)
+			{
+				retVal.push("sidepan");
+				retVal.push(1);
+				retVal.push(this.UIMenu.currentItem.sidePanel.Value);
+				com.rockstargames.ui.game.GameInterface.call("PLAY_SOUND",com.rockstargames.ui.game.GameInterface.GENERIC_TYPE,"SELECT","HUD_FRONTEND_DEFAULT_SOUNDSET");
+				return retVal.toString();
 			}
 		}
 		return "none";

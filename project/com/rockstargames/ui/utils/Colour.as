@@ -13,10 +13,12 @@
 		_loc1_.colorTransform = _loc4_;
 		movieClip._alpha = a;
 	}
+
 	static function setHudColour(hudColourEnum, hudColourObject)
 	{
 		com.rockstargames.ui.game.GameInterface.call("GET_HUD_COLOUR",com.rockstargames.ui.game.GameInterface.GENERIC_TYPE,hudColourEnum,hudColourObject);
 	}
+
 	static function ColouriseB(my_mc, r, g, b, a)
 	{
 		var _loc1_ = new Color(my_mc);
@@ -80,6 +82,14 @@
 		var _loc1_ = new com.rockstargames.ui.utils.HudColour();
 		com.rockstargames.ui.utils.Colour.setHudColour(colourId,_loc1_);
 		com.rockstargames.ui.utils.Colour.Colourise(mc,_loc1_.r,_loc1_.g,_loc1_.b,_loc1_.a);
+	}
+	static function ApplyVehColour(mc, colourId, alpha)
+	{
+		if (alpha == undefined)
+		{
+			alpha = 100;
+		}
+		com.rockstargames.ui.utils.Colour.Colourise(mc,colourId.r,colourId.g,colourId.b,alpha);
 	}
 	static function ApplyHudIntColour(mc, colour)
 	{

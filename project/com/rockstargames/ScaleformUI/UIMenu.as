@@ -235,6 +235,9 @@
 			case 0 :
 				panel = new com.rockstargames.ScaleformUI.sidePanels.MissionDetailsPanel(this, param1, param2, param3, param4, param5, param6, param7, param8, param9, param10);
 				break;
+			case 1:
+				panel = new com.rockstargames.ScaleformUI.sidePanels.ColourPickerPanel(this, param1, param2, param3, param4, param5, param6, param7, param8, param9, param10);
+				break;
 		}
 		this.menuItems[item].addSidePanel(panel);
 		if (!this.menuItems[item].highlighted)
