@@ -235,7 +235,7 @@
 			case 0 :
 				panel = new com.rockstargames.ScaleformUI.sidePanels.MissionDetailsPanel(this, param1, param2, param3, param4, param5, param6, param7, param8, param9, param10);
 				break;
-			case 1:
+			case 1 :
 				panel = new com.rockstargames.ScaleformUI.sidePanels.ColourPickerPanel(this, param1, param2, param3, param4, param5, param6, param7, param8, param9, param10);
 				break;
 		}
@@ -557,20 +557,21 @@
 		}
 		if (this.currentItem.subtitle != undefined && this.currentItem.subtitle != "")
 		{
+			this.DescriptionSprite._x = 0 + this._menuOff[0];
+			this.DescriptionSprite._y = offset + 1;
 			this.DescriptionSprite._visible = true;
 			var textBlips = new com.rockstargames.ui.utils.Text();
+			var format = this.DescriptionSprite.descriptionMC.descText.getTextFormat();
 			//com.rockstargames.ui.utils.UIText.setDescText(this.DescriptionSprite.descriptionMC.descText,this.currentItem.subtitle,true);
 			if (this.blipLayer)
 			{
 				this.blipLayer.removeMovieClip();
 			}
-			this.blipLayer = this.DescriptionSprite.descriptionMC.createEmptyMovieClip("blipLayer", 1000);
 			this.DescriptionSprite.descriptionMC.descText.wordWrap = true;
-			this.DescriptionSprite.descriptionMC.descText.autoSize = true;
-			textBlips.setTextWithIcons(this.currentItem.subtitle,this.blipLayer,this.DescriptionSprite.descriptionMC.descText,0,13,2,false);
-
-			this.DescriptionSprite._x = 0 + this._menuOff[0];
-			this.DescriptionSprite._y = offset + 1;
+			this.DescriptionSprite.descriptionMC.descText.autoSize = "left";
+			this.blipLayer = this.DescriptionSprite.descriptionMC.createEmptyMovieClip("blipLayer", this.DescriptionSprite.descriptionMC.getNextHighestDepth(), {_x:this.DescriptionSprite.descriptionMC.descText._x, _y:this.DescriptionSprite.descriptionMC.descText._y});
+			textBlips.setTextWithIcons(this.currentItem.subtitle,this.blipLayer,this.DescriptionSprite.descriptionMC.descText,0,format.size,2,false);
+			this.DescriptionSprite.descriptionMC.descText.setTextFormat(format);
 			if (this.currentItem.blinkDesc)
 			{
 				if (this.DescriptionSprite.iMC._currentframe == 1)
