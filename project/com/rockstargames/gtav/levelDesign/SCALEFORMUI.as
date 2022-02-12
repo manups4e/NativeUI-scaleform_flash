@@ -116,6 +116,10 @@
 			this.UIMenu.menuItems[item].sidePanel.itemMC.removeMovieClip();
 		}
 	}
+	function UPDATE_SIDE_PANEL_TITLE(item, _title)
+	{
+		this.UIMenu.menuItems[item].sidePanel.setTitle(_title);
+	}
 	function UPDATE_MISSION_DETAILS_PANEL_IMG(item, txd, txn)
 	{
 		this.UIMenu.menuItems[item].sidePanel.setPicture(txd,txn);

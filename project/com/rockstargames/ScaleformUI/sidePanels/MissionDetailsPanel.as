@@ -89,10 +89,10 @@
 		this.defaultPlaceholderA = this.itemMC.imgPlaceholderMC._alpha;
 		this.listDescItem = 0;
 
-		if (txd == "" && txn == "")
+		if (((txd == "") && txn == ""))
 		{
 			this.itemMC.descBG._y = this.itemMC.descBG._y - this.itemMC.imgPlaceholderMC._height;
-			if (titleType == 2)
+			if ((titleType == 2))
 			{
 				this.itemMC.descBG._y = this.itemMC.descBG._y + this.titleFreemode.getHeight();
 				this.titleFreemode._y = this.itemMC.descBG._y - this.titleFreemode.getHeight();
@@ -116,6 +116,8 @@
 		if (this.imgLdr.textureDict == txd && this.imgLdr.textureFilename == txn)
 		{
 			_loc12_ = true;
+			this.imgLdr.loadWithValidation("ScaleformUI",txd,txn,3,288,160);
+			this.transitionInBitmap();
 		}
 		else if (this.imgLdr.isLoaded)
 		{
@@ -126,6 +128,42 @@
 		var _loc8_ = String(this.imgLdr).split(".");
 		var _loc11_ = _loc8_.slice(_loc8_.length - _loc7_).join(".");
 		this.imgLdr.requestTxdRef(_loc11_,_loc12_,this.transitionInBitmap,this);
+	}
+
+	function setTitle(title)
+	{
+		this.panelTitle = title;
+		switch (this._titleType)
+		{
+			case 0 :
+				var bannerFont = new TextFormat("$Font5", 31);
+				bannerFont.align = "center";
+				this.BannerTitle = this.itemMC.BannerSprite.titleMC.labelTF;
+				this.BannerTitle.embedFonts = true;
+				this.BannerTitle.antiAliasType = "advanced";
+				this.BannerTitle.selectable = false;
+				if (this.panelTitle != undefined && this.panelTitle != "")
+				{
+					com.rockstargames.ui.utils.UIText.setSizedText(this.BannerTitle,this.panelTitle,true,true,31,31);
+				}
+				break;
+			case 1 :
+				this.BannerTitle = this.itemMC.BannerSprite.titleMC.labelTF;
+				if (this.panelTitle != undefined && this.panelTitle != "")
+				{
+					com.rockstargames.ui.utils.UIText.setSizedText(this.BannerTitle,this.panelTitle,true,true,12,12);
+				}
+				com.rockstargames.ui.utils.Colour.ApplyHudColourToTF(this.BannerTitle,com.rockstargames.ui.utils.HudColour.HUD_COLOUR_BLACK);
+				break;
+			case 2 :
+				this.itemMC.BannerSprite._visible = false;
+				this.titleFreemode._y = this.itemMC.descBG._y - this.titleFreemode.getHeight();
+				this.titleFreemode.highlightTitle(false);
+				com.rockstargames.ui.utils.UIText.setSizedText(this.titleFreemode.itemTextLeft,this.panelTitle,true,false,0,23);
+				com.rockstargames.ui.utils.UIText.setSizedText(this.titleFreemode.labelMC.titleshadowTF,this.panelTitle,true,false,0,23);
+				this.titleFreemode.snapBGGrid(this.titleFreemode.bgMC);
+				break;
+		}
 	}
 
 	function AddItem(id, textLeft, textRight, param3, param4, param5, param6)
@@ -148,11 +186,11 @@
 		this.descItems.splice(id,1);
 		for (var it in this.descItems)
 		{
-			if (it == 0)
+			if ((it == 0))
 			{
 				this.descItems[it].itemMC._y = this.itemMC.descBG._y;
 			}
-			else if (it > 0)
+			else if ((it > 0))
 			{
 				this.descItems[it].itemMC._y = this.descItems[it - 1].itemMC._y + this.descItems[it - 1].itemMC._height;
 			}
@@ -164,8 +202,6 @@
 	{
 		this.imgLdr._alpha = 0;
 		this.imgLdr._visible = true;
-		com.rockstargames.ui.tweenStar.TweenStarLite.removeTweenOf(this.imgLdr);
-		com.rockstargames.ui.tweenStar.TweenStarLite.removeTweenOf(this.itemMC.imgPlaceholderMC);
 		com.rockstargames.ui.tweenStar.TweenStarLite.to(this.imgLdr,0.3,{_alpha:100, ease:com.rockstargames.ui.tweenStar.Ease.QUADRATIC_OUT});
 		com.rockstargames.ui.tweenStar.TweenStarLite.to(this.itemMC.imgPlaceholderMC,0.3,{_alpha:0, ease:com.rockstargames.ui.tweenStar.Ease.QUADRATIC_OUT, onCompleteScope:this, onComplete:this.transitionComplete});
 	}
