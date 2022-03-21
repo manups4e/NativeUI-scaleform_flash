@@ -35,7 +35,7 @@
 		this.DispConf.safeTop = _safeTopPercent;
 		this.DispConf.screenHeight = _screenHeightPixels;
 		this.DispConf.screenWidth = _screenWidthPixels;
-		if (((_actualWidth / _actualHeight) > 1.5))
+		if ((_actualWidth / _actualHeight) > 1.5)
 		{
 			this.iActualWidth = 1280;
 		}
@@ -46,10 +46,10 @@
 		this.initScreenLayout();
 	}
 
-	function CREATE_MENU(title, subtitle, x, y, alternative, txd, txn, enableAnim, animType)
+	function CREATE_MENU(title, subtitle, x, y, alternative, txd, txn, maxItems, enableAnim, animType)
 	{
 		var off = [x, y];
-		this.UIMenu = new com.rockstargames.ScaleformUI.UIMenu(this.CONTENT, title, subtitle, alternative, x, y, txd, txn, enableAnim, animType);
+		this.UIMenu = new com.rockstargames.ScaleformUI.UIMenu(this.CONTENT, title, subtitle, alternative, x, y, txd, txn, maxItems, enableAnim, animType);
 	}
 
 	function CLEAR_ALL()
@@ -259,21 +259,21 @@
 				if (_panel._hovered)
 				{
 					var _panType = 0;
-					if ((_panel instanceof com.rockstargames.ScaleformUI.panels.UIMenuColorPanel))
+					if (_panel instanceof com.rockstargames.ScaleformUI.panels.UIMenuColorPanel)
 					{
 						_panType = 0;
 					}
-					else if ((_panel instanceof com.rockstargames.ScaleformUI.panels.UIMenuPercentagePanel))
+					else if (_panel instanceof com.rockstargames.ScaleformUI.panels.UIMenuPercentagePanel)
 					{
 						_panType = 1;
 						_panel.Coords = posX;
 					}
-					else if ((_panel instanceof com.rockstargames.ScaleformUI.panels.UIMenuGridPanel))
+					else if (_panel instanceof com.rockstargames.ScaleformUI.panels.UIMenuGridPanel)
 					{
 						_panType = 2;
 						_panel.Coords = new Array(posX, posY);
 					}
-					if (((_panType == 1) || _panType == 2))
+					if ((_panType == 1) || _panType == 2)
 					{
 						retVal.push("pan");
 						retVal.push(i);
@@ -342,7 +342,7 @@
 		{
 			_item.Value = _val;
 		}
-		else if ((_item instanceof com.rockstargames.ScaleformUI.items.UIMenuStatsItem))
+		else if (_item._type == 5)
 		{
 			_item.barscale = _val;
 		}
