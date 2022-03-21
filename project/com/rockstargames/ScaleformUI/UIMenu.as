@@ -14,13 +14,13 @@
 	var _menuTitle;
 	var _menuSubtitle;
 	var Footer;
-	var maxItemsOnScreen = 6;
+	var maxItemsOnScreen;
 	var _currentItem;
 	var _activeItem = 0;
 	var itemCount = 0;
 	var windowsCount = 0;
 	var _minItem = 0;
-	var _maxItem = this.maxItemsOnScreen;
+	var _maxItem;
 	var isVisible = false;
 	var _bannerTxd = "commonmenu";
 	var _bannerTexture = "interaction_bgd";
@@ -37,7 +37,7 @@
 	var EnableAnim;
 	var AnimType;
 
-	function UIMenu(mc, title, subtitle, alternative, x, y, txd, txn, enableAnim, animType)
+	function UIMenu(mc, title, subtitle, alternative, x, y, txd, txn, maxItems, enableAnim, animType)
 	{
 		this._menuOff = new Array(x, y);
 		this.menuItems = new Array();
@@ -45,8 +45,9 @@
 		this._mainMC = mc;
 		this._menuTitle = title;
 		this._menuSubtitle = subtitle;
-		this._maxItem = this.maxItemsOnScreen;
+		this.maxItemsOnScreen = maxItems;
 		this._minItem = 0;
+		this._maxItem = this.maxItemsOnScreen;
 		this.itemCount = 0;
 
 		this.BannerSprite = this._mainMC.attachMovie("BannerSprite", "bannerSpriteMC", this._mainMC.getNextHighestDepth());
@@ -123,6 +124,7 @@
 		this.itemsBG = this._mainMC.attachMovie("backgroundBody", "backgroundBody_" + this._mainMC.getNextHighestDepth(), this._mainMC.getNextHighestDepth());
 		this.itemsBG._x = 0 + this._menuOff[0];
 		this.itemsBG._y = this.SubtitleSprite._y + this.SubtitleSprite._height - 1;
+		this.itemsBG.maskMC._height = 0;
 		this.itemsBG.bgMC._height = 0;
 		com.rockstargames.ui.utils.Colour.ApplyHudColour(this.itemsBG.bgMC,com.rockstargames.ui.utils.HudColour.HUD_COLOUR_PAUSE_BG);
 		this.itemsBG.bgMC._alpha = 0;
@@ -163,12 +165,6 @@
 		{
 			item.itemMC._y = this.menuItems[this.itemCount - 1].itemMC._y + this.menuItems[this.itemCount - 1].itemMC._height;
 		}
-		this.itemsBG.bgMC._height += item.itemMC._height;
-		if (this.itemsBG.bgMC._height > 175)
-		{
-			this.itemsBG.bgMC._height = 175;
-		}
-		this._itemsOffset = this.itemsBG._y + this.itemsBG.bgMC._height;
 		this.currentSelection = _selectedItem;
 		this.updateItemsDrawing();
 	}
@@ -270,9 +266,9 @@
 					}
 					else
 					{
-						if (_loc2_ <= -this.scrollableContent._height - 175)
+						if (_loc2_ <= -this.scrollableContent._height - this.MaxHeight)
 						{
-							_loc2_ = -this.scrollableContent._height - 175;
+							_loc2_ = -this.scrollableContent._height - this.MaxHeight;
 						}
 					}
 					break;
@@ -280,7 +276,7 @@
 					_loc2_ = _loc2_ + this.currentItem.itemMC._height;
 					if (end)
 					{
-						_loc2_ = -(this.scrollableContent._height - 175);
+						_loc2_ = -(this.scrollableContent._height - this.MaxHeight);
 					}
 					else
 					{
@@ -308,9 +304,9 @@
 		{
 			if (dir == 1)
 			{
-				if (this.scrollableContent._y != 175 - (this.currentItem.itemMC._y + this.currentItem.itemMC._height))
+				if (this.scrollableContent._y != this.MaxHeight - (this.currentItem.itemMC._y + this.currentItem.itemMC._height))
 				{
-					this.scrollableContent._y = 175 - (this.currentItem.itemMC._y + this.currentItem.itemMC._height);
+					this.scrollableContent._y = this.MaxHeight - (this.currentItem.itemMC._y + this.currentItem.itemMC._height);
 				}
 			}
 			else if (dir == -1)
@@ -331,6 +327,8 @@
 			{
 				this._activeItem = 1000 - (1000 % this.itemCount);
 				this._activeItem += this.itemCount - 1;
+				this._minItem = this.itemCount - 1 - this.maxItemsOnScreen;
+				this._maxItem = this.itemCount - 1;
 				this.ScrollMenu(-1,true);
 				if (this.currentItem._type == 6)
 				{
@@ -340,6 +338,8 @@
 						if (this.scrollableContent._y < -this.currentItem.itemMC._y)
 						{
 							this.ScrollMenu(-1);
+							this._minItem--;
+							this._maxItem--;
 						}
 					}
 				}
@@ -350,15 +350,43 @@
 				if (this.scrollableContent._y < -this.currentItem.itemMC._y)
 				{
 					this.ScrollMenu(-1);
+					this._minItem--;
+					this._maxItem--;
 				}
 				if (this.currentItem._type == 6)
 				{
 					if (this.currentItem.jumpable)
 					{
-						this._activeItem--;
-						if (this.scrollableContent._y < -this.currentItem.itemMC._y)
+						if (this.currentSelection == 0)
 						{
-							this.ScrollMenu(-1);
+							this._activeItem = 1000 - (1000 % this.itemCount);
+							this._activeItem += this.itemCount - 1;
+							this._minItem = this.itemCount - 1 - this.maxItemsOnScreen;
+							this._maxItem = this.itemCount - 1;
+							this.ScrollMenu(-1,true);
+							if (this.currentItem._type == 6)
+							{
+								if (this.currentItem.jumpable)
+								{
+									this._activeItem--;
+									if (this.scrollableContent._y < -this.currentItem.itemMC._y)
+									{
+										this.ScrollMenu(-1);
+										this._minItem--;
+										this._maxItem--;
+									}
+								}
+							}
+						}
+						else
+						{
+							this._activeItem--;
+							if (this.scrollableContent._y < -this.currentItem.itemMC._y)
+							{
+								this.ScrollMenu(-1);
+								this._minItem--;
+								this._maxItem--;
+							}
 						}
 					}
 				}
@@ -387,15 +415,19 @@
 			if (this.currentSelection == this.itemCount - 1)
 			{
 				this._activeItem = 1000 - (1000 % this.itemCount);
+				this._minItem = 0;
+				this._maxItem = this.maxItemsOnScreen;
 				this.ScrollMenu(1,true);
 				if (this.currentItem._type == 6)
 				{
 					if (this.currentItem.jumpable)
 					{
 						this._activeItem++;
-						if (this.scrollableContent._y < -this.currentItem.itemMC._y)
+						if (this.scrollableContent._y > this.MaxHeight - (this.currentItem.itemMC._y + this.currentItem.itemMC._height))
 						{
 							this.ScrollMenu(1);
+							this._minItem++;
+							this._maxItem++;
 						}
 					}
 				}
@@ -403,16 +435,46 @@
 			else
 			{
 				this._activeItem++;
-				if (this.scrollableContent._y > 175 - (this.currentItem.itemMC._y + this.currentItem.itemMC._height))
+				if (this.scrollableContent._y > this.MaxHeight - (this.currentItem.itemMC._y + this.currentItem.itemMC._height))
 				{
 					this.ScrollMenu(1);
+					this._minItem++;
+					this._maxItem++;
 				}
-				if (this.currentItem.jumpable)
+				if (this.currentItem._type == 6)
 				{
-					this._activeItem++;
-					if (this.scrollableContent._y < -this.currentItem.itemMC._y)
+					if (this.currentItem.jumpable)
 					{
-						this.ScrollMenu(1);
+						if (this.currentSelection == this.itemCount - 1)
+						{
+							this._activeItem = 1000 - (1000 % this.itemCount);
+							this._minItem = 0;
+							this._maxItem = this.maxItemsOnScreen;
+							this.ScrollMenu(1,true);
+							if (this.currentItem._type == 6)
+							{
+								if (this.currentItem.jumpable)
+								{
+									this._activeItem++;
+									if (this.scrollableContent._y > this.MaxHeight - (this.currentItem.itemMC._y + this.currentItem.itemMC._height))
+									{
+										this.ScrollMenu(1);
+										this._minItem++;
+										this._maxItem++;
+									}
+								}
+							}
+						}
+						else
+						{
+							this._activeItem++;
+							if (this.scrollableContent._y > this.MaxHeight - (this.currentItem.itemMC._y + this.currentItem.itemMC._height))
+							{
+								this.ScrollMenu(1);
+								this._minItem++;
+								this._maxItem++;
+							}
+						}
 					}
 				}
 			}
@@ -438,7 +500,7 @@
 			this.currentItem.Value--;
 			retVal = this.currentItem.Value;
 		}
-		else if (this.currentItem instanceof com.rockstargames.ScaleformUI.items.UIMenuStatsItem)
+		else if (this.currentItem._type == 5)
 		{
 			this.currentItem.barscale--;
 			retVal = this.currentItem.barscale;
@@ -456,7 +518,7 @@
 			this.currentItem.Value++;
 			retVal = this.currentItem.Value;
 		}
-		else if (this.currentItem instanceof com.rockstargames.ScaleformUI.items.UIMenuStatsItem)
+		else if (this.currentItem._type == 5)
 		{
 			this.currentItem.barscale++;
 			retVal = this.currentItem.barscale;
@@ -472,7 +534,6 @@
 		for (var item in this.menuItems)
 		{
 			this.menuItems[item].highlighted = false;
-			this.menuItems[item].highlighted = (item == this.currentSelection);
 			if (item == 0)
 			{
 				this.menuItems[item].itemMC._y = 0;
@@ -481,7 +542,11 @@
 			{
 				this.menuItems[item].itemMC._y = this.menuItems[item - 1].itemMC._y + this.menuItems[item - 1].itemMC._height;
 			}
+			this.menuItems[item].highlighted = (item == this.currentSelection);
 		}
+
+		this.itemsBG.maskMC._height = this.itemsBG.bgMC._height = this.MaxHeight;
+		this._itemsOffset = this.itemsBG._y + this.itemsBG.bgMC._height;
 
 		if (this.currentItem._enabled)
 		{
@@ -502,8 +567,6 @@
 					this.currentItem.sidePanel.itemMC._x = this._menuOff[0] + 288 + 1;
 				}
 			}
-
-
 		}
 		this.updateDescription();
 		com.rockstargames.ui.utils.UIText.setSizedText(this.CounterText,this.currentSelection + 1 + "/" + this.itemCount,true,true);
@@ -598,7 +661,7 @@
 	}
 	function set currentItem(item)
 	{
-		var limit = this.UIMenu.itemCount - 1;
+		var limit = this.itemCount - 1;
 		var counter = 0;
 		if (this.itemCount > this.maxItemsOnScreen + 1)
 		{
@@ -632,24 +695,14 @@
 			this._activeItem = 0;
 			return;
 		}
-		if (val < this.currentSelection)
-		{
-		}
-		else if (val > this.currentSelection)
-		{
-		}
 		this._activeItem = 1000000 - (1000000 % this.itemCount) + val;
 		if (this.currentSelection > this._maxItem)
 		{
-			dir = 175 - (this.currentItem.itemMC._y + this.currentItem.itemMC._height);
-			this._maxItem = this.currentSelection;
-			this._minItem = this.currentSelection - this.maxItemsOnScreen;
+			dir = this.MaxHeight - (this.currentItem.itemMC._y + this.currentItem.itemMC._height);
 		}
 		else if (this.currentSelection < this._minItem)
 		{
 			dir = -this.currentItem.itemMC._y;
-			this._maxItem = this.maxItemsOnScreen + this.currentSelection;
-			this._minItem = this.currentSelection;
 		}
 		this.ScrollMenu(0,0,dir);
 		this.updateItemsDrawing();
@@ -690,5 +743,22 @@
 	{
 		this.BannerSprite.bannerBG.bannerSprite._alpha = 0;
 		com.rockstargames.ui.tweenStar.TweenStarLite.to(this.BannerSprite.bannerBG.bannerSprite,0.2,{_alpha:100});
+	}
+
+	function get MaxHeight()
+	{
+		var _h = 0;
+
+		var limit = this.itemCount;
+		if (limit > this.maxItemsOnScreen)
+		{
+			limit = this._maxItem;
+		}
+
+		for (var i = this._minItem; i < limit; i++)
+		{
+			_h += this.menuItems[i].itemMC.bgMC._height;
+		}
+		return _h;
 	}
 }
