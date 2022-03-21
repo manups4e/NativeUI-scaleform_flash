@@ -1,9 +1,7 @@
 ﻿class com.rockstargames.ScaleformUI.panels.UIMenuPercentagePanel extends com.rockstargames.ScaleformUI.panels.BasePanel
 {
-	var _sliderBG;
 	var _slider;
-	var _sliderBGColor = com.rockstargames.ui.utils.HudColour.HUD_COLOUR_PAUSE_BG;
-	var _sliderColor = com.rockstargames.ui.utils.HudColour.HUD_COLOUR_FREEMODE;
+	var _sliderColor = com.rockstargames.ui.utils.HudColour.HUD_COLOUR_WHITE;
 	var _max = 100;
 	var _value = 0;
 	var _coords;
@@ -24,13 +22,17 @@
 		this.itemMC.maxTF.embedFonts = true;
 		this.itemMC.maxTF.antiAliasType = "advanced";
 		com.rockstargames.ui.utils.UIText.setSizedText(this.itemMC.maxTF,maxText,true,true);
-		this._sliderBG = this.itemMC.sliderMC.sliderBG;
-		this._slider = this.itemMC.sliderMC.slider;
-		this.itemMC.sliderMC.onRollOver = com.rockstargames.ui.utils.DelegateStar.create(this, this.mOverPP, this.itemMC.sliderMC);
-		this.itemMC.sliderMC.onRollOut = com.rockstargames.ui.utils.DelegateStar.create(this, this.mOutPP, this.itemMC.sliderMC);
-		if ((startIndex != undefined))
+		this._slider = this.itemMC.attachMovie("GenericColourBar", "progress_bar", this.itemMC.getNextHighestDepth(), {_x:4, _y:30});
+		this._slider.init(this._sliderColor,279,8);
+		this._slider.onRollOver = com.rockstargames.ui.utils.DelegateStar.create(this, this.mOverPP, this.itemMC.sliderMC);
+		this._slider.onRollOut = com.rockstargames.ui.utils.DelegateStar.create(this, this.mOutPP, this.itemMC.sliderMC);
+		if (startIndex != undefined)
 		{
 			this.Value = startIndex;
+		}
+		else
+		{
+			this.Value = 0;
 		}
 	}
 
@@ -54,27 +56,15 @@
 
 	function set Value(val)
 	{
-		if (val > this._max)
-		{
-			this._value = this._max;
-			this._slider._width = 0;
-		}
-		else if (val < 0)
-		{
-			this._value = 0;
-			this._slider._width = this._sliderBG._width;
-		}
-		else
-		{
-			this._value = val;
-		}
-		this._slider._width = this._sliderBG._width / this._max * this._value;
+		this._value = Math.max(0, Math.min(val, this._max));
+		this._slider.percent(this._value,true);
 	}
 
-	function set Coords(val)
+	function set Coords(_val)
 	{
-		var val = (val - 4) / this._sliderBG._width * this._max;
-		this.Value = val;
+		var val = (_val-this._slider._x) / this._slider._width * this._max;
+		this._value = Math.max(0, Math.min(val, this._max));
+		this._slider.percent(this._value);
 	}
 	function get Coords()
 	{
