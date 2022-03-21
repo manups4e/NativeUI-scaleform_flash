@@ -14,7 +14,7 @@
 	{
 		super(parentMenu,str,substr,_enabled);
 		this._type = id;
-		this.itemMC = this.parentMC.attachMovie("characterStatsCardItem", "characterStatsCardItem_" + this._parentMenu.itemCount + 1, this.parentMC.getNextHighestDepth());
+		this.itemMC = this.parentMC.attachMovie("characterStatsCardItem", "characterStatsCardItem_" + this.parentMC.getNextHighestDepth(), this.parentMC.getNextHighestDepth());
 		this.backgroundMC = this.itemMC.bgMC;
 		this.leftTextTF = this.itemMC.labelMC.titleTF;
 		this.itemTextRight = this.itemMC.labelMC.valueTF;
@@ -134,4 +134,18 @@
 	{
 		return this._index;
 	}
+	
+	function Clear()
+	{
+		for (var pan in this.panels)
+		{
+			this.panels[pan].Clear();
+		}
+		if (this.sidePanel != undefined)
+		{
+			this.sidePanel.Clear();
+		}
+		this.itemMC.removeMovieClip();
+	}
+
 }
