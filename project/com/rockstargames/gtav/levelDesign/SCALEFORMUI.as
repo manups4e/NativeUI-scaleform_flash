@@ -349,6 +349,11 @@
 		this.UIMenu.updateItemsDrawing();
 	}
 
+	function SET_LEFT_BADGE(item, icon)
+	{
+		this.UIMenu.menuItems[item].SetLeftBadge(icon);
+	}
+
 	function SET_RIGHT_BADGE(item, icon)
 	{
 		this.UIMenu.menuItems[item].SetRightBadge(icon);
