@@ -220,6 +220,7 @@
 			if (this.rightBadgeMC.isLoaded)
 			{
 				this.rightBadgeMC.removeTxdRef();
+				this.rightBadgeMC.removeMovieClip()
 			}
 		}
 	}
@@ -237,9 +238,10 @@
 		}
 		else
 		{
-			if (this.leftBadgeId.isLoaded)
+			if (this.leftBadgeMC.isLoaded)
 			{
-				this.leftBadgeId.removeTxdRef();
+				this.leftBadgeMC.removeTxdRef();
+				this.leftBadgeMC.removeMovieClip()
 			}
 			this.itemMC.labelMC._x = 3.25;
 		}
