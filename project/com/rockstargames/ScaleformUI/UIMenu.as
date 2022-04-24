@@ -756,7 +756,7 @@
 		{
 			dir = -this.currentItem.itemMC._y;
 		}
-		this.ScrollMenu(0,0,dir);
+		this.ScrollMenu(0,150,0,dir);
 		this.updateItemsDrawing();
 	}
 
