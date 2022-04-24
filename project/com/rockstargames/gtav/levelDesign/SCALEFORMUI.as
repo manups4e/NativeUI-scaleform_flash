@@ -62,6 +62,11 @@
 	{
 		this.UIMenu.addItem(id,str,sub,param1,param2,param3,param4,param5,param6,param7,param8,param9,param10,param11,param12,param13);
 	}
+	
+	function REMOVE_ITEM(id)
+	{
+		this.UIMenu.removeItem(id);
+	}
 
 	function ADD_PANEL(item, panelType, param1, param2, param3, param4, param5, param6, param7, param8, param9, param10)
 	{
@@ -152,10 +157,10 @@
 				}
 				break;
 			case com.rockstargames.ui.game.GamePadConstants.DPADUP :
-				retVal = this.UIMenu.goUp();
+				retVal = this.UIMenu.goUp(item);
 				break;
 			case com.rockstargames.ui.game.GamePadConstants.DPADDOWN :
-				retVal = this.UIMenu.goDown();
+				retVal = this.UIMenu.goDown(item);
 				break;
 			case com.rockstargames.ui.game.GamePadConstants.DPADLEFT :
 				retVal = this.UIMenu.goLeft();
@@ -331,6 +336,9 @@
 		{
 			_selectedItem._sliderColor = sliderColor;
 			_selectedItem.bar.setBarColour(_selectedItem._sliderColor);
+		}
+		if (_selectedItem._type == 5){
+			_selectedItem.barMC.setBarColour(sliderColor);
 		}
 		this.UIMenu.updateItemsDrawing();
 	}

@@ -169,6 +169,19 @@
 		this.updateItemsDrawing();
 	}
 
+	function removeItem(id)
+	{
+		var _selectedItem = this.currentSelection;
+		this.menuItems[id].Clear();
+		this.menuItems.splice(id,1);
+		this.itemCount = this.menuItems.length;
+		for (var item in this.menuItems)
+		{
+			this.updateItemsDrawing();
+		}
+		this.currentSelection = _selectedItem;
+	}
+
 	function addPanel(item, id, param1, param2, param3, param4, param5, param6, param7, param8)
 	{
 		var panel;
@@ -243,11 +256,48 @@
 		this.updateItemsDrawing();
 	}
 
-	function ScrollMenu(targetIndex, end, offset)
+	function ScrollMenu(targetIndex, delay, end, offset)
 	{
 		if (end == undefined)
 		{
 			end = false;
+		}
+		var time = 0.2;
+		switch (delay)
+		{
+			case 150 :
+				time = 0.2;
+				break;
+			case 140 :
+				time = 0.09;
+				break;
+			case 130 :
+				time = 0.087;
+				break;
+			case 120 :
+				time = 0.083;
+				break;
+			case 110 :
+				time = 0.08;
+				break;
+			case 100 :
+				time = 0.05;
+				break;
+			case 90 :
+				time = 0.03;
+				break;
+			case 80 :
+				time = 0.02;
+				break;
+			case 70 :
+				time = 0.01;
+				break;
+			case 60 :
+				time = 0.007;
+				break;
+			case 50 :
+				time = 0.003;
+				break;
 		}
 		if (offset != undefined)
 		{
@@ -290,7 +340,7 @@
 		}
 		if (this.EnableAnim)
 		{
-			com.rockstargames.ui.tweenStar.TweenStarLite.to(this.scrollableContent,0.2,{_y:_loc2_, onCompleteScope:this, onComplete:this.scrollComplete, onCompleteArgs:[targetIndex, end, _loc2_], ease:this.AnimType});
+			com.rockstargames.ui.tweenStar.TweenStarLite.to(this.scrollableContent,time,{_y:_loc2_, onCompleteScope:this, onComplete:this.scrollComplete, onCompleteArgs:[targetIndex, end, _loc2_], ease:this.AnimType});
 		}
 		else
 		{
@@ -319,8 +369,9 @@
 		}
 	}
 
-	function goUp()
+	function goUp(val)
 	{
+		var delay = val;
 		if (this.itemCount > this.maxItemsOnScreen + 1)
 		{
 			if (this.currentSelection == 0)
@@ -329,7 +380,7 @@
 				this._activeItem += this.itemCount - 1;
 				this._minItem = this.itemCount - 1 - this.maxItemsOnScreen;
 				this._maxItem = this.itemCount - 1;
-				this.ScrollMenu(-1,true);
+				this.ScrollMenu(-1,delay,true);
 				if (this.currentItem._type == 6)
 				{
 					if (this.currentItem.jumpable)
@@ -337,7 +388,7 @@
 						this._activeItem--;
 						if (this.scrollableContent._y < -this.currentItem.itemMC._y)
 						{
-							this.ScrollMenu(-1);
+							this.ScrollMenu(-1,delay);
 							this._minItem--;
 							this._maxItem--;
 						}
@@ -349,7 +400,7 @@
 				this._activeItem--;
 				if (this.scrollableContent._y < -this.currentItem.itemMC._y)
 				{
-					this.ScrollMenu(-1);
+					this.ScrollMenu(-1,delay);
 					this._minItem--;
 					this._maxItem--;
 				}
@@ -363,7 +414,7 @@
 							this._activeItem += this.itemCount - 1;
 							this._minItem = this.itemCount - 1 - this.maxItemsOnScreen;
 							this._maxItem = this.itemCount - 1;
-							this.ScrollMenu(-1,true);
+							this.ScrollMenu(-1,delay,true);
 							if (this.currentItem._type == 6)
 							{
 								if (this.currentItem.jumpable)
@@ -371,7 +422,7 @@
 									this._activeItem--;
 									if (this.scrollableContent._y < -this.currentItem.itemMC._y)
 									{
-										this.ScrollMenu(-1);
+										this.ScrollMenu(-1,delay);
 										this._minItem--;
 										this._maxItem--;
 									}
@@ -383,7 +434,7 @@
 							this._activeItem--;
 							if (this.scrollableContent._y < -this.currentItem.itemMC._y)
 							{
-								this.ScrollMenu(-1);
+								this.ScrollMenu(-1,delay);
 								this._minItem--;
 								this._maxItem--;
 							}
@@ -408,8 +459,9 @@
 		return this.currentSelection;
 	}
 
-	function goDown()
+	function goDown(val)
 	{
+		var delay = val;
 		if (this.itemCount > this.maxItemsOnScreen + 1)
 		{
 			if (this.currentSelection == this.itemCount - 1)
@@ -417,7 +469,7 @@
 				this._activeItem = 1000 - (1000 % this.itemCount);
 				this._minItem = 0;
 				this._maxItem = this.maxItemsOnScreen;
-				this.ScrollMenu(1,true);
+				this.ScrollMenu(1,delay,true);
 				if (this.currentItem._type == 6)
 				{
 					if (this.currentItem.jumpable)
@@ -425,7 +477,7 @@
 						this._activeItem++;
 						if (this.scrollableContent._y > this.MaxHeight - (this.currentItem.itemMC._y + this.currentItem.itemMC._height))
 						{
-							this.ScrollMenu(1);
+							this.ScrollMenu(1,delay);
 							this._minItem++;
 							this._maxItem++;
 						}
@@ -437,7 +489,7 @@
 				this._activeItem++;
 				if (this.scrollableContent._y > this.MaxHeight - (this.currentItem.itemMC._y + this.currentItem.itemMC._height))
 				{
-					this.ScrollMenu(1);
+					this.ScrollMenu(1,delay);
 					this._minItem++;
 					this._maxItem++;
 				}
@@ -450,7 +502,7 @@
 							this._activeItem = 1000 - (1000 % this.itemCount);
 							this._minItem = 0;
 							this._maxItem = this.maxItemsOnScreen;
-							this.ScrollMenu(1,true);
+							this.ScrollMenu(1,delay,true);
 							if (this.currentItem._type == 6)
 							{
 								if (this.currentItem.jumpable)
@@ -458,7 +510,7 @@
 									this._activeItem++;
 									if (this.scrollableContent._y > this.MaxHeight - (this.currentItem.itemMC._y + this.currentItem.itemMC._height))
 									{
-										this.ScrollMenu(1);
+										this.ScrollMenu(1,delay);
 										this._minItem++;
 										this._maxItem++;
 									}
@@ -470,7 +522,7 @@
 							this._activeItem++;
 							if (this.scrollableContent._y > this.MaxHeight - (this.currentItem.itemMC._y + this.currentItem.itemMC._height))
 							{
-								this.ScrollMenu(1);
+								this.ScrollMenu(1,delay);
 								this._minItem++;
 								this._maxItem++;
 							}
