@@ -20,7 +20,7 @@
 	var itemCount = 0;
 	var windowsCount = 0;
 	var _minItem = 0;
-	var _maxItem;
+	var _maxItem = 7;
 	var isVisible = false;
 	var _bannerTxd = "commonmenu";
 	var _bannerTexture = "interaction_bgd";
@@ -372,7 +372,7 @@
 	function goUp(val)
 	{
 		var delay = val;
-		if (this.itemCount > this.maxItemsOnScreen + 1)
+		if (this.itemCount > this.maxItemsOnScreen)
 		{
 			if (this.currentSelection == 0)
 			{
@@ -462,7 +462,7 @@
 	function goDown(val)
 	{
 		var delay = val;
-		if (this.itemCount > this.maxItemsOnScreen + 1)
+		if (this.itemCount > this.maxItemsOnScreen)
 		{
 			if (this.currentSelection == this.itemCount - 1)
 			{
