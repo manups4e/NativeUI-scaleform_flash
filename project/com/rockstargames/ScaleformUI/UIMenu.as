@@ -627,7 +627,7 @@
 	function updateDescription()
 	{
 		var offset = this._itemsOffset;
-		if (this.itemCount > this.maxItemsOnScreen + 1)
+		if (this.itemCount > this.maxItemsOnScreen)
 		{
 			if (this.Footer == undefined)
 			{
@@ -715,7 +715,7 @@
 	{
 		var limit = this.itemCount - 1;
 		var counter = 0;
-		if (this.itemCount > this.maxItemsOnScreen + 1)
+		if (this.itemCount > this.maxItemsOnScreen)
 		{
 			limit = this._maxItem;
 		}
