@@ -33,12 +33,6 @@
 		this.blinkDesc = false;
 	}
 
-	function initBaseMouseInterface()
-	{
-		this.backgroundMC.onRollOver = com.rockstargames.ui.utils.DelegateStar.create(this, this.mOver);
-		this.backgroundMC.onRollOut = com.rockstargames.ui.utils.DelegateStar.create(this, this.mOut);
-	}
-
 	function mOver()
 	{
 		if (!this._hovered)

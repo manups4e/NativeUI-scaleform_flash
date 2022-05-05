@@ -130,7 +130,7 @@
 		this.itemsBG.bgMC._alpha = 0;
 		this.scrollableContent = this.itemsBG.createEmptyMovieClip("viewContainer", this.itemsBG.getNextHighestDepth());
 		this.itemsBG.setMask(this.itemsBG.maskMC);
-		//this.itemsBG._visible = false;
+
 		this._itemsOffset = this.itemsBG._y + this.itemsBG.bgMC._height;
 
 		this.Footer = this._mainMC.attachMovie("Footer", "footer", this._mainMC.getNextHighestDepth());
@@ -156,6 +156,7 @@
 		{
 			item = new com.rockstargames.ScaleformUI.items.UIMenuItem(id, str, substr, this, param1, param2, param3, param4, param5, param6, param7, param8, param9, param10, param11, param12, param13);
 		}
+
 		this.itemCount = this.menuItems.push(item);
 		if (this.itemCount == 1)
 		{
@@ -741,19 +742,32 @@
 
 	function set currentSelection(val)
 	{
-		var dir = -1;
+		var dir = undefined;
 		if (this.itemCount == 0)
 		{
 			this._activeItem = 0;
 			return;
 		}
 		this._activeItem = 1000000 - (1000000 % this.itemCount) + val;
+
 		if (this.currentSelection > this._maxItem)
 		{
+			this._minItem = this.currentSelection - this.maxItemsOnScreen;
+			this._maxItem = this.currentSelection;
+			if (this._minItem < 0)
+			{
+				this._minItem = 0;
+			}
 			dir = this.MaxHeight - (this.currentItem.itemMC._y + this.currentItem.itemMC._height);
 		}
 		else if (this.currentSelection < this._minItem)
 		{
+			this._minItem = this.currentSelection;
+			this._maxItem = this.currentSelection + this.maxItemsOnScreen;
+			if (this._maxItem > this.itemCount - 1)
+			{
+				this._maxItem = this.itemCount - 1;
+			}
 			dir = -this.currentItem.itemMC._y;
 		}
 		this.ScrollMenu(0,150,0,dir);

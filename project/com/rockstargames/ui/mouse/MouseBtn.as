@@ -1,18 +1,10 @@
-﻿class com.rockstargames.ui.mouse.MouseBtn extends MovieClip implements com.rockstargames.ui.mouse.MouseBtnInterface
+﻿dynamic class com.rockstargames.ui.mouse.MouseBtn extends MovieClip implements com.rockstargames.ui.mouse.MouseBtnInterface
 {
-	var optionalMouseArgs = new Array();
-	var _isMouseEnabled:Boolean = true;
-	var MOUSE_EVT;
-	var _name;
-	var callback;
-	var callbackArgs;
-	var onDragOut;
-	var onDragOver;
-	var onPress;
-	var onRelease;
-	var onReleaseOutside;
-	var onRollOut;
-	var onRollOver;
+    var optionalMouseArgs = new Array();
+    var _isMouseEnabled: Boolean = true;
+    var MOUSE_EVT;
+    var callback;
+    var callbackArgs;
 
 	function MouseBtn()
 	{
@@ -24,11 +16,11 @@
 	{
 		if (_uiID != undefined)
 		{
-			this.MOUSE_EVT._UI_MOVIE = _uiID;
+			this.MOUSE_EVT.UI_MOVIE = _uiID;
 		}
 		if (_interfaceID != undefined)
 		{
-			this.MOUSE_EVT._INTERFACE_TYPE = _interfaceID;
+			this.MOUSE_EVT.INTERFACE_TYPE = _interfaceID;
 		}
 		if (_optionalMouseArgs != undefined)
 		{
@@ -41,7 +33,7 @@
 		{
 			_itemContext = -1;
 		}
-		this.setupMouseInterface(com.rockstargames.ui.mouse.MOUSE_EVENTS.UI_MOVIE_GENERIC,undefined,[_itemID, _itemContext]);
+		this.setupMouseInterface(com.rockstargames.ui.mouse.MOUSE_EVENTS.UI_MOVIE_GENERIC,this.MOUSE_EVT.SF_BASE_CLASS_MOUSE,[_itemID, _itemContext]);
 		if (_callback)
 		{
 			this.callback = _callback;
@@ -75,14 +67,12 @@
 		var _loc3_ = this.optionalMouseArgs.length;
 		if (_loc3_ > 0)
 		{
-			var _loc2_ = 0;
-			while (_loc2_ < _loc3_)
+			for (var _loc2_ in this.optionalMouseArgs)
 			{
 				_loc4_.push(this.optionalMouseArgs[_loc2_]);
-				_loc2_ = _loc2_ + 1;
 			}
 		}
-		if (this.isMouseEnabled)
+		if (com.rockstargames.gtav.levelDesign.SCALEFORMUI.MouseEnabled)
 		{
 			if (this.callback)
 			{

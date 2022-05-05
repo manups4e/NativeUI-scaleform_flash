@@ -52,8 +52,8 @@
 			_grid = this.gridMC.attachMovie("txdLoader", "gridPanel", this.gridMC.getNextHighestDepth());
 			this.SetClip(_grid,"pause_menu_pages_char_mom_dad","nose_grid");
 		}
-		this.gridMC.onRollOver = com.rockstargames.ui.utils.DelegateStar.create(this, this.mOverGP, this.gridMC);
-		this.gridMC.onRollOut = com.rockstargames.ui.utils.DelegateStar.create(this, this.mOutGP, this.gridMC);
+		//this.gridMC.onRollOver = com.rockstargames.ui.utils.DelegateStar.create(this, this.mOverGP, this.gridMC);
+		//this.gridMC.onRollOut = com.rockstargames.ui.utils.DelegateStar.create(this, this.mOutGP, this.gridMC);
 
 		this.itemTextRight = this.labelMC.valueTF;
 		this.isAdjustable = true;
@@ -74,7 +74,29 @@
 		}
 		this.Value = this._value;
 		com.rockstargames.ui.utils.Colour.ApplyHudColour(this.backgroundMC,com.rockstargames.ui.utils.HudColour.HUD_COLOUR_PAUSE_BG);
-		//this.initBaseMouseInterface();
+		this.gridMC.attachMovie("mouseCatcher","mouseCatcher",this.gridMC.getNextHighestDepth(),{_width:this.gridMC._width, _height:this.gridMC._height});
+		this.gridMC.mouseCatcher.setupGenericMouseInterface(0,12,this.onMouseEvent,[this]);
+	}
+
+	function onMouseEvent(evtType, targetMC, args)
+	{
+		var panel = args[0];
+		switch (evtType)
+		{
+			case com.rockstargames.ui.mouse.MOUSE_EVENTS.MOUSE_ROLL_OUT :
+				panel.mOutGP();
+				break;
+			case com.rockstargames.ui.mouse.MOUSE_EVENTS.MOUSE_ROLL_OVER :
+				panel.mOverGP();
+				break;
+			case com.rockstargames.ui.mouse.MOUSE_EVENTS.MOUSE_PRESS :
+				break;
+			case com.rockstargames.ui.mouse.MOUSE_EVENTS.MOUSE_RELEASE :
+				break;
+			case com.rockstargames.ui.mouse.MOUSE_EVENTS.MOUSE_RELEASE_OUTSIDE :
+				break;
+		}
+
 	}
 
 	function mPressGP(mc)
@@ -120,8 +142,8 @@
 	}
 	function onLoadInit(target_mc)
 	{
-		target_mc.onRollOver = com.rockstargames.ui.utils.DelegateStar.create(this, this.mOverGP, target_mc);
-		target_mc.onRollOut = com.rockstargames.ui.utils.DelegateStar.create(this, this.mOutGP, target_mc);
+		//target_mc.onRollOver = com.rockstargames.ui.utils.DelegateStar.create(this, this.mOverGP, target_mc);
+		//target_mc.onRollOut = com.rockstargames.ui.utils.DelegateStar.create(this, this.mOutGP, target_mc);
 		delete this.txd_loader;
 	}
 
@@ -159,21 +181,18 @@
 		return this._value;
 	}
 
-	function set Coords(val)
+	function SetCoords()
 	{
-		if (this.hovered)
+		var coords = [(_xmouse - this.parentItem._parentMenu._menuOff[0]), _ymouse];
+		if (this.type == 0)
 		{
-			var coords = val;
-			if (this.type == 0)
-			{
-				this.my = this.gridMC._height - this.padding * 2;
-				var offset = ((this.itemMC._y + this.my) - this.padding * 2) - (this.gridMC._height / 2) - this.padding;
-				coords[1] -= offset;
-			}
-			var valX = (coords[0] - this.gridMC._x - this.padding) / this.mx;
-			var valY = (coords[1] - this.gridMC._y - this.padding) / this.my;
-			this.Value = new Array(valX, valY);
+			this.my = this.gridMC._height - this.padding * 2;
+			var offset = ((this.itemMC._y + this.my) - this.padding * 2) - (this.gridMC._height / 2) - this.padding;
+			coords[1] -= offset;
 		}
+		var valX = (coords[0] - this.gridMC._x - this.padding) / this.mx;
+		var valY = (coords[1] - this.gridMC._y - this.padding) / this.my;
+		this.Value = new Array(valX, valY);
 	}
 	function get Coords()
 	{

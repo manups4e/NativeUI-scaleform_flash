@@ -52,10 +52,9 @@
 		this.titleTF = this.itemMC.titleMC.titleTF;
 		this.leftArrow = this.itemMC.attachMovie("hairColourArrow", "leftArMC_" + this.itemMC._name, this.itemMC.getNextHighestDepth(), {_x:7.35, _y:12.6});
 		this.rightArrow = this.itemMC.attachMovie("hairColourArrow", "rightArMC_" + this.itemMC._name, this.itemMC.getNextHighestDepth(), {_x:282, _y:12.6, _xscale:-100});
-		this.leftArrow.onRollOver = com.rockstargames.ui.utils.DelegateStar.create(this, this.mOverCP, this.leftArrow);
-		this.rightArrow.onRollOver = com.rockstargames.ui.utils.DelegateStar.create(this, this.mOverCP, this.rightArrow);
-		this.leftArrow.onRollOut = com.rockstargames.ui.utils.DelegateStar.create(this, this.mOutCP, this.leftArrow);
-		this.rightArrow.onRollOut = com.rockstargames.ui.utils.DelegateStar.create(this, this.mOutCP, this.rightArrow);
+		this.leftArrow.setupGenericMouseInterface(-1,10,this.mouseEvent,[this, -1]);
+		this.rightArrow.setupGenericMouseInterface(-2,10,this.mouseEvent,[this, -2]);
+
 		if (index != undefined)
 		{
 			this._index = index;
@@ -68,8 +67,7 @@
 		for (var i = 0; i < this.visibleItems; i++)
 		{
 			this.colorItems.push(this.itemMC.attachMovie("swatch", "_swatch_" + this.itemMC._name, this.itemMC.getNextHighestDepth()));
-			this.colorItems[i].onRollOver = com.rockstargames.ui.utils.DelegateStar.create(this, this.mOverCP, i);
-			this.colorItems[i].onRollOut = com.rockstargames.ui.utils.DelegateStar.create(this, this.mOutCP, i);
+			this.colorItems[i].setupGenericMouseInterface(i,10,this.mouseEvent,[this, i]);
 			this.colorItems[i]._x = 8 + this.colorItems[i]._width * i;
 			this.colorItems[i]._y = 31.05;
 		}
@@ -81,6 +79,22 @@
 		this.titleTF.antiAliasType = "advanced";
 		this.Value = this.currentSelection;
 		com.rockstargames.ui.utils.UIText.setSizedText(this.titleTF,this._title + " (" + (this.currentSelection + 1) + "/" + this.itemCount + ")",true,true);
+	}
+
+	function mouseEvent(evtType, targetMC, args)
+	{
+		var panel = args[0];
+		var item = args[1];
+		switch (evtType)
+		{
+			case com.rockstargames.ui.mouse.MOUSE_EVENTS.MOUSE_ROLL_OUT :
+				panel._selected = -3;
+				panel._hovered = false;
+				break;
+			case com.rockstargames.ui.mouse.MOUSE_EVENTS.MOUSE_ROLL_OVER :
+				panel._selected = args[1];
+				panel._hovered = true;
+		}
 	}
 
 	function mOverCP(id)
@@ -198,11 +212,11 @@
 
 	function get Value()
 	{
-		if (this._selected != -1)
+		if (this._selected != -3)
 		{
 			switch (this._selected)
 			{
-				case -3 :
+				case -1 :
 					this.goLeft();
 					break;
 				case -2 :
@@ -244,6 +258,12 @@
 	}
 	function Clear()
 	{
+		for (var item in this.colorItems)
+		{
+			this.colorItems[item].dispose();
+		}
+		this.leftArrow.dispose();
+		this.rightArrow.dispose();
 		this.itemMC.removeMovieClip();
 	}
 }

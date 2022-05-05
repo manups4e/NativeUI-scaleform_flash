@@ -11,13 +11,13 @@
 	var titleFreemode;
 	var _titleType;
 	var hovered = -1;
-	function ColourPickerPanel(menu,leftRight,titleType,panelTitle,panelColour)
+	function ColourPickerPanel(menu, leftRight, titleType, panelTitle, panelColour)
 	{
 		this.menu = menu;
 		this.colorsArray = com.rockstargames.ScaleformUI.utils.ColorPanelColors.VEHICLE_COLORS;
 		this._mainMC = this.menu._mainMC;
 		this.LeftRightSide = leftRight;
-		this.itemMC = this._mainMC.attachMovie("ColourPicker","colourPicker_" + this._mainMC.getNextHighestDepth(),this._mainMC.getNextHighestDepth());
+		this.itemMC = this._mainMC.attachMovie("ColourPicker", "colourPicker_" + this._mainMC.getNextHighestDepth(), this._mainMC.getNextHighestDepth());
 		this.panelTitle = panelTitle;
 		this.panelTitleColour = panelColour;
 		this._titleType = titleType;
@@ -27,7 +27,7 @@
 				this.itemMC.gotoAndStop(1);
 				this.itemMC.BannerSprite._width = 288;
 				this.itemMC.BannerSprite._height = 65;
-				var banner = this.itemMC.BannerSprite.bannerBG.attachMovie("txdLoader","internbannerSprite_" + this.itemMC.BannerSprite.bannerBG.getNextHighestDepth(),this.itemMC.BannerSprite.bannerBG.getNextHighestDepth());
+				var banner = this.itemMC.BannerSprite.bannerBG.attachMovie("txdLoader", "internbannerSprite_" + this.itemMC.BannerSprite.bannerBG.getNextHighestDepth(), this.itemMC.BannerSprite.bannerBG.getNextHighestDepth());
 				var alreadyLoaded = true;
 				if (banner.textureFilename != this.menu._bannerTexture && banner.textureDict != this.menu._bannerTxd)
 				{
@@ -45,7 +45,7 @@
 				banner._alpha = 100;
 				banner.requestTxdRef(_loc8_,alreadyLoaded,undefined,this);
 
-				var bannerFont = new TextFormat("$Font5",31);
+				var bannerFont = new TextFormat("$Font5", 31);
 				bannerFont.align = "center";
 				this.BannerTitle = this.itemMC.BannerSprite.titleMC.labelTF;
 				this.BannerTitle.embedFonts = true;
@@ -76,17 +76,36 @@
 			var col = this.colorsArray[i];
 			var cell = this.itemMC.honeyComb["colour_" + i];
 			com.rockstargames.ui.utils.Colour.Colourise(cell,col.r,col.g,col.b,100);
-			cell.onRollOver = com.rockstargames.ui.utils.DelegateStar.create(this,this.mOverCP,i);
-			cell.onRollOut = com.rockstargames.ui.utils.DelegateStar.create(this,this.mOutCP,i);
+			cell.attachMovie("mouseCatcher","mouseCatcher",cell.getNextHighestDepth(),{_x:-30.35, _y:-35, _width:cell._width, _height:cell._height});
+			cell.mouseCatcher.setupGenericMouseInterface(i,2,this.onMouseEvent,[cell, i, this]);
 		}
+	}
+
+	function onMouseEvent(evtType, targetMC, args)
+	{
+		var cell = args[0];
+		var id = args[1];
+		var panel = args[2];
+		switch (evtType)
+		{
+			case com.rockstargames.ui.mouse.MOUSE_EVENTS.MOUSE_ROLL_OUT :
+				panel.mOutCP(id);
+				break;
+			case com.rockstargames.ui.mouse.MOUSE_EVENTS.MOUSE_ROLL_OVER :
+				panel.mOverCP(id);
+				break;
+			case com.rockstargames.ui.mouse.MOUSE_EVENTS.MOUSE_RELEASE_OUTSIDE :
+				panel.mOutCP(id);
+		}
+
 	}
 
 	function mOverCP(id)
 	{
 		var cell = this.itemMC.honeyComb["colour_" + id];
 		cell.swapDepths(this.itemMC.honeyComb.maskMC);
-		cell._width +=  30;
-		cell._height +=  30;
+		cell._width += 30;
+		cell._height += 30;
 		this.hovered = id;
 	}
 
@@ -94,8 +113,8 @@
 	{
 		var cell = this.itemMC.honeyComb["colour_" + id];
 		cell.swapDepths(this.itemMC.honeyComb.maskMC);
-		cell._width -=  30;
-		cell._height -=  30;
+		cell._width -= 30;
+		cell._height -= 30;
 		this.hovered = -1;
 	}
 
@@ -105,7 +124,7 @@
 		switch (this._titleType)
 		{
 			case 0 :
-				var bannerFont = new TextFormat("$Font5",31);
+				var bannerFont = new TextFormat("$Font5", 31);
 				bannerFont.align = "center";
 				this.BannerTitle = this.itemMC.BannerSprite.titleMC.labelTF;
 				this.BannerTitle.embedFonts = true;

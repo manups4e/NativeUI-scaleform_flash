@@ -37,6 +37,7 @@
 	var customRightArrow;
 	var hover = -1;
 	var jumpable = false;
+	var mouseCatcher;
 
 	function UIMenuItem(id, str, substr, parentMenu, param1, param2, param3, param4, param5, param6, param7, param8, param9, param10, param11, param12, param13)
 	{
@@ -52,6 +53,9 @@
 		this.rightText = "";
 		this._type = id;
 		this.jumpable = false;
+		this.itemMC.attachMovie("mouseCatcher","mouseCatcher",itemMC.getNextHighestDepth(),{_width:itemMC._width, _height:itemMC._height});
+		this.itemMC.mouseCatcher.setupGenericMouseInterface(this._parentMenu.itemCount,0,this.onMouseEvent,[this, this._parentMenu]);
+		//this.itemMC.mouseCatcher.swapDepths(this.itemMC.RLabelMC);
 
 		if (str != undefined)
 		{
@@ -186,15 +190,35 @@
 		{
 			com.rockstargames.ui.utils.Colour.ApplyHudColourToTF(this.leftTextTF,!this.highlighted ? this._textColor : this._textHighlightColor);
 		}
-		this.initBaseMouseInterface();
-		this.itemMC.leftArrow.onRollOver = com.rockstargames.ui.utils.DelegateStar.create(this, this.mOverI, this.itemMC.leftArrow);
-		this.itemMC.leftArrow.onRollOut = com.rockstargames.ui.utils.DelegateStar.create(this, this.mOutI, this.itemMC.leftArrow);
-		this.itemMC.rightArrow.onRollOver = com.rockstargames.ui.utils.DelegateStar.create(this, this.mOverI, this.itemMC.rightArrow);
-		this.itemMC.rightArrow.onRollOut = com.rockstargames.ui.utils.DelegateStar.create(this, this.mOutI, this.itemMC.rightArrow);
-		this.checkbox.onRollOver = com.rockstargames.ui.utils.DelegateStar.create(this, this.mOverI, this.checkbox);
-		this.checkbox.onRollOut = com.rockstargames.ui.utils.DelegateStar.create(this, this.mOutI, this.checkbox);
-		// DA RIVEDERE:         
-		// this.blinkDesc = _blink;
+	}
+
+	// this function is called out of scope of the item itself, use this.something won't do anything!
+	function onMouseEvent(evtType, targetMC, args)
+	{
+		var item = args[0];
+		var menu = args[1];
+		switch (evtType)
+		{
+			case com.rockstargames.ui.mouse.MOUSE_EVENTS.MOUSE_ROLL_OUT :
+				item.mOut();
+				break;
+			case com.rockstargames.ui.mouse.MOUSE_EVENTS.MOUSE_ROLL_OVER :
+				if (item._type == 6)
+				{
+					if (item.jumpable)
+					{
+						return;
+					}
+				}
+				item.mOver();
+				break;
+			case com.rockstargames.ui.mouse.MOUSE_EVENTS.MOUSE_PRESS :
+				break;
+			case com.rockstargames.ui.mouse.MOUSE_EVENTS.MOUSE_RELEASE :
+				break;
+			case com.rockstargames.ui.mouse.MOUSE_EVENTS.MOUSE_RELEASE_OUTSIDE :
+				break;
+		}
 
 	}
 
@@ -220,11 +244,11 @@
 			if (this.rightBadgeMC.isLoaded)
 			{
 				this.rightBadgeMC.removeTxdRef();
-				this.rightBadgeMC.removeMovieClip()
+				this.rightBadgeMC.removeMovieClip();
 			}
 		}
 	}
-	
+
 	function SetLeftBadge(id)
 	{
 		this.leftBadgeId = id;
@@ -241,7 +265,7 @@
 			if (this.leftBadgeMC.isLoaded)
 			{
 				this.leftBadgeMC.removeTxdRef();
-				this.leftBadgeMC.removeMovieClip()
+				this.leftBadgeMC.removeMovieClip();
 			}
 			this.itemMC.labelMC._x = 3.25;
 		}
@@ -295,7 +319,7 @@
 		this.leftBadgeMC._alpha = 0;
 		com.rockstargames.ui.tweenStar.TweenStarLite.to(this.leftBadgeMC,0.2,{_alpha:100});
 	}
-	
+
 	function checkLoaded()
 	{
 		this.checkbox._width = 24;
@@ -566,51 +590,73 @@
 		}
 	}
 
-	function Select(posX, posY)
+	function Select()
 	{
-		if (this.highlighted)
+		if (this._type == 1 || this._type == 3 || this._type == 4)
 		{
-			switch (this._type)
+			if (this.itemMC.leftArrow.hitTest(_xmouse, _ymouse, false))
 			{
-				case 1 :
-					if (this.hover == 0)
-					{
-						this.textIndex--;
-					}
-					else if (this.hover == 1)
-					{
-						this.textIndex++;
-					}
-					break;
-				case 2 :
-					if (this.hover == 1)
-					{
-						this.Checked = !this.Checked;
-					}
-					break;
-				case 3 :
-					switch (this.hover)
-					{
-						case 0 :
-							this.sliderscale -= this._multiplier;
-							break;
-						case 1 :
-							this.sliderscale += this._multiplier;
-							break;
-					}
-					break;
+				this.hover = 0;
+				this._hovered = true;
+			}
+			else if (this.itemMC.rightArrow.hitTest(_xmouse, _ymouse, false))
+			{
+				this.hover = 1;
+				this._hovered = true;
+			}
+			else
+			{
+				this.hover = -1;
+				this._hovered = false;
+			}
+		}
 
-				case 4 :
-					switch (this.hover)
-					{
-						case 0 :
-							this.barscale--;
-							break;
-						case 1 :
-							this.barscale++;
-							break;
-					}
-					break;
+		if (this._enabled)
+		{
+			if (this.highlighted)
+			{
+				switch (this._type)
+				{
+					case 1 :
+						if (this.hover == 0)
+						{
+							this.textIndex--;
+						}
+						else if (this.hover == 1)
+						{
+							this.textIndex++;
+						}
+						break;
+					case 2 :
+						if (this.hover == 1)
+						{
+							this.Checked = !this.Checked;
+						}
+						break;
+					case 3 :
+						switch (this.hover)
+						{
+							case 0 :
+								this.sliderscale -= this._multiplier;
+								break;
+							case 1 :
+								this.sliderscale += this._multiplier;
+								break;
+						}
+						break;
+
+					case 4 :
+						switch (this.hover)
+						{
+							case 0 :
+								this.barscale--;
+								break;
+							case 1 :
+								this.barscale++;
+								break;
+						}
+						break;
+				}
 			}
 		}
 		return this.Value;
@@ -618,6 +664,7 @@
 
 	function Clear()
 	{
+		this.itemMC.mouseCatcher.dispose();
 		if (this.rightBadgeMC != undefined)
 		{
 			if (this.rightBadgeMC.isLoaded)

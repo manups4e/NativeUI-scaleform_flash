@@ -37,7 +37,7 @@
 		}
 		com.rockstargames.ui.utils.UIText.setSizedText(this.leftTextTF,this.leftText,true,true);
 		com.rockstargames.ui.utils.Colour.ApplyHudColourToTF(this.leftTextTF,this._enabled ? (!this.highlighted ? this._textColor : this._textHighlightColor) : com.rockstargames.ui.utils.HudColour.HUD_COLOUR_GREY);
-		this.initBaseMouseInterface();
+		//this.initBaseMouseInterface();
 	}
 
 	function mOverBox(mc)
