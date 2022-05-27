@@ -53,8 +53,6 @@
 		this.rightText = "";
 		this._type = id;
 		this.jumpable = false;
-		this.itemMC.attachMovie("mouseCatcher","mouseCatcher",itemMC.getNextHighestDepth(),{_width:itemMC._width, _height:itemMC._height});
-		this.itemMC.mouseCatcher.setupGenericMouseInterface(this._parentMenu.itemCount,0,this.onMouseEvent,[this, this._parentMenu]);
 		//this.itemMC.mouseCatcher.swapDepths(this.itemMC.RLabelMC);
 
 		if (str != undefined)
@@ -190,6 +188,8 @@
 		{
 			com.rockstargames.ui.utils.Colour.ApplyHudColourToTF(this.leftTextTF,!this.highlighted ? this._textColor : this._textHighlightColor);
 		}
+		this.itemMC.attachMovie("mouseCatcher","mouseCatcher",itemMC.getNextHighestDepth(),{_width:itemMC._width, _height:itemMC._height});
+		this.itemMC.mouseCatcher.setupGenericMouseInterface(this._parentMenu.itemCount,0,this.onMouseEvent,[this, this._parentMenu]);
 	}
 
 	// this function is called out of scope of the item itself, use this.something won't do anything!
@@ -428,7 +428,7 @@
 		com.rockstargames.ui.utils.UIText.setSizedText(this.rightTextTF,this.rightText);
 		this.rightTextTF.autoSize = true;
 		this.itemMC.RLabelMC._x = this.itemMC.rightArrow._x - this.rightTextTF._width;
-		this.itemMC.leftArrow._x = this.rightTextTF._x - 6;
+		this.itemMC.leftArrow._x = this.itemMC.RLabelMC._x - 6;
 		this.itemMC.rightArrow._visible = this.itemMC.leftArrow._visible = true;
 	}
 

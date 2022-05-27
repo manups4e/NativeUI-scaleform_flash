@@ -187,7 +187,7 @@
 		var _item = this.UIMenu.menuItems[item];
 		var ret = _item.Select();
 		com.rockstargames.ui.game.GameInterface.call("PLAY_SOUND",com.rockstargames.ui.game.GameInterface.GENERIC_TYPE,"SELECT","HUD_FRONTEND_DEFAULT_SOUNDSET");
-		return ret.toString();
+		return ret;
 	}
 
 	function SELECT_PANEL(item)
