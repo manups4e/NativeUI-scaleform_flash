@@ -62,6 +62,10 @@
 		if (!this.highlighted)
 		{
 			com.rockstargames.ui.utils.Colour.ApplyHudColour(this.backgroundMC,this._mainColor);
+			if (this._mainColor == com.rockstargames.ui.utils.HudColour.HUD_COLOUR_PAUSE_BG)
+			{
+				this.backgroundMC._alpha = 0;
+			}
 		}
 	}
 
@@ -126,6 +130,10 @@
 			else
 			{
 				com.rockstargames.ui.utils.Colour.ApplyHudColour(this.backgroundMC,this._mainColor);
+				if (this._mainColor == com.rockstargames.ui.utils.HudColour.HUD_COLOUR_PAUSE_BG)
+				{
+					this.backgroundMC._alpha = 0;
+				}
 			}
 		}
 		else

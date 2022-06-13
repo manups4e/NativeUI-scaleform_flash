@@ -38,6 +38,11 @@
 	var hover = -1;
 	var jumpable = false;
 	var mouseCatcher;
+	static var DEFAULT_SCROLL_SPEED = 50;
+	var inverseScrollSpeed;
+	var goalX;
+	var duration;
+	var scrollTimeout;
 
 	function UIMenuItem(id, str, substr, parentMenu, param1, param2, param3, param4, param5, param6, param7, param8, param9, param10, param11, param12, param13)
 	{
@@ -57,8 +62,9 @@
 
 		if (str != undefined)
 		{
-			this.leftTextTF.autoSize = "none";
-			com.rockstargames.ui.utils.UIText.setSizedText(this.leftTextTF,str,true);
+			this.leftTextTF.autoSize = "left";
+			this.itemMC.labelMC.setMask(this.itemMC.labelMC.maskMC);
+			com.rockstargames.ui.utils.UIText.setSizedText(this.leftTextTF,str,false);
 		}
 
 		switch (id)
@@ -192,6 +198,17 @@
 		this.itemMC.mouseCatcher.setupGenericMouseInterface(this._parentMenu.itemCount,0,this.onMouseEvent,[this, this._parentMenu]);
 	}
 
+	function checkScroll()
+	{
+		if (this.leftTextTF.textWidth > this.itemMC.labelMC.maskMC._width)
+		{
+			this.inverseScrollSpeed = 1 / com.rockstargames.ScaleformUI.items.UIMenuItem.DEFAULT_SCROLL_SPEED;
+			this.goalX = (this.leftTextTF._width - this.itemMC.labelMC.maskMC._width);
+			this.duration = this.goalX * this.inverseScrollSpeed;
+			this.scrollTimeout = setTimeout(this.startScroll, 2000, this);
+		}
+	}
+
 	// this function is called out of scope of the item itself, use this.something won't do anything!
 	function onMouseEvent(evtType, targetMC, args)
 	{
@@ -219,14 +236,53 @@
 			case com.rockstargames.ui.mouse.MOUSE_EVENTS.MOUSE_RELEASE_OUTSIDE :
 				break;
 		}
-
 	}
 
+	function startScroll(item)
+	{
+		item.inverseScrollSpeed = 1 / com.rockstargames.ScaleformUI.items.UIMenuItem.DEFAULT_SCROLL_SPEED;
+		item.goalX = (item.leftTextTF._width - item.itemMC.labelMC.maskMC._width);
+		item.duration = item.goalX * item.inverseScrollSpeed;
+		com.rockstargames.ui.tweenStar.TweenStarLite.to(item.leftTextTF,item.duration,{_x:-item.goalX, onCompleteScope:item, onComplete:item.completeScroll, onCompleteArgs:["scroll"]});
+	}
+
+	function goBackScroll(item)
+	{
+		item.inverseScrollSpeed = 1 / com.rockstargames.ScaleformUI.items.UIMenuItem.DEFAULT_SCROLL_SPEED;
+		item.goalX = (item.leftTextTF._width - item.itemMC.labelMC.maskMC._width);
+		item.duration = item.goalX * item.inverseScrollSpeed;
+		com.rockstargames.ui.tweenStar.TweenStarLite.to(item.leftTextTF,item.duration,{_x:0, onCompleteScope:item, onComplete:item.completeScroll, onCompleteArgs:["back"]});
+	}
+
+	function completeScroll(arg)
+	{
+		this.scrollTimeout = setTimeout(arg == "scroll" ? this.goBackScroll : this.startScroll, 3000, this);
+	}
+
+	function updateLabelWidth()
+	{
+		switch (this._type)
+		{
+			case 0 :
+				this.itemMC.labelMC.maskMC._width = this.itemMC.RLabelMC._x - this.itemMC.RLabelMC._width - this.itemMC.labelMC._x - 5;
+				break;
+			case 2 :
+				this.itemMC.labelMC.maskMC._width = this.checkbox._x - this.itemMC.labelMC._x - 5;
+				break;
+			case 1 :
+			case 3 :
+			case 4 :
+				this.itemMC.labelMC.maskMC._width = this.itemMC.leftArrow._x - this.itemMC.labelMC._x - 5;
+				break;
+		}
+		//this.checkScroll();
+	}
 
 	function SetRightText(str)
 	{
 		this.rightText = str;
 		this.setRightText(this.rightTextTF,this.rightText);
+		this.updateLabelWidth();
 	}
 
 	function SetRightBadge(id)
@@ -238,6 +294,8 @@
 			var sprite_name = com.rockstargames.ScaleformUI.utils.Badges.getSpriteNameById(id, this.highlighted);
 			var sprite_txd = com.rockstargames.ScaleformUI.utils.Badges.GetSpriteDictionary(id);
 			this.SetClip(this.rightBadgeMC,sprite_txd,sprite_name,24,24,this.rightBadgeLoaded);
+			this.itemMC.RLabelMC._x -= 25;
+
 		}
 		else
 		{
@@ -245,8 +303,10 @@
 			{
 				this.rightBadgeMC.removeTxdRef();
 				this.rightBadgeMC.removeMovieClip();
+				this.itemMC.RLabelMC._x += 25;
 			}
 		}
+		this.updateLabelWidth();
 	}
 
 	function SetLeftBadge(id)
@@ -266,9 +326,10 @@
 			{
 				this.leftBadgeMC.removeTxdRef();
 				this.leftBadgeMC.removeMovieClip();
+				this.itemMC.labelMC._x = 3.25;
 			}
-			this.itemMC.labelMC._x = 3.25;
 		}
+		this.updateLabelWidth();
 	}
 
 
@@ -297,12 +358,15 @@
 		this.rightBadgeMC._y = 0.5;
 		//this.rightBadgeMC._alpha = 0;
 		//com.rockstargames.ui.tweenStar.TweenStarLite.to(this.rightBadgeMC,0.2,{_alpha:100});
+		this.updateLabelWidth();
 	}
+
 	function rightBadgeLoaded_withAnim()
 	{
 		this.rightBadgeLoaded();
 		this.rightBadgeMC._alpha = 0;
 		com.rockstargames.ui.tweenStar.TweenStarLite.to(this.rightBadgeMC,0.2,{_alpha:100});
+		this.updateLabelWidth();
 	}
 
 	function leftBadgeLoaded()
@@ -312,12 +376,15 @@
 		this.leftBadgeMC._height = 24;
 		this.leftBadgeMC._x = 0.5;
 		this.leftBadgeMC._y = 0.5;
+		this.updateLabelWidth();
 	}
+
 	function leftBadgeLoaded_withAnim()
 	{
 		this.leftBadgeLoaded();
 		this.leftBadgeMC._alpha = 0;
 		com.rockstargames.ui.tweenStar.TweenStarLite.to(this.leftBadgeMC,0.2,{_alpha:100});
+		this.updateLabelWidth();
 	}
 
 	function checkLoaded()
@@ -329,12 +396,15 @@
 		this.checkbox._visible = true;
 		//this.rightBadgeMC._alpha = 0;
 		//com.rockstargames.ui.tweenStar.TweenStarLite.to(this.rightBadgeMC,0.2,{_alpha:100});
+		this.updateLabelWidth();
 	}
+
 	function checkLoaded_withAnim()
 	{
 		this.checkLoaded();
 		this.checkbox._alpha = 0;
 		com.rockstargames.ui.tweenStar.TweenStarLite.to(this.checkbox,0.2,{_alpha:100});
+		this.updateLabelWidth();
 	}
 
 	function addPanel(_panel)
@@ -361,6 +431,7 @@
 		this._checked = val;
 		var sprite_name = this.getSprite(this._highlighted, this.tickStyle, this._checked);
 		this.SetClip(this.checkbox,"commonmenu",sprite_name,24,24,this.checkLoaded_withAnim);
+		this.updateLabelWidth();
 	}
 
 	function get Checked()
@@ -430,6 +501,7 @@
 		this.itemMC.RLabelMC._x = this.itemMC.rightArrow._x - this.rightTextTF._width;
 		this.itemMC.leftArrow._x = this.itemMC.RLabelMC._x - 6;
 		this.itemMC.rightArrow._visible = this.itemMC.leftArrow._visible = true;
+		this.updateLabelWidth();
 	}
 
 	function get textIndex()
@@ -481,6 +553,8 @@
 					var sprite_name = this.getSprite(true, this.tickStyle, this.Checked);
 					this.SetClip(this.checkbox,"commonmenu",sprite_name,24,24,this.checkLoaded);
 				}
+				this.updateLabelWidth();
+				this.checkScroll();
 			}
 			else
 			{
@@ -499,6 +573,10 @@
 					var sprite_name = this.getSprite(false, this.tickStyle, this.Checked);
 					this.SetClip(this.checkbox,"commonmenu",sprite_name,24,24,this.checkLoaded);
 				}
+				clearTimeout(this.scrollTimeout);
+				com.rockstargames.ui.tweenStar.TweenStarLite.removeTweenOf(this.leftTextTF);
+				this.leftTextTF._x = 0;
+				this.updateLabelWidth();
 			}
 			for (var _panel in this.panels)
 			{
@@ -664,6 +742,8 @@
 
 	function Clear()
 	{
+		clearTimeout(this.scrollTimeout);
+		com.rockstargames.ui.tweenStar.TweenStarLite.removeTweenOf(this.leftTextTF);
 		this.itemMC.mouseCatcher.dispose();
 		if (this.rightBadgeMC != undefined)
 		{
