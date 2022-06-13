@@ -36,6 +36,7 @@
 	var viewHeight;
 	var EnableAnim;
 	var AnimType;
+	var slots = [];
 
 	function UIMenu(mc, title, subtitle, alternative, x, y, txd, txn, maxItems, enableAnim, animType)
 	{
@@ -127,7 +128,7 @@
 		this.itemsBG.maskMC._height = 0;
 		this.itemsBG.bgMC._height = 0;
 		com.rockstargames.ui.utils.Colour.ApplyHudColour(this.itemsBG.bgMC,com.rockstargames.ui.utils.HudColour.HUD_COLOUR_PAUSE_BG);
-		this.itemsBG.bgMC._alpha = 0;
+		//this.itemsBG.bgMC._alpha = 100;
 		this.scrollableContent = this.itemsBG.createEmptyMovieClip("viewContainer", this.itemsBG.getNextHighestDepth());
 		this.itemsBG.setMask(this.itemsBG.maskMC);
 
@@ -156,18 +157,20 @@
 		{
 			item = new com.rockstargames.ScaleformUI.items.UIMenuItem(id, str, substr, this, param1, param2, param3, param4, param5, param6, param7, param8, param9, param10, param11, param12, param13);
 		}
-
 		this.itemCount = this.menuItems.push(item);
-		if (this.itemCount == 1)
-		{
-			item.itemMC._y = 0;
-		}
-		else if (this.itemCount > 1)
-		{
-			item.itemMC._y = this.menuItems[this.itemCount - 1].itemMC._y + this.menuItems[this.itemCount - 1].itemMC._height;
-		}
-		this.currentSelection = _selectedItem;
+
 		this.updateItemsDrawing();
+		if (_selectedItem >= this.itemCount - 1)
+		{
+			var dir;
+			if (this.itemCount - 1 > this._maxItem)
+			{
+				this._minItem = this.itemCount - 1 - this.maxItemsOnScreen;
+				this._maxItem = this.itemCount - 1;
+				dir = this.MaxHeight - (this.menuItems[this.itemCount - 1].itemMC._y + this.menuItems[this.itemCount - 1].itemMC._height);
+			}
+			this.ScrollMenu(0,25,0,dir);
+		}
 	}
 
 	function removeItem(id)
@@ -299,6 +302,9 @@
 			case 50 :
 				time = 0.003;
 				break;
+			case 25 : 
+				time = 0.0015;
+			break;
 		}
 		if (offset != undefined)
 		{
@@ -377,8 +383,7 @@
 		{
 			if (this.currentSelection == 0)
 			{
-				this._activeItem = 1000 - (1000 % this.itemCount);
-				this._activeItem += this.itemCount - 1;
+				this._activeItem = this.itemCount - 1;
 				this._minItem = this.itemCount - 1 - this.maxItemsOnScreen;
 				this._maxItem = this.itemCount - 1;
 				this.ScrollMenu(-1,delay,true);
@@ -411,8 +416,7 @@
 					{
 						if (this.currentSelection == 0)
 						{
-							this._activeItem = 1000 - (1000 % this.itemCount);
-							this._activeItem += this.itemCount - 1;
+							this._activeItem = this.itemCount - 1;
 							this._minItem = this.itemCount - 1 - this.maxItemsOnScreen;
 							this._maxItem = this.itemCount - 1;
 							this.ScrollMenu(-1,delay,true);
@@ -467,7 +471,7 @@
 		{
 			if (this.currentSelection == this.itemCount - 1)
 			{
-				this._activeItem = 1000 - (1000 % this.itemCount);
+				this._activeItem = 0;
 				this._minItem = 0;
 				this._maxItem = this.maxItemsOnScreen;
 				this.ScrollMenu(1,delay,true);
@@ -500,7 +504,7 @@
 					{
 						if (this.currentSelection == this.itemCount - 1)
 						{
-							this._activeItem = 1000 - (1000 % this.itemCount);
+							this._activeItem = 0;
 							this._minItem = 0;
 							this._maxItem = this.maxItemsOnScreen;
 							this.ScrollMenu(1,delay,true);
@@ -732,24 +736,17 @@
 
 	function get currentSelection()
 	{
-		if (this.itemCount == 0)
-		{
-			return 0;
-		}
-		return this._activeItem % this.itemCount;
-
+		return this._activeItem;
 	}
 
 	function set currentSelection(val)
 	{
-		var dir = undefined;
-		if (this.itemCount == 0)
+		var dir;
+		this._activeItem = val;
+		if (val > this.itemCount)
 		{
-			this._activeItem = 0;
 			return;
 		}
-		this._activeItem = 1000000 - (1000000 % this.itemCount) + val;
-
 		if (this.currentSelection > this._maxItem)
 		{
 			this._minItem = this.currentSelection - this.maxItemsOnScreen;
@@ -799,6 +796,7 @@
 		}
 		this.BannerSprite.bannerBG.bannerSprite.removeTxdRef();
 		this.BannerSprite.removeMovieClip();
+		this.itemsBG.removeMovieClip();
 		this.BodySprite.removeMovieClip();
 		this.DescriptionSprite.removeMovieClip();
 		this.SubtitleSprite.removeMovieClip();
