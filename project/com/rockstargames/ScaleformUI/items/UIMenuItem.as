@@ -196,6 +196,18 @@
 		}
 		this.itemMC.attachMovie("mouseCatcher","mouseCatcher",itemMC.getNextHighestDepth(),{_width:itemMC._width, _height:itemMC._height});
 		this.itemMC.mouseCatcher.setupGenericMouseInterface(this._parentMenu.itemCount,0,this.onMouseEvent,[this, this._parentMenu]);
+		
+		/*
+		var oldX = this.itemMC._xscale;
+		var oldY = this.itemMC._yscale;
+		this.itemMC._xscale *= 2;
+		com.rockstargames.ui.tweenStar.TweenStarLite.to(this.itemMC,0.2,{_xscale:100, onCompleteScope:this, onComplete:this._parentMenu.updateItemsDrawing()});
+		*/
+		
+		/*
+		this.itemMC._x = 289; 
+		com.rockstargames.ui.tweenStar.TweenStarLite.to(this.itemMC,0.2,{_x:0, onCompleteScope:this, onComplete:this._parentMenu.updateItemsDrawing(), ease:com.rockstargames.ui.tweenStar.Ease.SINE_INOUT});
+		*/
 	}
 
 	function checkScroll()

@@ -46,10 +46,10 @@
 		this.initScreenLayout();
 	}
 
-	function CREATE_MENU(title, subtitle, x, y, alternative, txd, txn, maxItems, enableAnim, animType)
+	function CREATE_MENU(title, subtitle, x, y, alternative, txd, txn, maxItems, enableAnim, animType, buildType, counterColor)
 	{
 		var off = [x, y];
-		this.UIMenu = new com.rockstargames.ScaleformUI.UIMenu(this.CONTENT, title, subtitle, alternative, x, y, txd, txn, maxItems, enableAnim, animType);
+		this.UIMenu = new com.rockstargames.ScaleformUI.UIMenu(this.CONTENT, title, subtitle, alternative, x, y, txd, txn, maxItems, enableAnim, animType, buildType, counterColor);
 	}
 
 	function CLEAR_ALL()
@@ -61,6 +61,16 @@
 	function ENABLE_MOUSE(bool)
 	{
 		com.rockstargames.gtav.levelDesign.SCALEFORMUI.MouseEnabled = bool;
+	}
+
+	function UPDATE_TITLE_SUBTITLE(title, sub, altern)
+	{
+		this.UIMenu.updateTitleSubtitle(title,sub, altern);
+	}
+
+	function SET_COUNTER_COLOR(colour)
+	{
+		this.UIMenu.colorCounter(colour);
 	}
 
 	function ADD_ITEM(id, str, sub, param1, param2, param3, param4, param5, param6, param7, param8, param9, param10, param11, param12, param13)
@@ -86,6 +96,11 @@
 	function CHANGE_SCROLLING_ANIMATION_TYPE(type)
 	{
 		this.UIMenu.AnimType = type;
+	}
+
+	function CHANGE_BUILDING_ANIMATION_TYPE(type)
+	{
+		this.UIMenu.buildingType = type;
 	}
 
 	function ADD_WINDOW(id, param0, param1, param2, param3, param4, param5, param6, param7, param8, param9)
