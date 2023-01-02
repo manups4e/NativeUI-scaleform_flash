@@ -27,7 +27,7 @@
 	var txd_loader;
 	var _checkBoxHovered;
 	var leftArrow;
-	var rightArrow;
+	var Arrow;
 	var _max;
 	var _multiplier;
 	var divider;
@@ -43,6 +43,7 @@
 	var goalX;
 	var duration;
 	var scrollTimeout;
+	var labelFont;
 
 	function UIMenuItem(id, str, substr, parentMenu, param1, param2, param3, param4, param5, param6, param7, param8, param9, param10, param11, param12, param13)
 	{
@@ -63,8 +64,8 @@
 		if (str != undefined)
 		{
 			this.leftTextTF.autoSize = "left";
-			this.itemMC.labelMC.setMask(this.itemMC.labelMC.maskMC);
 			com.rockstargames.ui.utils.UIText.setSizedText(this.leftTextTF,str,false);
+			this.itemMC.labelMC.setMask(this.itemMC.labelMC.maskMC);
 		}
 
 		switch (id)
@@ -196,18 +197,29 @@
 		}
 		this.itemMC.attachMovie("mouseCatcher","mouseCatcher",itemMC.getNextHighestDepth(),{_width:itemMC._width, _height:itemMC._height});
 		this.itemMC.mouseCatcher.setupGenericMouseInterface(this._parentMenu.itemCount,0,this.onMouseEvent,[this, this._parentMenu]);
-		
+
 		/*
 		var oldX = this.itemMC._xscale;
 		var oldY = this.itemMC._yscale;
 		this.itemMC._xscale *= 2;
 		com.rockstargames.ui.tweenStar.TweenStarLite.to(this.itemMC,0.2,{_xscale:100, onCompleteScope:this, onComplete:this._parentMenu.updateItemsDrawing()});
 		*/
-		
+
 		/*
 		this.itemMC._x = 289; 
 		com.rockstargames.ui.tweenStar.TweenStarLite.to(this.itemMC,0.2,{_x:0, onCompleteScope:this, onComplete:this._parentMenu.updateItemsDrawing(), ease:com.rockstargames.ui.tweenStar.Ease.SINE_INOUT});
 		*/
+	}
+
+	function updateFont(fontName, fontId)
+	{
+		this.labelFont = new Array(fontName, fontId);
+		var newFont = this.leftTextTF.getTextFormat();
+		newFont.font = this.labelFont[0];
+		this.leftTextTF.embedFonts = true;
+		this.leftTextTF.antiAliasType = "advanced";
+		this.leftTextTF.selectable = false;
+		this.leftTextTF.setTextFormat(newFont);
 	}
 
 	function checkScroll()

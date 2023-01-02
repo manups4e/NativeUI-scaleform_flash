@@ -40,8 +40,9 @@
 	var slots = [];
 	var alternativeTitle;
 	var countCol;
+	var descFont = 0;
 	
-	function UIMenu(mc, title, subtitle, alternative, x, y, txd, txn, maxItems, enableAnim, animType, buildType, counterColor)
+	function UIMenu(mc, title, subtitle, alternative, x, y, txd, txn, maxItems, enableAnim, animType, buildType, counterColor, dFontName, dFontId)
 	{
 		this._menuOff = new Array(x, y);
 		this.menuItems = new Array();
@@ -55,7 +56,8 @@
 		this.itemCount = 0;
 		this.alternativeTitle = alternative;
 		this.countCol = counterColor;
-		
+		this.descFont = [dFontName, dFontId];
+
 		this.BannerSprite = this._mainMC.attachMovie("BannerSprite", "bannerSpriteMC", this._mainMC.getNextHighestDepth());
 		this.BannerSprite._x = 0 + this._menuOff[0];
 		this.BannerSprite._y = 0 + this._menuOff[1];
@@ -729,7 +731,10 @@
 			this.DescriptionSprite.descriptionMC.descText.wordWrap = true;
 			this.DescriptionSprite.descriptionMC.descText.autoSize = "left";
 			this.blipLayer = this.DescriptionSprite.descriptionMC.createEmptyMovieClip("blipLayer", this.DescriptionSprite.descriptionMC.getNextHighestDepth(), {_x:this.DescriptionSprite.descriptionMC.descText._x, _y:this.DescriptionSprite.descriptionMC.descText._y});
-			textBlips.setTextWithIcons(this.currentItem.subtitle,this.blipLayer,this.DescriptionSprite.descriptionMC.descText,0,format.size,2,false);
+			textBlips.setTextWithIcons(this.currentItem.subtitle,this.blipLayer,this.DescriptionSprite.descriptionMC.descText,this.descFont[1],13,2,false);
+			format.font = this.descFont[0];
+			format.size = 13;
+			format.leading = 2;
 			this.DescriptionSprite.descriptionMC.descText.setTextFormat(format);
 			if (this.currentItem.blinkDesc)
 			{

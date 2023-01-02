@@ -46,10 +46,10 @@
 		this.initScreenLayout();
 	}
 
-	function CREATE_MENU(title, subtitle, x, y, alternative, txd, txn, maxItems, enableAnim, animType, buildType, counterColor)
+	function CREATE_MENU(title, subtitle, x, y, alternative, txd, txn, maxItems, enableAnim, animType, buildType, counterColor, dFontName, dFontId)
 	{
 		var off = [x, y];
-		this.UIMenu = new com.rockstargames.ScaleformUI.UIMenu(this.CONTENT, title, subtitle, alternative, x, y, txd, txn, maxItems, enableAnim, animType, buildType, counterColor);
+		this.UIMenu = new com.rockstargames.ScaleformUI.UIMenu(this.CONTENT, title, subtitle, alternative, x, y, txd, txn, maxItems, enableAnim, animType, buildType, counterColor, dFontName, dFontId);
 	}
 
 	function CLEAR_ALL()
@@ -65,12 +65,21 @@
 
 	function UPDATE_TITLE_SUBTITLE(title, sub, altern)
 	{
-		this.UIMenu.updateTitleSubtitle(title,sub, altern);
+		this.UIMenu.updateTitleSubtitle(title,sub,altern);
 	}
 
 	function SET_COUNTER_COLOR(colour)
 	{
 		this.UIMenu.colorCounter(colour);
+	}
+
+	function SET_DESC_FONT(fName, fId)
+	{
+		this.UIMenu.descFont = [fName, fId];
+	}
+	function SET_ITEM_LABEL_FONT(item, fontName, fontId)
+	{
+		this.UIMenu.menuItems[item].updateFont(fontName, fontId);
 	}
 
 	function ADD_ITEM(id, str, sub, param1, param2, param3, param4, param5, param6, param7, param8, param9, param10, param11, param12, param13)
@@ -276,6 +285,10 @@
 		this.UIMenu.menuItems[item].multiListItems = [];
 		this.UIMenu.menuItems[item].multiListItems = list.split(",");
 		this.SET_ITEM_VALUE(item,index);
+	}
+	
+	function UPDATE_LISTITEM_INDEX(item, index){
+		
 	}
 
 	function ENABLE_ITEM(item, disable)
