@@ -203,6 +203,7 @@
 			}
 		}
 		this.scrollableContent._y = dir;
+		return this.itemCount;
 	}
 
 	function removeItem(id)
@@ -242,6 +243,12 @@
 		{
 			panel.isVisible = false;
 		}
+		this.updateItemsDrawing();
+	}
+	
+	function removePanel(item, id){
+		var selectItem = this.menuItems[item];
+		selectItem.removePanel(id);
 		this.updateItemsDrawing();
 	}
 

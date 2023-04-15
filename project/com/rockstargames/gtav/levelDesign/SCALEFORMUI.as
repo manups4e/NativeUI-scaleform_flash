@@ -96,6 +96,10 @@
 	{
 		this.UIMenu.addPanel(item,panelType,param1,param2,param3,param4,param5,param6,param7,param8,param9,param10);
 	}
+	
+	function REMOVE_PANEL(item, id){
+		this.UIMenu.removePanel(item, id);
+	}
 
 	function ENABLE_SCROLLING_ANIMATION(enable)
 	{
@@ -269,7 +273,7 @@
 			}
 		}
 	}
-
+	
 	function ADD_ITEM_TO_ITEMLIST(listItemId, item)
 	{
 		this.UIMenu.menuItems[listItemId].itemList.push(item);

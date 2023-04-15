@@ -435,6 +435,12 @@
 	{
 		this.panels.push(_panel);
 	}
+	
+	function removePanel(id){
+		var panel = this.panels[id];
+		panel.Clear();
+		this.panels.splice(id, 1);
+	}
 
 	function getSprite(_highlighted, _style, _checked)
 	{
