@@ -213,7 +213,12 @@
 
 	function updateDescBG()
 	{
-		this.itemMC.descBG._height = this.listDescItem * 27;
+		var val = 0;
+		for (var item in this.descItems)
+		{
+			val = val + this.descItems[item].itemMC.bgMC._height + 2;
+		}
+		this.itemMC.descBG._height = val;
 	}
 
 
