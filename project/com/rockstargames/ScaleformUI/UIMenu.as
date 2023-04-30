@@ -738,11 +738,11 @@
 			this.DescriptionSprite.descriptionMC.descText.wordWrap = true;
 			this.DescriptionSprite.descriptionMC.descText.autoSize = "left";
 			this.blipLayer = this.DescriptionSprite.descriptionMC.createEmptyMovieClip("blipLayer", this.DescriptionSprite.descriptionMC.getNextHighestDepth(), {_x:this.DescriptionSprite.descriptionMC.descText._x, _y:this.DescriptionSprite.descriptionMC.descText._y});
-			textBlips.setTextWithIcons(this.currentItem.subtitle,this.blipLayer,this.DescriptionSprite.descriptionMC.descText,this.descFont[1],13,2,false);
 			format.font = this.descFont[0];
-			format.size = 13;
-			format.leading = 2;
+			//format.size = 13;
+			//format.leading = 2;
 			this.DescriptionSprite.descriptionMC.descText.setTextFormat(format);
+			textBlips.setTextWithIcons(this.currentItem.subtitle,this.blipLayer,this.DescriptionSprite.descriptionMC.descText,this.descFont[1],13,2,false);
 			if (this.currentItem.blinkDesc)
 			{
 				if (this.DescriptionSprite.iMC._currentframe == 1)
@@ -840,7 +840,7 @@
 		{
 			return;
 		}
-		if (this.currentSelection > this._maxItem)
+		if (this.currentSelection >= this._maxItem)
 		{
 			this._minItem = this.currentSelection - this.maxItemsOnScreen;
 			this._maxItem = this.currentSelection;

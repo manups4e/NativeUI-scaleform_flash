@@ -303,7 +303,7 @@
 
 	function UPDATE_ITEM_DESCRIPTION(item, substr)
 	{
-		var _selectedItem = UIMenu.menuItems[item];
+		var _selectedItem = this.UIMenu.menuItems[item];
 		_selectedItem.subtitle = substr;
 		this.UIMenu.updateItemsDrawing();
 	}
