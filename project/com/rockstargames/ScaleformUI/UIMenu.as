@@ -41,8 +41,11 @@
 	var alternativeTitle;
 	var countCol;
 	var descFont = 0;
-	
-	function UIMenu(mc, title, subtitle, alternative, x, y, txd, txn, maxItems, enableAnim, animType, buildType, counterColor, dFontName, dFontId)
+	var totalItems = 0;
+	var timerId = 0;
+	var isFading = false;
+
+	function UIMenu(mc, title, subtitle, alternative, x, y, txd, txn, maxItems, totItems, enableAnim, animType, buildType, counterColor, dFontName, dFontId)
 	{
 		this._menuOff = new Array(x, y);
 		this.menuItems = new Array();
@@ -54,6 +57,7 @@
 		this._minItem = 0;
 		this._maxItem = this.maxItemsOnScreen;
 		this.itemCount = 0;
+		this.totalItems = totItems;
 		this.alternativeTitle = alternative;
 		this.countCol = counterColor;
 		this.descFont = [dFontName, dFontId];
@@ -154,18 +158,44 @@
 		this.buildingType = buildType;
 	}
 
-	function addItem(id, str, substr, param1, param2, param3, param4, param5, param6, param7, param8, param9, param10, param11, param12, param13)
+	function addItem(before, id, index, str, substr, param1, param2, param3, param4, param5, param6, param7, param8, param9, param10, param11, param12, param13)
 	{
 		var item;
 		if (id == 5)
 		{
-			item = new com.rockstargames.ScaleformUI.items.UIMenuStatsItem(id, str, substr, this, param1, param2, param3, param4, param5, param6, param7, param8, param9);
+			item = new com.rockstargames.ScaleformUI.items.UIMenuStatsItem(id, index, str, substr, this, param1, param2, param3, param4, param5, param6, param7, param8, param9);
 		}
 		else
 		{
-			item = new com.rockstargames.ScaleformUI.items.UIMenuItem(id, str, substr, this, param1, param2, param3, param4, param5, param6, param7, param8, param9, param10, param11, param12, param13);
+			item = new com.rockstargames.ScaleformUI.items.UIMenuItem(id, index, str, substr, this, param1, param2, param3, param4, param5, param6, param7, param8, param9, param10, param11, param12, param13);
 		}
-		this.itemCount = this.menuItems.push(item);
+
+		var lastItem = this.menuItems[this.itemCount - 1];
+		if (before)
+		{
+			item.itemMC._y = this.menuItems[0].itemMC._y - item.itemMC._height;
+			this.menuItems[this.itemCount - 1].Clear();
+			this.menuItems.pop();
+			this.itemCount = this.menuItems.unshift(item);
+		}
+		else
+		{
+			if (this.itemCount == 0)
+			{
+				item.itemMC._y = 0;
+			}
+			else
+			{
+				if (this.itemCount >= this.maxItemsOnScreen)
+				{
+					this.menuItems[0].Clear();
+					this.menuItems.shift();
+					this.itemCount = this.menuItems.length;
+				}
+				item.itemMC._y = lastItem.itemMC._y + lastItem.itemMC._height;
+			}
+			this.itemCount = this.menuItems.push(item);
+		}
 
 		if (this.buildingType > 0)
 		{
@@ -190,19 +220,7 @@
 			}
 			com.rockstargames.ui.tweenStar.TweenStarLite.to(item.itemMC,0.45,{_x:0, ease:this.AnimType});
 		}
-
 		this.updateItemsDrawing();
-		var dir = this.scrollableContent._y;
-		if (this.currentSelection >= this.itemCount - 1)
-		{
-			if (this.itemCount - 1 > this._maxItem)
-			{
-				this._minItem = this.itemCount - 1 - this.maxItemsOnScreen;
-				this._maxItem = this.itemCount - 1;
-				dir = this.MaxHeight - (this.menuItems[this.itemCount - 1].itemMC._y + this.menuItems[this.itemCount - 1].itemMC._height);
-			}
-		}
-		this.scrollableContent._y = dir;
 		return this.itemCount;
 	}
 
@@ -212,11 +230,9 @@
 		this.menuItems[id].Clear();
 		this.menuItems.splice(id,1);
 		this.itemCount = this.menuItems.length;
-		for (var item in this.menuItems)
-		{
-			this.updateItemsDrawing();
-		}
 		this.currentSelection = _selectedItem;
+		this.updateItemsDrawing();
+		return this.itemCount;
 	}
 
 	function addPanel(item, id, param1, param2, param3, param4, param5, param6, param7, param8)
@@ -245,8 +261,9 @@
 		}
 		this.updateItemsDrawing();
 	}
-	
-	function removePanel(item, id){
+
+	function removePanel(item, id)
+	{
 		var selectItem = this.menuItems[item];
 		selectItem.removePanel(id);
 		this.updateItemsDrawing();
@@ -418,182 +435,17 @@
 	function goUp(val)
 	{
 		var delay = val;
-		if (this.itemCount > this.maxItemsOnScreen)
-		{
-			if (this.currentSelection == 0)
-			{
-				this._activeItem = this.itemCount - 1;
-				this._minItem = this.itemCount - 1 - this.maxItemsOnScreen;
-				this._maxItem = this.itemCount - 1;
-				this.ScrollMenu(-1,delay,true);
-				if (this.currentItem._type == 6)
-				{
-					if (this.currentItem.jumpable)
-					{
-						this._activeItem--;
-						if (this.scrollableContent._y < -this.currentItem.itemMC._y)
-						{
-							this.ScrollMenu(-1,delay);
-							this._minItem--;
-							this._maxItem--;
-						}
-					}
-				}
-			}
-			else
-			{
-				this._activeItem--;
-				if (this.scrollableContent._y < -this.currentItem.itemMC._y)
-				{
-					this.ScrollMenu(-1,delay);
-					this._minItem--;
-					this._maxItem--;
-				}
-				if (this.currentItem._type == 6)
-				{
-					if (this.currentItem.jumpable)
-					{
-						if (this.currentSelection == 0)
-						{
-							this._activeItem = this.itemCount - 1;
-							this._minItem = this.itemCount - 1 - this.maxItemsOnScreen;
-							this._maxItem = this.itemCount - 1;
-							this.ScrollMenu(-1,delay,true);
-							if (this.currentItem._type == 6)
-							{
-								if (this.currentItem.jumpable)
-								{
-									this._activeItem--;
-									if (this.scrollableContent._y < -this.currentItem.itemMC._y)
-									{
-										this.ScrollMenu(-1,delay);
-										this._minItem--;
-										this._maxItem--;
-									}
-								}
-							}
-						}
-						else
-						{
-							this._activeItem--;
-							if (this.scrollableContent._y < -this.currentItem.itemMC._y)
-							{
-								this.ScrollMenu(-1,delay);
-								this._minItem--;
-								this._maxItem--;
-							}
-						}
-					}
-				}
-			}
-		}
-		else
-		{
-			this._activeItem--;
-			if (this.currentItem._type == 6)
-			{
-				if (this.currentItem.jumpable)
-				{
-					this._activeItem--;
-				}
-			}
-			if (this._activeItem < 0)
-			{
-				this._activeItem = this.itemCount - 1;
-			}
-		}
+		//this.ScrollMenu(-1,delay);
+		this.scrollableContent._y = -this.currentItem.itemMC._y;
 		this.updateItemsDrawing();
-		com.rockstargames.ui.game.GameInterface.call("PLAY_SOUND",com.rockstargames.ui.game.GameInterface.GENERIC_TYPE,"NAV_UP_DOWN","HUD_FRONTEND_DEFAULT_SOUNDSET");
-		return this.currentSelection;
 	}
 
 	function goDown(val)
 	{
 		var delay = val;
-		if (this.itemCount > this.maxItemsOnScreen)
-		{
-			if (this.currentSelection == this.itemCount - 1)
-			{
-				this._activeItem = 0;
-				this._minItem = 0;
-				this._maxItem = this.maxItemsOnScreen;
-				this.ScrollMenu(1,delay,true);
-				if (this.currentItem._type == 6)
-				{
-					if (this.currentItem.jumpable)
-					{
-						this._activeItem++;
-						if (this.scrollableContent._y > this.MaxHeight - (this.currentItem.itemMC._y + this.currentItem.itemMC._height))
-						{
-							this.ScrollMenu(1,delay);
-							this._minItem++;
-							this._maxItem++;
-						}
-					}
-				}
-			}
-			else
-			{
-				this._activeItem++;
-				if (this.scrollableContent._y > this.MaxHeight - (this.currentItem.itemMC._y + this.currentItem.itemMC._height))
-				{
-					this.ScrollMenu(1,delay);
-					this._minItem++;
-					this._maxItem++;
-				}
-				if (this.currentItem._type == 6)
-				{
-					if (this.currentItem.jumpable)
-					{
-						if (this.currentSelection == this.itemCount - 1)
-						{
-							this._activeItem = 0;
-							this._minItem = 0;
-							this._maxItem = this.maxItemsOnScreen;
-							this.ScrollMenu(1,delay,true);
-							if (this.currentItem._type == 6)
-							{
-								if (this.currentItem.jumpable)
-								{
-									this._activeItem++;
-									if (this.scrollableContent._y > this.MaxHeight - (this.currentItem.itemMC._y + this.currentItem.itemMC._height))
-									{
-										this.ScrollMenu(1,delay);
-										this._minItem++;
-										this._maxItem++;
-									}
-								}
-							}
-						}
-						else
-						{
-							this._activeItem++;
-							if (this.scrollableContent._y > this.MaxHeight - (this.currentItem.itemMC._y + this.currentItem.itemMC._height))
-							{
-								this.ScrollMenu(1,delay);
-								this._minItem++;
-								this._maxItem++;
-							}
-						}
-					}
-				}
-			}
-		}
-		else
-		{
-			this._activeItem++;
-			if (this.currentItem.jumpable)
-			{
-				this._activeItem++;
-			}
-			if (this._activeItem == this.itemCount)
-			{
-				this._activeItem = 0;
-			}
-		}
+		//this.ScrollMenu(1,delay);
+		this.scrollableContent._y = this.MaxHeight - (this.currentItem.itemMC._y + this.currentItem.itemMC._height);
 		this.updateItemsDrawing();
-		com.rockstargames.ui.game.GameInterface.call("PLAY_SOUND",com.rockstargames.ui.game.GameInterface.GENERIC_TYPE,"NAV_UP_DOWN","HUD_FRONTEND_DEFAULT_SOUNDSET");
-		return this.currentSelection;
 	}
 
 	function goLeft()
@@ -638,15 +490,15 @@
 		for (var item in this.menuItems)
 		{
 			this.menuItems[item].highlighted = false;
-			if (item == 0)
-			{
-				this.menuItems[item].itemMC._y = 0;
-			}
-			else if (item > 0)
-			{
-				this.menuItems[item].itemMC._y = this.menuItems[item - 1].itemMC._y + this.menuItems[item - 1].itemMC._height;
-			}
 			this.menuItems[item].highlighted = (item == this.currentSelection);
+		}
+		if (this.currentSelection == 0)
+		{
+			this.scrollableContent._y = -this.currentItem.itemMC._y;
+		}
+		else if (this.currentSelection == this.maxItemsOnScreen - 1)
+		{
+			this.scrollableContent._y = this.MaxHeight - (this.currentItem.itemMC._y + this.currentItem.itemMC._height);
 		}
 
 		this.itemsBG.maskMC._height = this.itemsBG.bgMC._height = this.MaxHeight;
@@ -673,14 +525,13 @@
 			}
 		}
 		this.updateDescription();
-		com.rockstargames.ui.utils.UIText.setSizedText(this.CounterText,this.currentSelection + 1 + "/" + this.itemCount,true,true);
 		com.rockstargames.ui.utils.Colour.ApplyHudColourToTF(this.CounterText,this.countCol);
 	}
 
 	function updateDescription()
 	{
 		var offset = this._itemsOffset;
-		if (this.itemCount > this.maxItemsOnScreen)
+		if (this.totalItems >= this.maxItemsOnScreen)
 		{
 			if (this.Footer == undefined)
 			{
@@ -729,20 +580,20 @@
 			this.DescriptionSprite._y = offset + 1;
 			this.DescriptionSprite._visible = true;
 			var textBlips = new com.rockstargames.ui.utils.Text();
-			var format = this.DescriptionSprite.descriptionMC.descText.getTextFormat();
 			//com.rockstargames.ui.utils.UIText.setDescText(this.DescriptionSprite.descriptionMC.descText,this.currentItem.subtitle,true);
+			var format = this.DescriptionSprite.descriptionMC.descText.getTextFormat();
 			if (this.blipLayer)
 			{
 				this.blipLayer.removeMovieClip();
 			}
 			this.DescriptionSprite.descriptionMC.descText.wordWrap = true;
-			this.DescriptionSprite.descriptionMC.descText.autoSize = "left";
-			this.blipLayer = this.DescriptionSprite.descriptionMC.createEmptyMovieClip("blipLayer", this.DescriptionSprite.descriptionMC.getNextHighestDepth(), {_x:this.DescriptionSprite.descriptionMC.descText._x, _y:this.DescriptionSprite.descriptionMC.descText._y});
-			format.font = this.descFont[0];
-			//format.size = 13;
-			//format.leading = 2;
-			this.DescriptionSprite.descriptionMC.descText.setTextFormat(format);
+			this.DescriptionSprite.descriptionMC.descText.autoSize = true;
+			this.blipLayer = this.DescriptionSprite.descriptionMC.createEmptyMovieClip("blipLayer", 1000, {_x:this.DescriptionSprite.descriptionMC.descText._x, _y:this.DescriptionSprite.descriptionMC.descText._y});
 			textBlips.setTextWithIcons(this.currentItem.subtitle,this.blipLayer,this.DescriptionSprite.descriptionMC.descText,this.descFont[1],13,2,false);
+			format.font = this.descFont[0];
+			format.size = 13;
+			format.leading = 2;
+			this.DescriptionSprite.descriptionMC.descText.setTextFormat(format);
 			if (this.currentItem.blinkDesc)
 			{
 				if (this.DescriptionSprite.iMC._currentframe == 1)
@@ -804,6 +655,11 @@
 		com.rockstargames.ui.utils.Colour.ApplyHudColourToTF(this.CounterText,colour);
 	}
 
+	function setCounter(act, maxItems)
+	{
+		com.rockstargames.ui.utils.UIText.setSizedText(this.CounterText,act + "/" + maxItems,true,true);
+	}
+
 
 	function get currentItem()
 	{
@@ -811,18 +667,11 @@
 	}
 	function set currentItem(item)
 	{
-		var limit = this.itemCount - 1;
-		var counter = 0;
-		if (this.itemCount > this.maxItemsOnScreen)
+		for (var item in this.menuItems)
 		{
-			limit = this._maxItem;
-		}
-
-		for (var i = this._minItem; i <= limit; i++)
-		{
-			if (this.menuItems[i].leftText == item.leftText && this.menuItems[i].subtitle == item.subtitle)
+			if (this.menuItems[item].leftText == item.leftText && this.menuItems[item].subtitle == item.subtitle)
 			{
-				this.currentSelection = i;
+				this.currentSelection = item;
 			}
 		}
 	}
@@ -834,33 +683,7 @@
 
 	function set currentSelection(val)
 	{
-		var dir;
 		this._activeItem = val;
-		if (this._activeItem > this.itemCount)
-		{
-			return;
-		}
-		if (this.currentSelection >= this._maxItem)
-		{
-			this._minItem = this.currentSelection - this.maxItemsOnScreen;
-			this._maxItem = this.currentSelection;
-			if (this._minItem < 0)
-			{
-				this._minItem = 0;
-			}
-			dir = this.MaxHeight - (this.currentItem.itemMC._y + this.currentItem.itemMC._height);
-		}
-		else if (this.currentSelection < this._minItem)
-		{
-			this._minItem = this.currentSelection;
-			this._maxItem = this.currentSelection + this.maxItemsOnScreen;
-			if (this._maxItem > this.itemCount - 1)
-			{
-				this._maxItem = this.itemCount - 1;
-			}
-			dir = -this.currentItem.itemMC._y;
-		}
-		this.ScrollMenu(0,150,0,dir);
 		this.updateItemsDrawing();
 	}
 
@@ -872,13 +695,61 @@
 		this.txd_loader.loadClip(_loc2_,targetMC);
 	}
 
-	function Clear()
+	function ClearItems()
 	{
 		for (var it in this.menuItems)
 		{
 			this.menuItems[it].Clear();
 		}
 		this.menuItems = new Array();
+	}
+
+	function FadeOutMenu()
+	{
+		com.rockstargames.gtav.levelDesign.SCALEFORMUI.IS_FADING = true;
+		this.FadeTween(this._mainMC,false);
+	}
+	function FadeInMenu()
+	{
+		com.rockstargames.gtav.levelDesign.SCALEFORMUI.IS_FADING = true;
+		this.FadeTween(this._mainMC,true);
+	}
+
+	function FadeOutItems()
+	{
+		com.rockstargames.gtav.levelDesign.SCALEFORMUI.IS_FADING = true;
+		this.FadeTween(this.scrollableContent,false);
+	}
+	function FadeInItems()
+	{
+		com.rockstargames.gtav.levelDesign.SCALEFORMUI.IS_FADING = true;
+		this.FadeTween(this.scrollableContent,true);
+	}
+
+	function FadeTween(mc, bool)
+	{
+		var _alphaTo = 0;
+		if (bool)
+		{
+			_alphaTo = 100;
+			// fadein
+		}
+		else
+		{
+			//fadeo ut
+			_alphaTo = 0;
+		}
+		com.rockstargames.ui.tweenStar.TweenStarLite.to(mc,0.1,{_alpha:_alphaTo, onCompleteScope:this, onComplete:this.fadingComplete});
+	}
+
+	function fadingComplete()
+	{
+		com.rockstargames.gtav.levelDesign.SCALEFORMUI.IS_FADING = false;
+	}
+
+	function Clear()
+	{
+		this.ClearItems();
 		if (this.windows.length > 0)
 		{
 			for (var wi in this.windows)
@@ -907,12 +778,7 @@
 		var _h = 0;
 
 		var limit = this.itemCount;
-		if (limit > this.maxItemsOnScreen)
-		{
-			limit = this._maxItem;
-		}
-
-		for (var i = this._minItem; i < limit; i++)
+		for (var i = 0; i < limit; i++)
 		{
 			_h += this.menuItems[i].itemMC.bgMC._height;
 		}

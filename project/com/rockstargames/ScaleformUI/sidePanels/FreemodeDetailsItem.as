@@ -9,7 +9,10 @@
 	var _type;
 	var rightBadgeId;
 	var badgeLoader;
-	function FreemodeDetailsItem(_parentPanel, index, type, textLeft, textRight, param3, param4, param5, param6)
+	var labelFont;
+	var rightLabelFont;
+
+	function FreemodeDetailsItem(_parentPanel, index, type, textLeft, textRight, param3, param4, param5, param6, param7, param8, param9, param10)
 	{
 		this.parentPanel = _parentPanel;
 		this.itemMC = this.parentPanel.itemMC.attachMovie("freemodeDetailsItem", "detailsItem_" + this.parentPanel.itemMC.getNextHighestDepth(), this.parentPanel.itemMC.getNextHighestDepth());
@@ -106,7 +109,34 @@
 		}
 		com.rockstargames.ui.utils.Colour.ApplyHudColour(this.itemMC.leftlabelMC,com.rockstargames.ui.utils.HudColour.HUD_COLOUR_WHITE);
 		com.rockstargames.ui.utils.Colour.ApplyHudColour(this.itemMC.labelMC,com.rockstargames.ui.utils.HudColour.HUD_COLOUR_WHITE);
+		this.updateLabelFont(param6, param7);
+		this.updateRightLabelFont(param8, param9);
 	}
+
+	function updateLabelFont(fontName, fontId)
+	{
+		this.labelFont = new Array(fontName, fontId);
+		var newFont = this.itemMC.leftlabelMC.titleTF.getTextFormat();
+		newFont.font = this.labelFont[0];
+		this.itemMC.leftlabelMC.titleTF.embedFonts = true;
+		this.itemMC.leftlabelMC.titleTF.antiAliasType = "advanced";
+		this.itemMC.leftlabelMC.titleTF.selectable = false;
+		this.itemMC.leftlabelMC.titleTF.setNewTextFormat(newFont);
+		this.itemMC.leftlabelMC.titleTF.setTextFormat(newFont);
+	}
+
+	function updateRightLabelFont(fontName, fontId)
+	{
+		this.rightLabelFont = new Array(fontName, fontId);
+		var newFont = this.itemMC.labelMC.valueTF.getTextFormat();
+		newFont.font = this.rightLabelFont[0];
+		this.itemMC.labelMC.valueTF.embedFonts = true;
+		this.itemMC.labelMC.valueTF.antiAliasType = "advanced";
+		this.itemMC.labelMC.valueTF.selectable = false;
+		this.itemMC.labelMC.valueTF.setNewTextFormat(newFont);
+		this.itemMC.labelMC.valueTF.setTextFormat(newFont);
+	}
+
 
 	function SetRightBadge(id)
 	{

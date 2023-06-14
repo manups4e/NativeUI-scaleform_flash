@@ -84,7 +84,7 @@
 	{
 		this.model.getCurrentView().highlightedItem = 0;
 		this.model.getCurrentView().topEdge = 0;
-		this.model.getCurrentView().__set__index(0);
+		this.model.getCurrentView().index = 0;
 	}
 
 	function SHOW_COLUMN(bool)
@@ -124,14 +124,14 @@
 	function SET_FOCUS(isFocused)
 	{
 		this.columnIsFocused = isFocused;
-		com.rockstargames.ui.utils.Debug.log("COLUMN SET FOCUS columnID: " + this.__get__columnID() + " = SET isFocused to: " + isFocused);
+		com.rockstargames.ui.utils.Debug.log("COLUMN SET FOCUS columnID: " + this.columnID + " = SET isFocused to: " + isFocused);
 		this.SEND_COLUMN_PARAMS();
 		var __reg4 = this.model.getCurrentView().itemList;
 		var __reg2 = 0;
 		while (__reg2 < __reg4.length)
 		{
 			var __reg3 = __reg4[__reg2];
-			__reg3.__set__highlighted(isFocused ? this.model.getCurrentView().highlightedItem == __reg2 : false);
+			__reg3.highlighted = isFocused ? this.model.getCurrentView().highlightedItem == __reg2 : false;
 			++__reg2;
 		}
 		if (this.scrollBase != undefined)
@@ -149,8 +149,8 @@
 		while (__reg2 < __reg4.length)
 		{
 			var __reg3 = __reg4[__reg2];
-			__reg3.__set__columnID(this.columnID);
-			com.rockstargames.ui.utils.Debug.log(__reg2 + "  " + __reg3 + " = SET COLUMNID to: " + __reg3.__get__columnID());
+			__reg3.columnID = this.columnID;
+			com.rockstargames.ui.utils.Debug.log(__reg2 + "  " + __reg3 + " = SET COLUMNID to: " + __reg3.columnID);
 			++__reg2;
 		}
 		this.setScrollColumnID();
@@ -165,7 +165,7 @@
 				this.scrollBase.setColumnID(this.footerScrollOverrideIndex);
 				return;
 			}
-			this.scrollBase.setColumnID(this.__get__columnID());
+			this.scrollBase.setColumnID(this.columnID);
 		}
 	}
 

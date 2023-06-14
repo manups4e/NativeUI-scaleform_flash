@@ -166,9 +166,9 @@
 		}
 	}
 
-	function AddItem(id, textLeft, textRight, param3, param4, param5, param6)
+	function AddItem(id, textLeft, textRight, param3, param4, param5, param6, param7, param8, param9, param10)
 	{
-		var item = new com.rockstargames.ScaleformUI.sidePanels.FreemodeDetailsItem(this, this.listDescItem + 1, id, textLeft, textRight, param3, param4, param5, param6);
+		var item = new com.rockstargames.ScaleformUI.sidePanels.FreemodeDetailsItem(this, this.listDescItem + 1, id, textLeft, textRight, param3, param4, param5, param6, param7, param8, param9, param10);
 		if (this.listDescItem == 0)
 		{
 			item.itemMC._y = this.itemMC.descBG._y;

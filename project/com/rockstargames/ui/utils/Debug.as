@@ -1,4 +1,4 @@
-class com.rockstargames.ui.utils.Debug
+﻿class com.rockstargames.ui.utils.Debug
 {
    function Debug()
    {
