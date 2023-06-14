@@ -54,6 +54,8 @@
 			case 1 :
 				this.itemTextRight._width = 288 - (this.itemTextLeft._x + this.itemTextLeft.textWidth + 25);
 				this.itemTextRight._x = 288 - this.itemTextRight._width - 6;
+				this.updateLabelFont(param4,param5);
+				this.updateRightLabelFont(param6,param7);
 				break;
 			case 2 :
 				this.badgeLoader = this.itemMC.iconMC.attachMovie("txdLoader", "badge", this.itemMC.iconMC.getNextHighestDepth());
@@ -75,6 +77,8 @@
 						this.itemMC.checkMC._visible = param5;
 					}
 				}
+				this.updateLabelFont(param6,param7);
+				this.updateRightLabelFont(param8,param9);
 				break;
 			case 3 :
 				var _loc0_ = 2;
@@ -82,6 +86,8 @@
 				this.itemMC.leftlabelMC._y = _loc0_ = 2;
 				this.itemMC.labelMC._y = _loc0_;
 				this.itemMC.bgMC._y = _loc0_;
+				this.updateLabelFont(param4,param5);
+				this.updateRightLabelFont(param6,param7);
 				break;
 			case 4 :
 				var _loc9_ = textLeft;
@@ -106,11 +112,10 @@
 				this.itemTextLeft._y = -2;
 				this.itemTextRight._visible = false;
 				this.itemMC.bgMC._height = this.itemTextLeft.textHeight <= 0 ? 0 : this.itemTextLeft.textHeight + 16;
+				this.updateLabelFont(param3,param4);
 		}
 		com.rockstargames.ui.utils.Colour.ApplyHudColour(this.itemMC.leftlabelMC,com.rockstargames.ui.utils.HudColour.HUD_COLOUR_WHITE);
 		com.rockstargames.ui.utils.Colour.ApplyHudColour(this.itemMC.labelMC,com.rockstargames.ui.utils.HudColour.HUD_COLOUR_WHITE);
-		this.updateLabelFont(param6, param7);
-		this.updateRightLabelFont(param8, param9);
 	}
 
 	function updateLabelFont(fontName, fontId)
