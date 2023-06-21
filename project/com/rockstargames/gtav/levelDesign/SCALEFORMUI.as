@@ -47,10 +47,13 @@
 		this.initScreenLayout();
 	}
 
-	function CREATE_MENU(title, subtitle, x, y, alternative, txd, txn, maxItems, totItems, enableAnim, animType, buildType, counterColor, dFontName, dFontId)
+	function CREATE_MENU(title, subtitle, x, y, alternative, txd, txn, maxItems, totItems, enableAnim, animType, buildType, counterColor, dFontName, dFontId, fadingSpeed)
 	{
 		var off = [x, y];
-		this.CONTENT._alpha = 0;
+		if (fadingSpeed > 0.0)
+		{
+			this.CONTENT._alpha = 0;
+		}
 		this.UIMenu = new com.rockstargames.ScaleformUI.UIMenu(this.CONTENT, title, subtitle, alternative, x, y, txd, txn, maxItems, totItems, enableAnim, animType, buildType, counterColor, dFontName, dFontId);
 	}
 
@@ -63,6 +66,11 @@
 	{
 		this.UIMenu.Clear();
 		this.UIMenu = undefined;
+	}
+
+	function SET_WIDTH(w)
+	{
+		this.UIMenu.Width = w;
 	}
 
 	function ENABLE_MOUSE(bool)

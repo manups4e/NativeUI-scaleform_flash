@@ -235,6 +235,12 @@
 	{
 		this.itemMC.statWheelMC.wheelMC.lineTo(Math.sin(angle * this.PI_OVER_180) * this.wheelRadius,(-Math.cos(angle * this.PI_OVER_180)) * this.wheelRadius);
 	}
+	
+	function set Width(w)
+	{
+		this.itemMC._width = w;
+	}
+
 
 	function Clear()
 	{

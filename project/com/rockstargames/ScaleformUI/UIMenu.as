@@ -44,8 +44,10 @@
 	var totalItems = 0;
 	var timerId = 0;
 	var isFading = false;
+	var fadingSpeed = 0.1;
+	var __width;
 
-	function UIMenu(mc, title, subtitle, alternative, x, y, txd, txn, maxItems, totItems, enableAnim, animType, buildType, counterColor, dFontName, dFontId)
+	function UIMenu(mc, title, subtitle, alternative, x, y, txd, txn, maxItems, totItems, enableAnim, animType, buildType, counterColor, dFontName, dFontId, fadingSp)
 	{
 		this._menuOff = new Array(x, y);
 		this.menuItems = new Array();
@@ -61,7 +63,6 @@
 		this.alternativeTitle = alternative;
 		this.countCol = counterColor;
 		this.descFont = [dFontName, dFontId];
-
 		this.BannerSprite = this._mainMC.attachMovie("BannerSprite", "bannerSpriteMC", this._mainMC.getNextHighestDepth());
 		this.BannerSprite._x = 0 + this._menuOff[0];
 		this.BannerSprite._y = 0 + this._menuOff[1];
@@ -69,6 +70,7 @@
 		this.BannerSprite._height = 65;
 		this._bannerTxd = txd;
 		this._bannerTexture = txn;
+		this.fadingSpeed = fadingSp;
 
 		var banner = this.BannerSprite.bannerBG.attachMovie("txdLoader", "bannerSprite", this.BannerSprite.bannerBG.getNextHighestDepth());
 		var _alreadyLoaded = true;
@@ -100,10 +102,11 @@
 				this.BannerTitle.antiAliasType = "advanced";
 				this.BannerTitle.selectable = false;
 				com.rockstargames.ui.utils.UIText.setSizedText(this.BannerSprite.titleMC.labelTF,this._menuTitle,true,true,31,31);
+				this.BannerTitle.setTextFormat(bannerFont);
 			}
 			else
 			{
-				var bannerFont = new TextFormat("$Font2_cond_NOT_GAMERNAME", 31);
+				var bannerFont = new TextFormat("$Font2", 31);
 				bannerFont.align = "left";
 				bannerFont.bold = true;
 				this.BannerTitle = this.BannerSprite.titleMC.labelTF2;
@@ -111,9 +114,12 @@
 				this.BannerTitle.antiAliasType = "advanced";
 				this.BannerTitle.selectable = false;
 				com.rockstargames.ui.utils.UIText.setSizedText(this.BannerSprite.titleMC.labelTF2,this._menuTitle,true,true,31,31);
+				this.BannerTitle.setTextFormat(bannerFont);
 			}
 		}
 
+		var subFont = new TextFormat("$Font2", 12);
+		subFont.align = "left";
 		this.SubtitleSprite = this._mainMC.attachMovie("SubtitleSprite", "subtitleSprite", this._mainMC.getNextHighestDepth());
 		this.SubtitleSprite._x = 0 + this._menuOff[0];
 		this.SubtitleSprite._y = this.BannerSprite._y + this.BannerSprite._height - 1;
@@ -127,11 +133,16 @@
 		if (this._menuSubtitle != undefined && this._menuSubtitle != "")
 		{
 			com.rockstargames.ui.utils.UIText.setSizedText(this.SubtitleText,this._menuSubtitle,true,true);
+			this.SubtitleText.setTextFormat(subFont);
 		}
+
+		subFont = new TextFormat("$Font2", 12);
+		subFont.align = "right";
 		this.CounterText = this.SubtitleSprite.counterMC.labelTF;
 		this.CounterText.antiAliasType = "advanced";
 		this.CounterText.selectable = false;
 		com.rockstargames.ui.utils.UIText.setSizedText(this.CounterText,"0/0",true,true);
+		this.CounterText.setTextFormat(subFont);
 		com.rockstargames.ui.utils.Colour.ApplyHudColourToTF(this.CounterText,counterColor);
 
 		this.itemsBG = this._mainMC.attachMovie("backgroundBody", "backgroundBody_" + this._mainMC.getNextHighestDepth(), this._mainMC.getNextHighestDepth());
@@ -208,7 +219,7 @@
 					item.itemMC._x = 289;
 					break;
 				case 3 :
-					if (this.itemCount % 2 == 0)
+					if (index % 2 == 0)
 					{
 						item.itemMC._x = 289;
 					}
@@ -630,10 +641,11 @@
 				this.BannerTitle.antiAliasType = "advanced";
 				this.BannerTitle.selectable = false;
 				com.rockstargames.ui.utils.UIText.setSizedText(this.BannerSprite.titleMC.labelTF,this._menuTitle,true,true,31,31);
+				this.BannerTitle.setTextFormat(bannerFont);
 			}
 			else
 			{
-				var bannerFont = new TextFormat("$Font2_cond_NOT_GAMERNAME", 31);
+				var bannerFont = new TextFormat("$Font2", 31);
 				bannerFont.align = "left";
 				bannerFont.bold = true;
 				this.BannerTitle = this.BannerSprite.titleMC.labelTF2;
@@ -641,23 +653,33 @@
 				this.BannerTitle.antiAliasType = "advanced";
 				this.BannerTitle.selectable = false;
 				com.rockstargames.ui.utils.UIText.setSizedText(this.BannerSprite.titleMC.labelTF2,this._menuTitle,true,true,31,31);
+				this.BannerTitle.setTextFormat(bannerFont);
 			}
 		}
 		if (this._menuSubtitle != undefined && this._menuSubtitle != "")
 		{
+			var subFont = new TextFormat("$Font2", 12);
+			subFont.align = "left";
 			com.rockstargames.ui.utils.UIText.setSizedText(this.SubtitleText,this._menuSubtitle,true,true);
+			this.SubtitleText.setTextFormat(subFont);
 		}
+		this.updateItemsDrawing();
 	}
 
 	function colorCounter(colour)
 	{
 		this.countCol = colour;
 		com.rockstargames.ui.utils.Colour.ApplyHudColourToTF(this.CounterText,colour);
+		this.updateItemsDrawing();
 	}
 
 	function setCounter(act, maxItems)
 	{
+		var subFont = new TextFormat("$Font2", 12);
+		subFont.align = "right";
 		com.rockstargames.ui.utils.UIText.setSizedText(this.CounterText,act + "/" + maxItems,true,true);
+		this.CounterText.setTextFormat(subFont);
+		this.updateItemsDrawing();
 	}
 
 
@@ -695,35 +717,38 @@
 		this.txd_loader.loadClip(_loc2_,targetMC);
 	}
 
-	function ClearItems()
-	{
-		for (var it in this.menuItems)
-		{
-			this.menuItems[it].Clear();
-		}
-		this.menuItems = new Array();
-	}
-
 	function FadeOutMenu()
 	{
-		com.rockstargames.gtav.levelDesign.SCALEFORMUI.IS_FADING = true;
-		this.FadeTween(this._mainMC,false);
+		if (this.fadingSpeed > 0.0)
+		{
+			com.rockstargames.gtav.levelDesign.SCALEFORMUI.IS_FADING = true;
+			this.FadeTween(this._mainMC,false);
+		}
 	}
 	function FadeInMenu()
 	{
-		com.rockstargames.gtav.levelDesign.SCALEFORMUI.IS_FADING = true;
-		this.FadeTween(this._mainMC,true);
+		if (this.fadingSpeed > 0.0)
+		{
+			com.rockstargames.gtav.levelDesign.SCALEFORMUI.IS_FADING = true;
+			this.FadeTween(this._mainMC,true);
+		}
 	}
 
 	function FadeOutItems()
 	{
-		com.rockstargames.gtav.levelDesign.SCALEFORMUI.IS_FADING = true;
-		this.FadeTween(this.scrollableContent,false);
+		if (this.fadingSpeed > 0.0)
+		{
+			com.rockstargames.gtav.levelDesign.SCALEFORMUI.IS_FADING = true;
+			this.FadeTween(this.scrollableContent,false);
+		}
 	}
 	function FadeInItems()
 	{
-		com.rockstargames.gtav.levelDesign.SCALEFORMUI.IS_FADING = true;
-		this.FadeTween(this.scrollableContent,true);
+		if (this.fadingSpeed > 0.0)
+		{
+			com.rockstargames.gtav.levelDesign.SCALEFORMUI.IS_FADING = true;
+			this.FadeTween(this.scrollableContent,true);
+		}
 	}
 
 	function FadeTween(mc, bool)
@@ -739,12 +764,22 @@
 			//fadeo ut
 			_alphaTo = 0;
 		}
-		com.rockstargames.ui.tweenStar.TweenStarLite.to(mc,0.1,{_alpha:_alphaTo, onCompleteScope:this, onComplete:this.fadingComplete});
+		com.rockstargames.ui.tweenStar.TweenStarLite.to(mc,this.fadingSpeed,{_alpha:_alphaTo, onCompleteScope:this, onComplete:this.fadingComplete});
 	}
 
 	function fadingComplete()
 	{
 		com.rockstargames.gtav.levelDesign.SCALEFORMUI.IS_FADING = false;
+	}
+
+
+	function ClearItems()
+	{
+		for (var it in this.menuItems)
+		{
+			this.menuItems[it].Clear();
+		}
+		this.menuItems = new Array();
 	}
 
 	function Clear()
@@ -771,6 +806,43 @@
 	{
 		this.BannerSprite.bannerBG.bannerSprite._alpha = 0;
 		com.rockstargames.ui.tweenStar.TweenStarLite.to(this.BannerSprite.bannerBG.bannerSprite,0.2,{_alpha:100});
+	}
+
+	function resizeMe(mc, maxW, maxH, constrainProportions)
+	{
+		maxH = maxH == 0 ? maxW : maxH;
+		mc._width = maxW;
+		mc._height = maxH;
+		if (constrainProportions)
+		{
+			mc._xscale < mc._yscale ? mc._yscale = mc._xscale : mc._xscale = mc._yscale;
+		}
+	}
+
+	function set Width(_w)
+	{
+		var scale = _w / 288;
+
+		com.rockstargames.ui.utils.Debug.log("BEFORE width: " + _w + ", this.BannerSprite._width:" + this.BannerSprite._width);
+		this.__width = _w;
+		for (var it in this.menuItems)
+		{
+			this.menuItems[it].Width = _w;
+		}
+		if (this.windows.length > 0)
+		{
+			for (var wi in this.windows)
+			{
+				this.windows[wi].Width = _w;
+			}
+		}
+		this.BannerSprite._xscale *= scale;
+		this.itemsBG._xscale *= scale;
+		this.BodySprite._xscale *= scale;
+		this.DescriptionSprite._xscale *= scale;
+		this.SubtitleSprite._xscale *= scale;
+		this.Footer._xscale *= scale;
+		com.rockstargames.ui.utils.Debug.log("AFTER width: " + _w + ", this.BannerSprite._width:" + this.BannerSprite._width);
 	}
 
 	function get MaxHeight()

@@ -35,6 +35,10 @@
 	}
 
 
+	function set Width(w){
+		this.itemMC._width = w;
+	}
+
 	function set isVisible(_h)
 	{
 		this.itemMC._visible = _h;

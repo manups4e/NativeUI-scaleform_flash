@@ -790,6 +790,15 @@
 		}
 		return this.Value;
 	}
+	
+	function set Width(w)
+	{
+		this.itemMC._width = w;
+		for (var pan in this.panels)
+		{
+			this.panels[pan].Width = w;
+		}
+	}
 
 	function Clear()
 	{

@@ -83,6 +83,12 @@
 	{
 		this._dadSprite._x = 124;
 	}
+	
+	function set Width(w)
+	{
+		this.itemMC._width = w;
+	}
+
 
 	function Clear()
 	{
