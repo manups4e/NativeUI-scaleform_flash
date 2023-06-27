@@ -822,8 +822,6 @@
 	function set Width(_w)
 	{
 		var scale = _w / 288;
-
-		com.rockstargames.ui.utils.Debug.log("BEFORE width: " + _w + ", this.BannerSprite._width:" + this.BannerSprite._width);
 		this.__width = _w;
 		for (var it in this.menuItems)
 		{
