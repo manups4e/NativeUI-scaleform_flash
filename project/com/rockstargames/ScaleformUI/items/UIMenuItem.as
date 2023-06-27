@@ -47,6 +47,7 @@
 	var rightLabelFont;
 	var menuIndex;
 	var wasH = false;
+	var rightTextY = 0;
 
 	function UIMenuItem(id, index, str, substr, parentMenu, param1, param2, param3, param4, param5, param6, param7, param8, param9, param10, param11, param12, param13)
 	{
@@ -537,7 +538,7 @@
 		{
 			this.multiListIndex += this.multiListItems.length;
 		}
-
+		
 		this.selectedIndex = this.multiListIndex;
 		this.selectedValue = this.multiListItems[this.multiListIndex];
 		this.rightText = this.selectedValue;
@@ -546,6 +547,7 @@
 		this.itemMC.RLabelMC._x = this.itemMC.rightArrow._x - this.rightTextTF._width;
 		this.itemMC.leftArrow._x = this.itemMC.RLabelMC._x - 6;
 		this.itemMC.rightArrow._visible = this.itemMC.leftArrow._visible = true;
+		this.rightTextTF._y = 0;
 		this.updateLabelWidth();
 	}
 
