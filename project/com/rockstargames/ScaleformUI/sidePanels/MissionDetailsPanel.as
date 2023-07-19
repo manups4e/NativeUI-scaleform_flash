@@ -49,8 +49,6 @@
 				banner._alpha = 100;
 				banner.requestTxdRef(_loc8_,alreadyLoaded,undefined,this);
 
-				var bannerFont = new TextFormat("$Font5", 31);
-				bannerFont.align = "center";
 				this.BannerTitle = this.itemMC.BannerSprite.titleMC.labelTF;
 				this.BannerTitle.embedFonts = true;
 				this.BannerTitle.antiAliasType = "advanced";
@@ -59,6 +57,7 @@
 				{
 					com.rockstargames.ui.utils.UIText.setSizedText(this.BannerTitle,this.panelTitle,true,true,31,31);
 				}
+				this.updateFont(this.titleFreemode.itemTextLeft,"$Font2_cond_NOT_GAMERNAME");
 				break;
 			case 1 :
 				this.itemMC.gotoAndStop(2);
@@ -79,6 +78,9 @@
 				this.titleFreemode.highlightTitle(false);
 				com.rockstargames.ui.utils.UIText.setSizedText(this.titleFreemode.itemTextLeft,this.panelTitle,true,false,0,23);
 				com.rockstargames.ui.utils.UIText.setSizedText(this.titleFreemode.labelMC.titleshadowTF,this.panelTitle,true,false,0,23);
+				this.updateFont(this.titleFreemode.itemTextLeft,"$Font5");
+				this.updateFont(this.titleFreemode.labelMC.titleshadowTF,"$Font5");
+
 				this.titleFreemode.snapBGGrid(this.titleFreemode.bgMC);
 				break;
 		}
@@ -128,6 +130,17 @@
 		var _loc8_ = String(this.imgLdr).split(".");
 		var _loc11_ = _loc8_.slice(_loc8_.length - _loc7_).join(".");
 		this.imgLdr.requestTxdRef(_loc11_,_loc12_,this.transitionInBitmap,this);
+	}
+	
+	function updateFont(tf, fontName)
+	{
+		tf.embedFonts = true;
+		tf.antiAliasType = "advanced";
+		tf.selectable = false;
+		var newFont = tf.getTextFormat();
+		newFont.font = fontName;
+		tf.setNewTextFormat(newFont);
+		tf.setTextFormat(newFont);
 	}
 
 	function setTitle(title)

@@ -87,7 +87,9 @@
 		banner.init("ScaleformUI",txd,txn,288,54.75);
 		var _loc7_ = 3;
 		var _loc5_ = String(banner).split(".");
+        com.rockstargames.ui.utils.Debug.log(String(banner));
 		var _loc8_ = _loc5_.slice(_loc5_.length - _loc7_).join(".");
+        com.rockstargames.ui.utils.Debug.log(_loc8_);
 		com.rockstargames.ui.tweenStar.TweenStarLite.removeTweenOf(banner);
 		banner._alpha = 100;
 		banner.requestTxdRef(_loc8_,_alreadyLoaded,this.bannerLoaded,this);

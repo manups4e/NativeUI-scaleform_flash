@@ -388,7 +388,7 @@
 
 	function SET_ITEM_LABELS(item, lbl, rtxt)
 	{
-		com.rockstargames.ui.utils.UIText.setSizedText(this.UIMenu.menuItems[item].leftTextTF,lbl,true,true);
+		com.rockstargames.ui.utils.UIText.setSizedText(this.UIMenu.menuItems[item].leftTextTF,lbl,true,false);
 		if (this.UIMenu.menuItems[item]._type == 0)
 		{
 			this.UIMenu.menuItems[item].SetRightText(rtxt);
@@ -402,7 +402,13 @@
 
 	function SET_LEFT_LABEL(item, txt)
 	{
-		com.rockstargames.ui.utils.UIText.setSizedText(this.UIMenu.menuItems[item].leftTextTF,txt,true,true);
+		var _item = this.UIMenu.menuItems[item];
+		com.rockstargames.ui.utils.UIText.setSizedText(_item.leftTextTF,txt,true,true);
+		if (_item._type == 6)
+		{
+			_item.leftTextTF.autoSize = "center";
+			_item.updateLabelWidth();
+		}
 		this.UIMenu.menuItems[item].refreshLabelFonts();
 	}
 	function SET_RIGHT_LABEL(item, txt)
