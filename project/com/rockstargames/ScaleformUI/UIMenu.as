@@ -46,6 +46,7 @@
 	var isFading = false;
 	var fadingSpeed = 0.1;
 	var __width;
+	var IS3D;
 
 	function UIMenu(mc, title, subtitle, alternative, x, y, txd, txn, maxItems, totItems, enableAnim, animType, buildType, counterColor, dFontName, dFontId, fadingSp)
 	{
@@ -80,19 +81,7 @@
 		}
 		this._bannerTxd = txd;
 		this._bannerTexture = txn;
-		if (banner.isLoaded)
-		{
-			banner.removeTxdRef();
-		}
-		banner.init("ScaleformUI",txd,txn,288,54.75);
-		var _loc7_ = 3;
-		var _loc5_ = String(banner).split(".");
-        com.rockstargames.ui.utils.Debug.log(String(banner));
-		var _loc8_ = _loc5_.slice(_loc5_.length - _loc7_).join(".");
-        com.rockstargames.ui.utils.Debug.log(_loc8_);
-		com.rockstargames.ui.tweenStar.TweenStarLite.removeTweenOf(banner);
-		banner._alpha = 100;
-		banner.requestTxdRef(_loc8_,_alreadyLoaded,this.bannerLoaded,this);
+		com.rockstargames.ScaleformUI.utils.MovieClipHandler.SetClip(banner, txd, txn, 288,54.75, this.bannerLoaded, this);
 		if (this._menuTitle != undefined && this._menuTitle != "")
 		{
 			if (!this.alternativeTitle)
@@ -530,10 +519,24 @@
 				if (this.currentItem.sidePanel.LeftRightSide == 0)
 				{
 					this.currentItem.sidePanel.itemMC._x = this._menuOff[0] - this.currentItem.sidePanel.itemMC._width - 1;
+					if (this.IS3D)
+					{
+						this.currentItem.sidePanel.itemMC._alpha = 0;
+						this.currentItem.sidePanel.itemMC._yrotation = 270;
+					}
 				}
 				else
 				{
 					this.currentItem.sidePanel.itemMC._x = this._menuOff[0] + 288 + 1;
+					if (this.IS3D)
+					{
+						this.currentItem.sidePanel.itemMC._alpha = 0;
+						this.currentItem.sidePanel.itemMC._yrotation = 90;
+					}
+				}
+				if (this.IS3D)
+				{
+					com.rockstargames.ui.tweenStar.TweenStarLite.to(this.currentItem.sidePanel.itemMC,0.25,{_yrotation:0, _alpha:100});
 				}
 			}
 		}
@@ -709,14 +712,6 @@
 	{
 		this._activeItem = val;
 		this.updateItemsDrawing();
-	}
-
-	function SetClip(targetMC, textureDict, textureName)
-	{
-		this.txd_loader = new MovieClipLoader();
-		this.txd_loader.addListener(this);
-		var _loc2_ = "img://" + textureDict + "/" + textureName;
-		this.txd_loader.loadClip(_loc2_,targetMC);
 	}
 
 	function FadeOutMenu()

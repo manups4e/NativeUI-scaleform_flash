@@ -26,7 +26,7 @@
 		this._background = this.itemMC.attachMovie("txdLoader", "heritageBG", this.itemMC.getNextHighestDepth());
 		this._dadSprite = this.itemMC.attachMovie("txdLoader", "heritageDad", this.itemMC.getNextHighestDepth(), {_x:124});
 		this._momSprite = this.itemMC.attachMovie("txdLoader", "heritageMom", this.itemMC.getNextHighestDepth(), {_x:20});
-		this.SetClip(this._background,"pause_menu_pages_char_mom_dad","mumdadbg",288,158);
+		com.rockstargames.ScaleformUI.utils.MovieClipHandler.SetClip(this._background,"pause_menu_pages_char_mom_dad","mumdadbg",288,158);
 		this.setIndex(this.momIdx,this.dadIdx);
 	}
 
@@ -50,31 +50,11 @@
 		{
 			this.dadIdx = 0;
 		}
-		this.SetClip(this._dadSprite,"char_creator_portraits",this.dadIdx < 21 ? "male_" + this.dadIdx : "special_male_" + (this.dadIdx - 21),144,158,this.dadLoaded);
-		this.SetClip(this._momSprite,"char_creator_portraits",this.momIdx < 21 ? "female_" + this.momIdx : "special_female_" + (this.momIdx - 21),144,158,this.momLoaded);
+		com.rockstargames.ScaleformUI.utils.MovieClipHandler.SetClip(this._dadSprite,"char_creator_portraits",this.dadIdx < 21 ? "male_" + this.dadIdx : "special_male_" + (this.dadIdx - 21),144,158,this.dadLoaded, this);
+		com.rockstargames.ScaleformUI.utils.MovieClipHandler.SetClip(this._momSprite,"char_creator_portraits",this.momIdx < 21 ? "female_" + this.momIdx : "special_female_" + (this.momIdx - 21),144,158,this.momLoaded, this);
 	}
 
-	function SetClip(targetMC, textureDict, textureName, w, h, callback)
-	{
-		var _loaded = true;
-		if (targetMC.textureFilename != textureName && targetMC.textureDict != textureDict)
-		{
-			_loaded = false;
-		}
-		/*
-		if (targetMC.isLoaded)
-		{
-		targetMC.removeTxdRef();
-		}
-		*/ 
-		targetMC.init("ScaleformUI",textureDict,textureName,w,h);
-		var _loc7_ = 2;
-		var _loc5_ = String(targetMC).split(".");
-		var _loc8_ = _loc5_.slice(_loc5_.length - _loc7_).join(".");
-		com.rockstargames.ui.tweenStar.TweenStarLite.removeTweenOf(targetMC);
-		targetMC._alpha = 100;
-		targetMC.requestTxdRef(_loc8_,_loaded,callback,this);
-	}
+
 	function momLoaded()
 	{
 		this._momSprite._x = 20;
@@ -83,7 +63,7 @@
 	{
 		this._dadSprite._x = 124;
 	}
-	
+
 	function set Width(w)
 	{
 		this.itemMC._width = w;

@@ -173,6 +173,7 @@
 	}
 	function onLoadError(targetMC)
 	{
+		com.rockstargames.ui.utils.Debug.log(arguments.toString());
 		this.txdLoader.removeListener(this.txdListener);
 		this.txdLoader = null;
 		this.txdListener = null;

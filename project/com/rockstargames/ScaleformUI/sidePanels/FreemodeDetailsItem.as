@@ -150,7 +150,7 @@
 		{
 			var sprite_name = com.rockstargames.ScaleformUI.utils.Badges.getSpriteNameById(id, false);
 			var sprite_txd = com.rockstargames.ScaleformUI.utils.Badges.GetSpriteDictionary(id);
-			this.SetClip(this.badgeLoader,sprite_txd,sprite_name,20,20);
+			com.rockstargames.ScaleformUI.utils.MovieClipHandler.SetClip(this.badgeLoader,sprite_txd,sprite_name,20,20);
 		}
 		else
 		{
@@ -160,24 +160,6 @@
 			}
 		}
 	}
-
-	function SetClip(targetMC, textureDict, textureName, w, h, x, y, callback)
-	{
-		var _loc12_ = true;
-		if (targetMC.textureFilename != textureName && targetMC.textureDict != textureDict)
-		{
-			var _loc12_ = false;
-		}
-		targetMC.init("ScaleformUI",textureDict,textureName,w,h);
-		var _loc7_ = 4;
-		var _loc5_ = String(targetMC).split(".");
-		var _loc8_ = _loc5_.slice(_loc5_.length - _loc7_).join(".");
-		com.rockstargames.ui.tweenStar.TweenStarLite.removeTweenOf(targetMC);
-		targetMC._alpha = 100;
-		targetMC.requestTxdRef(_loc8_,_loc12_,callback,this);
-	}
-
-
 
 	function snapBGGrid(bgMC)
 	{

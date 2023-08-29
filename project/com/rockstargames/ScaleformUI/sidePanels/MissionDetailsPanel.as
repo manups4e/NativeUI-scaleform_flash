@@ -32,22 +32,7 @@
 				this.itemMC.BannerSprite._width = 288;
 				this.itemMC.BannerSprite._height = 65;
 				var banner = this.itemMC.BannerSprite.bannerBG.attachMovie("txdLoader", "internbannerSprite_" + this.itemMC.BannerSprite.bannerBG.getNextHighestDepth(), this.itemMC.BannerSprite.bannerBG.getNextHighestDepth());
-				var alreadyLoaded = true;
-				if (banner.textureFilename != this.menu._bannerTexture && banner.textureDict != this.menu._bannerTxd)
-				{
-					alreadyLoaded = false;
-				}
-				if (banner.isLoaded)
-				{
-					banner.removeTxdRef();
-				}
-				banner.init("ScaleformUI",this.menu._bannerTxd,this.menu._bannerTexture,288,54.75);
-				var _loc7_ = 4;
-				var _loc5_ = String(banner).split(".");
-				var _loc8_ = _loc5_.slice(_loc5_.length - _loc7_).join(".");
-				com.rockstargames.ui.tweenStar.TweenStarLite.removeTweenOf(banner);
-				banner._alpha = 100;
-				banner.requestTxdRef(_loc8_,alreadyLoaded,undefined,this);
+				com.rockstargames.ScaleformUI.utils.MovieClipHandler.SetClip(banner,menu._bannerTxd,this.menu._bannerTexture,288,65, this);
 
 				this.BannerTitle = this.itemMC.BannerSprite.titleMC.labelTF;
 				this.BannerTitle.embedFonts = true;
@@ -114,24 +99,9 @@
 		{
 			this.imgLdr = this.itemMC.imgMC.attachMovie("txdLoader", "imgLdr_" + this.itemMC.imgMC.getNextHighestDepth(), this.itemMC.imgMC.getNextHighestDepth());
 		}
-		var _loc12_ = false;
-		if (this.imgLdr.textureDict == txd && this.imgLdr.textureFilename == txn)
-		{
-			_loc12_ = true;
-			this.imgLdr.loadWithValidation("ScaleformUI",txd,txn,3,288,160);
-			this.transitionInBitmap();
-		}
-		else if (this.imgLdr.isLoaded)
-		{
-			this.imgLdr.removeTxdRef();
-		}
-		this.imgLdr.init("ScaleformUI",txd,txn,288,160);
-		var _loc7_ = 3;
-		var _loc8_ = String(this.imgLdr).split(".");
-		var _loc11_ = _loc8_.slice(_loc8_.length - _loc7_).join(".");
-		this.imgLdr.requestTxdRef(_loc11_,_loc12_,this.transitionInBitmap,this);
+    	com.rockstargames.ScaleformUI.utils.MovieClipHandler.SetClip(this.imgLdr,txd, txn,288,160,this.transitionInBitmap, this);
 	}
-	
+
 	function updateFont(tf, fontName)
 	{
 		tf.embedFonts = true;

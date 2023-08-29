@@ -50,7 +50,7 @@
 		else
 		{
 			_grid = this.gridMC.attachMovie("txdLoader", "gridPanel", this.gridMC.getNextHighestDepth());
-			this.SetClip(_grid,"pause_menu_pages_char_mom_dad","nose_grid");
+			com.rockstargames.ScaleformUI.utils.MovieClipHandler.SetClip(_grid,"pause_menu_pages_char_mom_dad","nose_grid");
 		}
 		//this.gridMC.onRollOver = com.rockstargames.ui.utils.DelegateStar.create(this, this.mOverGP, this.gridMC);
 		//this.gridMC.onRollOut = com.rockstargames.ui.utils.DelegateStar.create(this, this.mOutGP, this.gridMC);
@@ -118,27 +118,6 @@
 	{
 		this.hovered = false;
 		this._hovered = false;
-	}
-	function SetClip(targetMC, textureDict, textureName, w, h, callback)
-	{
-		var _loaded = true;
-		if (targetMC.textureFilename != textureName && targetMC.textureDict != textureDict)
-		{
-			_loaded = false;
-		}
-		/*
-		if (targetMC.isLoaded)
-		{
-		targetMC.removeTxdRef();
-		}
-		*/ 
-		targetMC.init("ScaleformUI",textureDict,textureName,w,h);
-		var _loc7_ = 3;
-		var _loc5_ = String(targetMC).split(".");
-		var _loc8_ = _loc5_.slice(_loc5_.length - _loc7_).join(".");
-		com.rockstargames.ui.tweenStar.TweenStarLite.removeTweenOf(targetMC);
-		targetMC._alpha = 100;
-		targetMC.requestTxdRef(_loc8_,_loaded,callback,this);
 	}
 	function onLoadInit(target_mc)
 	{

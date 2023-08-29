@@ -57,20 +57,7 @@
 		{
 			this.itemMC.statWheelMC._visible = false;
 			this.leftEmblemMC = this.itemMC.cMC.attachMovie("txdLoader", "uimenudetailswindow", this.itemMC.getNextHighestDepth(), {_x:14, _y:9});
-			if (this.leftEmblemMC.textureFilename != txd && this.leftEmblemMC.textureDict != txn)
-			{
-				if (this.leftEmblemMC.isLoaded)
-				{
-					this.leftEmblemMC.removeTxdRef();
-				}
-				this.leftEmblemMC.init("ScaleformUI",txd,txn,w,h);
-				var _loc7_ = 3;
-				var _loc5_ = String(this.leftEmblemMC).split(".");
-				var _loc8_ = _loc5_.slice(_loc5_.length - _loc7_).join(".");
-				com.rockstargames.ui.tweenStar.TweenStarLite.removeTweenOf(this.leftEmblemMC);
-				this.leftEmblemMC._alpha = 100;
-				this.leftEmblemMC.addTxdRef(_loc8_,this.txdloaded,this);
-			}
+			com.rockstargames.ScaleformUI.utils.MovieClipHandler.SetClip(this.leftEmblemMC,txd,txn,w,h,this.txdloaded, this);
 		}
 		else
 		{
@@ -119,22 +106,7 @@
 		{
 			this.itemMC.statWheelMC._visible = false;
 			this.leftEmblemMC = this.itemMC.cMC.attachMovie("txdLoader", "uimenudetailswindow", this.itemMC.getNextHighestDepth());
-			if (this.leftEmblemMC.textureFilename != txd && this.leftEmblemMC.textureDict != txn)
-			{
-				if (this.leftEmblemMC.isLoaded)
-				{
-					this.leftEmblemMC.removeTxdRef();
-				}
-				this.leftEmblemMC.init("ScaleformUI",txd,txn,w,h);
-				var _loc7_ = 3;
-				var _loc5_ = String(this.leftEmblemMC).split(".");
-				var _loc8_ = _loc5_.slice(_loc5_.length - _loc7_).join(".");
-				com.rockstargames.ui.tweenStar.TweenStarLite.removeTweenOf(this.leftEmblemMC);
-				this.leftEmblemMC._alpha = 100;
-				this.leftEmblemMC._x = x;
-				this.leftEmblemMC._y = y;
-				this.leftEmblemMC.addTxdRef(_loc8_,this.txdloaded,this);
-			}
+			com.rockstargames.ScaleformUI.utils.MovieClipHandler.SetClip(this.leftEmblemMC,txd,txn,w,h,this.txdloaded, this);
 		}
 		else
 		{
@@ -235,7 +207,7 @@
 	{
 		this.itemMC.statWheelMC.wheelMC.lineTo(Math.sin(angle * this.PI_OVER_180) * this.wheelRadius,(-Math.cos(angle * this.PI_OVER_180)) * this.wheelRadius);
 	}
-	
+
 	function set Width(w)
 	{
 		this.itemMC._width = w;

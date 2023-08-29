@@ -1,50 +1,23 @@
-﻿class com.rockstargames.gtav.levelDesign.SCALEFORMUI extends com.rockstargames.ui.core.BaseScreenLayout
+﻿class com.rockstargames.gtav.levelDesign.SCALEFORMUI extends com.rockstargames.gtav.levelDesign.BaseScriptUI
 {
+	var menuContainer;
 	var UIMenu;
 	var DispConf;
 	var offset = [];
 	var iActualWidth;
 	static var MouseEnabled = true;
 	static var IS_FADING = false;
+	var GameMap;
+
 	function SCALEFORMUI()
 	{
 		super();
 		_global.gfxExtensions = true;
-		this.DispConf = new com.rockstargames.ui.utils.DisplayConfig();
-		this.DispConf = this.getDisplayConfig(true);
 	}
 
 	function INITIALISE(mc)
 	{
 		super.INITIALISE(mc);
-		this.getDisplayConfig(true);
-	}
-
-	function initScreenLayout()
-	{
-		this.offset[0] = this.FOUR_THREE_PADDING + this.DispConf.safeLeft * this.DispConf.screenWidth;
-		this.offset[1] = this.DispConf.safeTop * this.DispConf.screenHeight;
-	}
-
-	function SET_DISPLAY_CONFIG(_screenWidthPixels, _screenHeightPixels, _safeTopPercent, _safeBottomPercent, _safeLeftPercent, _safeRightPercent, _isWideScreen, _isCircleAccept, _isAsian, _actualWidth, _actualHeight)
-	{
-		this.DispConf.isCircleAccept = _isCircleAccept;
-		this.DispConf.isWideScreen = _isWideScreen;
-		this.DispConf.safeBottom = _safeBottomPercent;
-		this.DispConf.safeLeft = _safeLeftPercent;
-		this.DispConf.safeRight = _safeRightPercent;
-		this.DispConf.safeTop = _safeTopPercent;
-		this.DispConf.screenHeight = _screenHeightPixels;
-		this.DispConf.screenWidth = _screenWidthPixels;
-		if ((_actualWidth / _actualHeight) > 1.5)
-		{
-			this.iActualWidth = 1280;
-		}
-		else
-		{
-			this.iActualWidth = 890;
-		}
-		this.initScreenLayout();
 	}
 
 	function CREATE_MENU(title, subtitle, x, y, alternative, txd, txn, maxItems, totItems, enableAnim, animType, buildType, counterColor, dFontName, dFontId, fadingSpeed)
@@ -55,6 +28,11 @@
 			this.CONTENT._alpha = 0;
 		}
 		this.UIMenu = new com.rockstargames.ScaleformUI.UIMenu(this.CONTENT, title, subtitle, alternative, x, y, txd, txn, maxItems, totItems, enableAnim, animType, buildType, counterColor, dFontName, dFontId, fadingSpeed);
+	}
+
+	function ENABLE_3D_ANIMATIONS(enable)
+	{
+		this.UIMenu.IS3D = enable;
 	}
 
 	function CLEAR_ITEMS()
@@ -509,9 +487,28 @@
 		return com.rockstargames.gtav.levelDesign.SCALEFORMUI.IS_FADING;
 	}
 
+	function CREATE_MAP()
+	{
+		this.GameMap = new com.rockstargames.ScaleformUI.GameMap.Minimap(this.CONTENT);
+	}
+
+	function SHOW_MAP(bool)
+	{
+		this.GameMap.Visible = bool;
+	}
+	function SET_MAP_SCALE(scale)
+	{
+		this.GameMap.ScaleMap(scale);
+	}
+	function CLEAR_MAP()
+	{
+		this.GameMap.Clear();
+		this.GameMap = undefined;
+	}
 
 	function ADD_TXD_REF_RESPONSE(txd, strRef, success)
 	{
+		com.rockstargames.ui.utils.Debug.log("ADD_TXD_REF_RESPONSE - " + arguments.toString());
 		if (success == true)
 		{
 			var pMC = this.CONTENT;
@@ -525,6 +522,7 @@
 
 	function TXD_HAS_LOADED(txd, success, strRef)
 	{
+		com.rockstargames.ui.utils.Debug.log("TXD_HAS_LOADED - " + arguments.toString());
 		if (success == true)
 		{
 			var pMC = this.CONTENT;
@@ -538,6 +536,7 @@
 
 	function TXD_ALREADY_LOADED(txd, strRef)
 	{
+		com.rockstargames.ui.utils.Debug.log("TXD_ALREADY_LOADED - " + arguments.toString());
 		var pMC = this.CONTENT;
 		var il = com.rockstargames.ui.media.ImageLoaderMC(eval(pMC + "." + strRef));
 		if (pMC != undefined)

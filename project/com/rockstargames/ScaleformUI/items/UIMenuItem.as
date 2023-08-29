@@ -46,9 +46,9 @@
 	var labelFont;
 	var rightLabelFont;
 	var menuIndex;
-	var wasH = false;
 	var rightTextY = 0;
 	var rightTextX = 0;
+	var wasH = false;
 
 	function UIMenuItem(id, index, str, substr, parentMenu, param1, param2, param3, param4, param5, param6, param7, param8, param9, param10, param11, param12, param13)
 	{
@@ -346,13 +346,14 @@
 		this.rightBadgeId = id;
 		if (this.rightBadgeId != com.rockstargames.ScaleformUI.utils.Badges.NONE)
 		{
-			if(this.rightBadgeMC.isLoaded){
+			if (this.rightBadgeMC.isLoaded)
+			{
 				this.rightBadgeMC.removeMovieClip();
 			}
 			this.rightBadgeMC = this.itemMC.attachMovie("txdLoader", "RightBadge", this.itemMC.getNextHighestDepth());
 			var sprite_name = com.rockstargames.ScaleformUI.utils.Badges.getSpriteNameById(id, this.highlighted);
 			var sprite_txd = com.rockstargames.ScaleformUI.utils.Badges.GetSpriteDictionary(id);
-			this.SetClip(this.rightBadgeMC,sprite_txd,sprite_name,24,24,this.rightBadgeLoaded);
+			com.rockstargames.ScaleformUI.utils.MovieClipHandler.SetClip(this.rightBadgeMC,sprite_txd,sprite_name,24,24,this.rightBadgeLoaded, this);
 			this.itemMC.RLabelMC._x = 271.95 - 25;
 		}
 		else
@@ -372,13 +373,14 @@
 		this.leftBadgeId = id;
 		if (this.leftBadgeId != com.rockstargames.ScaleformUI.utils.Badges.NONE)
 		{
-			if(this.leftBadgeMC.isLoaded){
+			if (this.leftBadgeMC.isLoaded)
+			{
 				this.leftBadgeMC.removeMovieClip();
 			}
 			this.leftBadgeMC = this.itemMC.attachMovie("txdLoader", "LeftBadge", this.itemMC.getNextHighestDepth());
 			var sprite_name = com.rockstargames.ScaleformUI.utils.Badges.getSpriteNameById(id, this.highlighted);
 			var sprite_txd = com.rockstargames.ScaleformUI.utils.Badges.GetSpriteDictionary(id);
-			this.SetClip(this.leftBadgeMC,sprite_txd,sprite_name,24,24,this.leftBadgeLoaded);
+			com.rockstargames.ScaleformUI.utils.MovieClipHandler.SetClip(this.leftBadgeMC,sprite_txd,sprite_name,24,24,this.leftBadgeLoaded, this);
 			this.itemMC.labelMC._x = 28.25;
 		}
 		else
@@ -390,24 +392,6 @@
 				this.itemMC.labelMC._x = 3.25;
 			}
 		}
-		this.updateLabelWidth();
-	}
-
-
-	function SetClip(targetMC, textureDict, textureName, w, h, callback)
-	{
-		var _loc12_ = true;
-		if (targetMC.textureFilename != textureName && targetMC.textureDict != textureDict)
-		{
-			var _loc12_ = false;
-		}
-		targetMC.init("ScaleformUI",textureDict,textureName,w,h);
-		var _loc7_ = 4;
-		var _loc5_ = String(targetMC).split(".");
-		var _loc8_ = _loc5_.slice(_loc5_.length - _loc7_).join(".");
-		com.rockstargames.ui.tweenStar.TweenStarLite.removeTweenOf(targetMC);
-		targetMC._alpha = 100;
-		targetMC.requestTxdRef(_loc8_,_loc12_,callback,this);
 		this.updateLabelWidth();
 	}
 
@@ -499,7 +483,7 @@
 	{
 		this._checked = val;
 		var sprite_name = this.getSprite(this._highlighted, this.tickStyle, this._checked);
-		this.SetClip(this.checkbox,"commonmenu",sprite_name,24,24,this.checkLoaded_withAnim);
+		com.rockstargames.ScaleformUI.utils.MovieClipHandler.SetClip(this.checkbox,"commonmenu",sprite_name,24,24,this.checkLoaded_withAnim, this);
 		this.updateLabelWidth();
 	}
 
@@ -588,7 +572,7 @@
 		{
 			var txd = com.rockstargames.ScaleformUI.utils.Badges.GetSpriteDictionary(this.rightBadgeId);
 			var sprite_name = com.rockstargames.ScaleformUI.utils.Badges.getSpriteNameById(this.rightBadgeId, _h);
-			this.SetClip(this.rightBadgeMC,txd,sprite_name,24,24,this.rightBadgeLoaded);
+			com.rockstargames.ScaleformUI.utils.MovieClipHandler.SetClip(this.rightBadgeMC,txd,sprite_name,24,24,this.rightBadgeLoaded, this);
 			if (this.rightBadgeId == 1 || this.rightBadgeId == 4 || this.rightBadgeId == 26)
 			{
 				com.rockstargames.ui.utils.Colour.ApplyHudColour(this.rightBadgeMC,com.rockstargames.ScaleformUI.utils.Badges.BadgeToColor(this.rightBadgeId, _h));
@@ -598,7 +582,7 @@
 		{
 			var txd = com.rockstargames.ScaleformUI.utils.Badges.GetSpriteDictionary(this.leftBadgeId);
 			var sprite_name = com.rockstargames.ScaleformUI.utils.Badges.getSpriteNameById(this.leftBadgeId, _h);
-			this.SetClip(this.leftBadgeId,txd,sprite_name,24,24,this.leftBadgeLoaded);
+			com.rockstargames.ScaleformUI.utils.MovieClipHandler.SetClip(this.leftBadgeId,txd,sprite_name,24,24,this.leftBadgeLoaded, this);
 			if (this.leftBadgeId == 1 || this.leftBadgeId == 4 || this.leftBadgeId == 26)
 			{
 				com.rockstargames.ui.utils.Colour.ApplyHudColour(this.leftBadgeMC,com.rockstargames.ScaleformUI.utils.Badges.BadgeToColor(this.leftBadgeId, _h));
@@ -628,7 +612,7 @@
 				else if (this._type == 2)
 				{
 					var sprite_name = this.getSprite(true, this.tickStyle, this.Checked);
-					this.SetClip(this.checkbox,"commonmenu",sprite_name,24,24,this.checkLoaded);
+					com.rockstargames.ScaleformUI.utils.MovieClipHandler.SetClip(this.checkbox,"commonmenu",sprite_name,24,24,this.checkLoaded, this);
 				}
 				this.updateLabelWidth();
 				this.checkScroll();
@@ -648,7 +632,7 @@
 				else if (this._type == 2)
 				{
 					var sprite_name = this.getSprite(false, this.tickStyle, this.Checked);
-					this.SetClip(this.checkbox,"commonmenu",sprite_name,24,24,this.checkLoaded);
+					com.rockstargames.ScaleformUI.utils.MovieClipHandler.SetClip(this.checkbox,"commonmenu",sprite_name,24,24,this.checkLoaded, this);
 				}
 				clearTimeout(this.scrollTimeout);
 				com.rockstargames.ui.tweenStar.TweenStarLite.removeTweenOf(this.leftTextTF);
@@ -666,6 +650,10 @@
 		}
 		this.refreshLabelFonts();
 		this.updateLabelWidth();
+		if (this._parentMenu.IS3D)
+		{
+			this.rotateSel(_h);
+		}
 	}
 
 	function mOverI(mc)
@@ -827,6 +815,39 @@
 		for (var pan in this.panels)
 		{
 			this.panels[pan].Width = w;
+		}
+	}
+
+	function rotateSel(bool)
+	{
+		var speed = 0.25;
+		var xrot = 0;
+		if (bool)
+		{
+			this.backgroundMC._xrotation = 0;
+			xrot = 180;
+			com.rockstargames.ui.tweenStar.TweenStarLite.to(this.backgroundMC,speed,{_xrotation:xrot});
+			/*
+			//this.itemMC.labelMC._xrotation = 180;
+			this.itemMC.RLabelMC._xrotation = 180;
+			this.checkbox._xrotation = 180;
+			this.itemMC.rightArrow._xrotation = 180;
+			this.itemMC.leftArrow._xrotation = 180;
+			this.bar._xrotation = 180;
+			this.leftBadgeMC._xrotation = 180;
+			this.rightBadgeMC._xrotation = 180;
+			*/
+
+			//com.rockstargames.ui.tweenStar.TweenStarLite.to(this.itemMC.labelMC,speed,{_xrotation:360});
+			/*
+			com.rockstargames.ui.tweenStar.TweenStarLite.to(this.itemMC.RLabelMC,speed,{_xrotation:360});
+			com.rockstargames.ui.tweenStar.TweenStarLite.to(this.checkbox,speed,{_xrotation:360});
+			com.rockstargames.ui.tweenStar.TweenStarLite.to(this.itemMC.rightArrow,speed,{_xrotation:360});
+			com.rockstargames.ui.tweenStar.TweenStarLite.to(this.itemMC.leftArrow,speed,{_xrotation:360});
+			com.rockstargames.ui.tweenStar.TweenStarLite.to(this.bar,speed,{_xrotation:360});
+			com.rockstargames.ui.tweenStar.TweenStarLite.to(this.leftBadgeMC,speed,{_xrotation:360});
+			com.rockstargames.ui.tweenStar.TweenStarLite.to(this.rightBadgeMC,speed,{_xrotation:360});
+			*/
 		}
 	}
 
