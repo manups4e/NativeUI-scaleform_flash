@@ -54,8 +54,8 @@
 			case 1 :
 				this.itemTextRight._width = 288 - (this.itemTextLeft._x + this.itemTextLeft.textWidth + 25);
 				this.itemTextRight._x = 288 - this.itemTextRight._width - 6;
-				this.updateLabelFont(param4,param5);
-				this.updateRightLabelFont(param6,param7);
+				this.updateLabelFont(param6,param7);
+				this.updateRightLabelFont(param8,param9);
 				break;
 			case 2 :
 				this.badgeLoader = this.itemMC.iconMC.attachMovie("txdLoader", "badge", this.itemMC.iconMC.getNextHighestDepth());
@@ -69,7 +69,7 @@
 				{
 					_loc7_ = param4;
 				}
-				com.rockstargames.ui.utils.Colour.ApplyHudColour(this.itemMC.iconMC,_loc7_);
+				com.rockstargames.ScaleformUI.utils.MovieClipHandler.ApplyHexColour(this.itemMC.iconMC,_loc7_);
 				if (param5 != undefined)
 				{
 					if (this.itemMC.checkMC)
@@ -86,10 +86,11 @@
 				this.itemMC.leftlabelMC._y = _loc0_ = 2;
 				this.itemMC.labelMC._y = _loc0_;
 				this.itemMC.bgMC._y = _loc0_;
-				this.updateLabelFont(param4,param5);
-				this.updateRightLabelFont(param6,param7);
+				this.updateLabelFont(param6,param7);
+				this.updateRightLabelFont(param8,param9);
 				break;
 			case 4 :
+				this.itemMC.outlineMC._visible = this.parentPanel.listDescItem > 0;
 				var _loc9_ = textLeft;
 				var _loc5_ = this.itemTextLeft.getTextFormat();
 				_loc5_.size = com.rockstargames.ui.utils.UIText.SIZE;
@@ -112,7 +113,7 @@
 				this.itemTextLeft._y = -2;
 				this.itemTextRight._visible = false;
 				this.itemMC.bgMC._height = this.itemTextLeft.textHeight <= 0 ? 0 : this.itemTextLeft.textHeight + 16;
-				this.updateLabelFont(param3,param4);
+				this.updateLabelFont(param6,param7);
 		}
 		com.rockstargames.ui.utils.Colour.ApplyHudColour(this.itemMC.leftlabelMC,com.rockstargames.ui.utils.HudColour.HUD_COLOUR_WHITE);
 		com.rockstargames.ui.utils.Colour.ApplyHudColour(this.itemMC.labelMC,com.rockstargames.ui.utils.HudColour.HUD_COLOUR_WHITE);

@@ -26,8 +26,7 @@
 			case 0 :
 				this.itemMC.gotoAndStop(1);
 				this.itemMC.BannerSprite._width = 288;
-				this.itemMC.BannerSprite._height = 65;
-				var banner = this.itemMC.BannerSprite.bannerBG.attachMovie("txdLoader", "internbannerSprite_" + this.itemMC.BannerSprite.bannerBG.getNextHighestDepth(), this.itemMC.BannerSprite.bannerBG.getNextHighestDepth());
+				var banner = this.itemMC.BannerSprite.bannerBG.attachMovie("txdLoader", "bannerSpriteNew", this.itemMC.BannerSprite.bannerBG.getNextHighestDepth());
 				var alreadyLoaded = true;
 				if (banner.textureFilename != this.menu._bannerTexture && banner.textureDict != this.menu._bannerTxd)
 				{
@@ -37,13 +36,8 @@
 				{
 					banner.removeTxdRef();
 				}
-				banner.init("ScaleformUI",this.menu._bannerTxd,this.menu._bannerTexture,288,54.75);
-				var _loc7_ = 4;
-				var _loc5_ = String(banner).split(".");
-				var _loc8_ = _loc5_.slice(_loc5_.length - _loc7_).join(".");
-				com.rockstargames.ui.tweenStar.TweenStarLite.removeTweenOf(banner);
-				banner._alpha = 100;
-				banner.requestTxdRef(_loc8_,alreadyLoaded,undefined,this);
+
+				com.rockstargames.ScaleformUI.utils.MovieClipHandler.SetClip(banner,this.menu._bannerTxd,this.menu._bannerTexture,288,65);
 
 				var bannerFont = new TextFormat("$Font5", 31);
 				bannerFont.align = "center";
@@ -55,18 +49,20 @@
 				{
 					com.rockstargames.ui.utils.UIText.setSizedText(this.BannerTitle,this.panelTitle,true,true,31,31);
 				}
+				com.rockstargames.ScaleformUI.utils.MovieClipHandler.ApplyHexColour(this.itemMC.BannerSprite.bannerBG.bannerSpriteNew,this.menu.bannerColor);
 				break;
 			case 1 :
 				this.itemMC.gotoAndStop(2);
 				this.itemMC.BannerSprite.bannerBG._alpha = 100;
-				com.rockstargames.ui.utils.Colour.ApplyHudColour(this.itemMC.BannerSprite.bannerBG,this.panelTitleColour);
+				com.rockstargames.ScaleformUI.utils.MovieClipHandler.ApplyHexColour(this.itemMC.BannerSprite.bannerBG,this.panelTitleColour);
 
-				this.BannerTitle = this.itemMC.BannerSprite.titleMC.labelTF;
+				this.BannerTitle = this.itemMC.BannerSprite.labelTF;
 				if (this.panelTitle != undefined && this.panelTitle != "")
 				{
-					com.rockstargames.ui.utils.UIText.setSizedText(this.BannerTitle,this.panelTitle,true,true,12,12);
+					com.rockstargames.ui.utils.UIText.setSizedText(this.BannerTitle,this.panelTitle,true, true, 21, 21);
+					com.rockstargames.ScaleformUI.utils.MovieClipHandler.UpdateFont(this.BannerTitle, "$Font5");
 				}
-				com.rockstargames.ui.utils.Colour.ApplyHudColourToTF(this.BannerTitle,com.rockstargames.ui.utils.HudColour.HUD_COLOUR_BLACK);
+				//com.rockstargames.ui.utils.Colour.ApplyHudColourToTF(this.BannerTitle,com.rockstargames.ui.utils.HudColour.HUD_COLOUR_BLACK);
 				break;
 		}
 		com.rockstargames.ui.utils.Colour.ApplyHudColour(this.itemMC.imgPlaceholderMC,com.rockstargames.ui.utils.HudColour.HUD_COLOUR_PAUSE_BG);

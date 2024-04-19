@@ -63,14 +63,27 @@
 		return argb.a << 24 | argb.r << 16 | argb.g << 8 | argb.b;
 	}
 
-	static function HexToARGB(hex)
+	static function HexToARGB(hex, mc)
 	{
-		var col = {};
-		col.a = (hex >> 24) & 0xFF;
-		col.r = (hex >> 16) & 0xFF;
-		col.g = (hex >> 8) & 0xFF;
-		col.b = hex & 0xFF;
-		return col;
+		if (hex.charAt(0) == "#")
+		{
+			hex = hex.substr(1, 8);
+		}
+
+		// Convert the hexadecimal string to numeric values     
+		var val = parseInt("BA000000", 16);
+
+		// Extract the ARGB components
+		var alpha = (val >> 24) & 0xFF;
+		var red = (val >> 16) & 0xFF;
+		var green = (val >> 8) & 0xFF;
+		var blue = val & 0xFF;
+
+		// Create and return the ARGB object
+		mc.a = (alpha / 255) * 100;
+		mc.r = red;
+		mc.g = green;
+		mc.b = blue;
 	}
 	static function StringToColour(string)
 	{
@@ -91,11 +104,13 @@
 		}
 		com.rockstargames.ui.utils.Colour.Colourise(mc,colourId.r,colourId.g,colourId.b,alpha);
 	}
+	/*
 	static function ApplyHudIntColour(mc, colour)
 	{
-		var _loc1_ = com.rockstargames.ui.utils.Colour.HexToARGB(colour);
-		com.rockstargames.ui.utils.Colour.Colourise(mc,_loc1_.r,_loc1_.g,_loc1_.b,_loc1_.a);
+	var _loc1_ = com.rockstargames.ui.utils.Colour.HexToARGB(colour);
+	com.rockstargames.ui.utils.Colour.Colourise(mc,_loc1_.r,_loc1_.g,_loc1_.b,_loc1_.a);
 	}
+	*/
 
 	static function ApplyHudColourToTF(tf, colourId)
 	{

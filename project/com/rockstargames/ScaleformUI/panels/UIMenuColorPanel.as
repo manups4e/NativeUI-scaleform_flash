@@ -37,8 +37,7 @@
 				for (var i = 0; i < arr.length; i++)
 				{
 					var _loc5_ = new com.rockstargames.ui.utils.HudColour();
-					var col = com.rockstargames.ui.utils.HudColour[arr[i]];
-					com.rockstargames.ui.utils.Colour.setHudColour(col,_loc5_);
+					com.rockstargames.ScaleformUI.utils.MovieClipHandler.HexToARGB(arr[i],_loc5_);
 					var item = {i:i, r:_loc5_.r, g:_loc5_.g, b:_loc5_.b, a:_loc5_.a};
 					this.colorsArray.push(item);
 					this.visibleItems = this.colorsArray.length > 9 ? 9 : this.colorsArray.length;

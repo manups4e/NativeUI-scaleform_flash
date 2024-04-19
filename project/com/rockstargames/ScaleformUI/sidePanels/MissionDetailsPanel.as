@@ -47,7 +47,7 @@
 			case 1 :
 				this.itemMC.gotoAndStop(2);
 				this.itemMC.BannerSprite.bannerBG._alpha = 100;
-				com.rockstargames.ui.utils.Colour.ApplyHudColour(this.itemMC.BannerSprite.bannerBG,this.panelTitleColour);
+				com.rockstargames.ScaleformUI.utils.MovieClipHandler.ApplyHexColour(this.itemMC.BannerSprite.bannerBG,this.panelTitleColour);
 
 				this.BannerTitle = this.itemMC.BannerSprite.titleMC.labelTF;
 				if (this.panelTitle != undefined && this.panelTitle != "")
@@ -212,6 +212,18 @@
 	function get isVisible()
 	{
 		return this.itemMC._visible;
+	}
+	
+	function ClearItems(){
+		if (this.descItems.length > 0)
+		{
+			for (var dd in this.descItems)
+			{
+				this.descItems[dd].Clear();
+			}
+		}
+		this.descItems = new Array();
+		this.listDescItem = 0;
 	}
 
 	function Clear()

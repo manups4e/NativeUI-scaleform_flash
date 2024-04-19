@@ -86,14 +86,18 @@
 
 		if (this.barMC != undefined)
 		{
-			this.barMC.init(__reg5,278);
+			var _loc1_ = new com.rockstargames.ui.utils.HudColour();
+			com.rockstargames.ScaleformUI.utils.MovieClipHandler.HexToARGB(__reg5,_loc1_);
+			this.barMC.initCustom(_loc1_,278);
 			var __reg6 = com.rockstargames.gtav.utils.GTAVUIUtils.getAdjustedSegmentPct(__reg4, 54, 2, 5);
 			this.barMC.percent(__reg6,false);
 		}
 
 		if (this.darkbarMC != undefined)
 		{
-			this.darkbarMC.init(__reg5,278);
+			var _loc1_ = new com.rockstargames.ui.utils.HudColour();
+			com.rockstargames.ScaleformUI.utils.MovieClipHandler.HexToARGB(__reg5,_loc1_);
+			this.darkbarMC.initCustom(_loc1_,278);
 			this.darkbarMC._alpha = 70;
 			var __reg7 = com.rockstargames.gtav.utils.GTAVUIUtils.getAdjustedSegmentPct(__reg3, 54, 2, 5);
 			this.darkbarMC.percent(__reg7,false);

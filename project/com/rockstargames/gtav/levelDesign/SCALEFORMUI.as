@@ -2,12 +2,12 @@
 {
 	var menuContainer;
 	var UIMenu;
+	var TimerBarPool;
 	var DispConf;
 	var offset = [];
 	var iActualWidth;
 	static var MouseEnabled = true;
 	static var IS_FADING = false;
-	var GameMap;
 
 	function SCALEFORMUI()
 	{
@@ -20,14 +20,14 @@
 		super.INITIALISE(mc);
 	}
 
-	function CREATE_MENU(title, subtitle, x, y, alternative, txd, txn, maxItems, totItems, enableAnim, animType, buildType, counterColor, dFontName, dFontId, fadingSpeed)
+	function CREATE_MENU(title, subtitle, x, y, alternative, txd, txn, maxItems, totItems, enableAnim, animType, buildType, counterColor, dFontName, dFontId, fadingSpeed, bannerColor, itemless, descText)
 	{
 		var off = [x, y];
 		if (fadingSpeed > 0.0)
 		{
 			this.CONTENT._alpha = 0;
 		}
-		this.UIMenu = new com.rockstargames.ScaleformUI.UIMenu(this.CONTENT, title, subtitle, alternative, x, y, txd, txn, maxItems, totItems, enableAnim, animType, buildType, counterColor, dFontName, dFontId, fadingSpeed);
+		this.UIMenu = new com.rockstargames.ScaleformUI.UIMenu(this.CONTENT, title, subtitle, alternative, x, y, txd, txn, maxItems, totItems, enableAnim, animType, buildType, counterColor, dFontName, dFontId, fadingSpeed, bannerColor, itemless, descText);
 	}
 
 	function ENABLE_3D_ANIMATIONS(enable)
@@ -40,10 +40,13 @@
 		this.UIMenu.ClearItems();
 	}
 
-	function CLEAR_ALL()
+	function UPDATE_MENU_BANNER_TEXTURE(txd, txn)
 	{
-		this.UIMenu.Clear();
-		this.UIMenu = undefined;
+		this.UIMenu.SetBannerTexture(txd,txn);
+	}
+	function SET_MENU_BANNER_COLOR(color)
+	{
+		this.UIMenu.SetBannerColor(color);
 	}
 
 	function SET_WIDTH(w)
@@ -227,7 +230,17 @@
 		return ret;
 	}
 
-	function SELECT_PANEL(item)
+	function GET_PICKER_COLOR(colorId)
+	{
+		var retVal = new Array();
+		var color = com.rockstargames.ScaleformUI.utils.ColorPanelColors.GetVehColorById(colorId);
+		retVal.push(color.r);
+		retVal.push(color.g);
+		retVal.push(color.b);
+		return retVal.toString();
+	}
+
+	function SELECT_PANEL(item, colorID)
 	{
 		var retVal = new Array();
 		var _item = this.UIMenu.menuItems[item];
@@ -236,14 +249,21 @@
 			for (var i = 0; i < _item.panels.length; i++)
 			{
 				var _panel = _item.panels[i];
-				if (_panel._hovered)
+				if (_panel instanceof com.rockstargames.ScaleformUI.panels.UIMenuColorPickerPanel)
 				{
-					if (_panel instanceof com.rockstargames.ScaleformUI.panels.UIMenuColorPanel)
+					return i;
+				}
+				else
+				{
+					if (_panel._hovered)
 					{
-						retVal.push(i);
-						retVal.push(_panel.Value);
-						com.rockstargames.ui.game.GameInterface.call("PLAY_SOUND",com.rockstargames.ui.game.GameInterface.GENERIC_TYPE,"SELECT","HUD_FRONTEND_DEFAULT_SOUNDSET");
-						return retVal.toString();
+						if (_panel instanceof com.rockstargames.ScaleformUI.panels.UIMenuColorPanel)
+						{
+							retVal.push(i);
+							retVal.push(_panel.Value);
+							com.rockstargames.ui.game.GameInterface.call("PLAY_SOUND",com.rockstargames.ui.game.GameInterface.GENERIC_TYPE,"SELECT","HUD_FRONTEND_DEFAULT_SOUNDSET");
+							return retVal.toString();
+						}
 					}
 				}
 			}
@@ -487,28 +507,14 @@
 		return com.rockstargames.gtav.levelDesign.SCALEFORMUI.IS_FADING;
 	}
 
-	function CREATE_MAP()
+	function CLEAR_ALL()
 	{
-		this.GameMap = new com.rockstargames.ScaleformUI.GameMap.Minimap(this.CONTENT);
-	}
-
-	function SHOW_MAP(bool)
-	{
-		this.GameMap.Visible = bool;
-	}
-	function SET_MAP_SCALE(scale)
-	{
-		this.GameMap.ScaleMap(scale);
-	}
-	function CLEAR_MAP()
-	{
-		this.GameMap.Clear();
-		this.GameMap = undefined;
+		this.UIMenu.Clear();
+		this.UIMenu = undefined;
 	}
 
 	function ADD_TXD_REF_RESPONSE(txd, strRef, success)
 	{
-		com.rockstargames.ui.utils.Debug.log("ADD_TXD_REF_RESPONSE - " + arguments.toString());
 		if (success == true)
 		{
 			var pMC = this.CONTENT;
@@ -522,7 +528,6 @@
 
 	function TXD_HAS_LOADED(txd, success, strRef)
 	{
-		com.rockstargames.ui.utils.Debug.log("TXD_HAS_LOADED - " + arguments.toString());
 		if (success == true)
 		{
 			var pMC = this.CONTENT;
@@ -536,7 +541,6 @@
 
 	function TXD_ALREADY_LOADED(txd, strRef)
 	{
-		com.rockstargames.ui.utils.Debug.log("TXD_ALREADY_LOADED - " + arguments.toString());
 		var pMC = this.CONTENT;
 		var il = com.rockstargames.ui.media.ImageLoaderMC(eval(pMC + "." + strRef));
 		if (pMC != undefined)

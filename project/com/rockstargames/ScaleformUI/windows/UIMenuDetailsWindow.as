@@ -20,6 +20,7 @@
 	function UIMenuDetailsWindow(parentMenu, _det0, _det1, _det2, txd, txn, x, y, w, h)
 	{
 		this.statsMaxDegrees = new Array();
+		this.totalStats = 0;
 		this.currentAngle = 0;
 		this.itemMC.statWheelMC.wheelMC.clear();
 		this._parentMenu = parentMenu;
@@ -56,8 +57,8 @@
 		if (txd != undefined && txd != "" && txn != undefined && txn != "")
 		{
 			this.itemMC.statWheelMC._visible = false;
-			this.leftEmblemMC = this.itemMC.cMC.attachMovie("txdLoader", "uimenudetailswindow", this.itemMC.getNextHighestDepth(), {_x:14, _y:9});
-			com.rockstargames.ScaleformUI.utils.MovieClipHandler.SetClip(this.leftEmblemMC,txd,txn,w,h,this.txdloaded, this);
+			this.leftEmblemMC = this.itemMC.cMC.attachMovie("txdLoader", "leftEmblem", this.itemMC.getNextHighestDepth(), {_x:14, _y:9});
+			com.rockstargames.ScaleformUI.utils.MovieClipHandler.SetClip(this.leftEmblemMC,txd,txn,w,h,this.txdloaded,this);
 		}
 		else
 		{
@@ -105,8 +106,8 @@
 		if (txd != undefined && txd != "" && txn != undefined && txn != "")
 		{
 			this.itemMC.statWheelMC._visible = false;
-			this.leftEmblemMC = this.itemMC.cMC.attachMovie("txdLoader", "uimenudetailswindow", this.itemMC.getNextHighestDepth());
-			com.rockstargames.ScaleformUI.utils.MovieClipHandler.SetClip(this.leftEmblemMC,txd,txn,w,h,this.txdloaded, this);
+			this.leftEmblemMC = this.itemMC.cMC.attachMovie("txdLoader", "leftEmblem", this.itemMC.getNextHighestDepth());
+			com.rockstargames.ScaleformUI.utils.MovieClipHandler.SetClip(this.leftEmblemMC,txd,txn,w,h,this.txdloaded,this);
 		}
 		else
 		{
@@ -186,7 +187,7 @@
 		endAngle = Math.min(endAngle, 360);
 		var _loc5_ = this.itemMC.statWheelMC.wheelMC;
 		var _loc6_ = new com.rockstargames.ui.utils.HudColour();
-		com.rockstargames.ui.utils.Colour.setHudColour(colourId,_loc6_);
+		com.rockstargames.ScaleformUI.utils.MovieClipHandler.HexToARGB(colourId,_loc6_);
 		_loc5_.moveTo(0,0);
 		_loc5_.beginFill(com.rockstargames.ui.utils.Colour.RGBToHex(_loc6_.r, _loc6_.g, _loc6_.b),100);
 		var _loc2_ = startAngle;

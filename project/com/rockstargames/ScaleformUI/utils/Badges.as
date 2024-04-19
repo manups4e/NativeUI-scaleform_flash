@@ -180,8 +180,41 @@
 	static var BRAND_WILLARD = 177;
 	static var BRAND_ZIRCONIUM = 178;
 	static var INFO = 179;
+	static var MISSION_YELLOW = 180;
+	static var MISSION_BLUE = 181;
+	static var MISSION_GREEN = 182;
+	static var MISSION_PURPLE = 183;
+	static var MISSION_ORANGE = 184;
+	static var MISSION_RED = 185;
+	static var MISSION_AQUA = 186;
+	static var MISSION_LIGHTRED = 187;
 	function Badges()
 	{
+	}
+
+	static function canChangeSprite(id){
+		switch (id)
+		{
+			case com.rockstargames.ScaleformUI.utils.Badges.AMMO :
+			case com.rockstargames.ScaleformUI.utils.Badges.ARMOR :
+			case com.rockstargames.ScaleformUI.utils.Badges.BARBER :
+			case com.rockstargames.ScaleformUI.utils.Badges.BIKE :
+			case com.rockstargames.ScaleformUI.utils.Badges.CAR :
+			case com.rockstargames.ScaleformUI.utils.Badges.CLOTHING :
+			case com.rockstargames.ScaleformUI.utils.Badges.FRANKLIN :
+			case com.rockstargames.ScaleformUI.utils.Badges.GUN :
+			case com.rockstargames.ScaleformUI.utils.Badges.HEALTH_HEART :
+			case com.rockstargames.ScaleformUI.utils.Badges.MAKEUP_BRUSH :
+			case com.rockstargames.ScaleformUI.utils.Badges.MASK :
+			case com.rockstargames.ScaleformUI.utils.Badges.MICHAEL :
+			case com.rockstargames.ScaleformUI.utils.Badges.TATTOO :
+			case com.rockstargames.ScaleformUI.utils.Badges.TREVOR :
+				return true;
+			default :
+				return false;
+				break;
+		}
+		
 	}
 
 	static function getSpriteNameById(id, selected)
@@ -254,6 +287,14 @@
 				return "base_jumping";
 			case com.rockstargames.ScaleformUI.utils.Badges.BRIEFCASE :
 				return "capture_the_flag";
+			case com.rockstargames.ScaleformUI.utils.Badges.MISSION_YELLOW :
+			case com.rockstargames.ScaleformUI.utils.Badges.MISSION_BLUE :
+			case com.rockstargames.ScaleformUI.utils.Badges.MISSION_GREEN :
+			case com.rockstargames.ScaleformUI.utils.Badges.MISSION_PURPLE :
+			case com.rockstargames.ScaleformUI.utils.Badges.MISSION_ORANGE :
+			case com.rockstargames.ScaleformUI.utils.Badges.MISSION_RED :
+			case com.rockstargames.ScaleformUI.utils.Badges.MISSION_LIGHTRED:
+			case com.rockstargames.ScaleformUI.utils.Badges.MISSION_AQUA :
 			case com.rockstargames.ScaleformUI.utils.Badges.MISSION_STAR :
 				return "custom_mission";
 			case com.rockstargames.ScaleformUI.utils.Badges.DEATHMATCH :
@@ -604,6 +645,14 @@
 			case com.rockstargames.ScaleformUI.utils.Badges.ADVERSARY :
 			case com.rockstargames.ScaleformUI.utils.Badges.BASE_JUMPING :
 			case com.rockstargames.ScaleformUI.utils.Badges.BRIEFCASE :
+			case com.rockstargames.ScaleformUI.utils.Badges.MISSION_YELLOW :
+			case com.rockstargames.ScaleformUI.utils.Badges.MISSION_BLUE :
+			case com.rockstargames.ScaleformUI.utils.Badges.MISSION_GREEN :
+			case com.rockstargames.ScaleformUI.utils.Badges.MISSION_PURPLE :
+			case com.rockstargames.ScaleformUI.utils.Badges.MISSION_ORANGE :
+			case com.rockstargames.ScaleformUI.utils.Badges.MISSION_RED :
+			case com.rockstargames.ScaleformUI.utils.Badges.MISSION_LIGHTRED:
+			case com.rockstargames.ScaleformUI.utils.Badges.MISSION_AQUA :
 			case com.rockstargames.ScaleformUI.utils.Badges.MISSION_STAR :
 			case com.rockstargames.ScaleformUI.utils.Badges.DEATHMATCH :
 			case com.rockstargames.ScaleformUI.utils.Badges.CASTLE :
@@ -723,7 +772,39 @@
 			case com.rockstargames.ScaleformUI.utils.Badges.LOCK :
 			case com.rockstargames.ScaleformUI.utils.Badges.TICK :
 			case com.rockstargames.ScaleformUI.utils.Badges.CROWN :
+			case com.rockstargames.ScaleformUI.utils.Badges.ROCKSTAR :
 				return selected ? com.rockstargames.ui.utils.HudColour.HUD_COLOUR_BLACK : com.rockstargames.ui.utils.HudColour.HUD_COLOUR_WHITE;
+			case com.rockstargames.ScaleformUI.utils.Badges.GLOBE_WHITE :
+				return com.rockstargames.ui.utils.HudColour.HUD_COLOUR_WHITE;
+			case com.rockstargames.ScaleformUI.utils.Badges.GLOBE_RED :
+				return com.rockstargames.ui.utils.HudColour.HUD_COLOUR_RED;
+			case com.rockstargames.ScaleformUI.utils.Badges.GLOBE_BLUE :
+				return com.rockstargames.ui.utils.HudColour.HUD_COLOUR_BLUE;
+			case com.rockstargames.ScaleformUI.utils.Badges.GLOBE_YELLOW :
+				return com.rockstargames.ui.utils.HudColour.HUD_COLOUR_YELLOW;
+			case com.rockstargames.ScaleformUI.utils.Badges.GLOBE_GREEN :
+				return com.rockstargames.ui.utils.HudColour.HUD_COLOUR_GREEN;
+			case com.rockstargames.ScaleformUI.utils.Badges.GLOBE_ORANGE :
+				return com.rockstargames.ui.utils.HudColour.HUD_COLOUR_ORANGE;
+			case com.rockstargames.ScaleformUI.utils.Badges.MISSION_YELLOW :
+				return com.rockstargames.ui.utils.HudColour.HUD_COLOUR_YELLOW;
+			case com.rockstargames.ScaleformUI.utils.Badges.MISSION_BLUE :
+				return com.rockstargames.ui.utils.HudColour.HUD_COLOUR_FREEMODE;
+			case com.rockstargames.ScaleformUI.utils.Badges.MISSION_GREEN :
+				return com.rockstargames.ui.utils.HudColour.HUD_COLOUR_GREEN;
+			case com.rockstargames.ScaleformUI.utils.Badges.MISSION_PURPLE :
+				return com.rockstargames.ui.utils.HudColour.HUD_COLOUR_PURPLE;
+			case com.rockstargames.ScaleformUI.utils.Badges.MISSION_ORANGE :
+				return com.rockstargames.ui.utils.HudColour.HUD_COLOUR_ORANGE;
+			case com.rockstargames.ScaleformUI.utils.Badges.MISSION_RED :
+				return com.rockstargames.ui.utils.HudColour.HUD_COLOUR_RED;
+			case com.rockstargames.ScaleformUI.utils.Badges.MISSION_LIGHTRED:
+				return com.rockstargames.ui.utils.HudColour.HUD_COLOUR_REDLIGHT;
+			case com.rockstargames.ScaleformUI.utils.Badges.MISSION_AQUA :
+				return com.rockstargames.ui.utils.HudColour.HUD_COLOUR_FRIENDLY;
+			default :
+				return -1;
+				break;
 		}
 	}
 

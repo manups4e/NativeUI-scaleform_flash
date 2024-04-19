@@ -10,8 +10,8 @@
 	var leftTextTF;
 	var leftText;
 	var parentMC;
-	var _mainColor = com.rockstargames.ui.utils.HudColour.HUD_COLOUR_PAUSE_BG;// HUD_COLOUR_PAUSE_BG
-	var _highlightColor = com.rockstargames.ui.utils.HudColour.HUD_COLOUR_WHITE;// HUD_COLOUR_WHITE
+	var _mainColor = 1291845632;// com.rockstargames.ui.utils.HudColour.HUD_COLOUR_PAUSE_BG
+	var _highlightColor = -986896;// com.rockstargames.ui.utils.HudColour.HUD_COLOUR_WHITE
 	var _textColor = com.rockstargames.ui.utils.HudColour.NONE;
 	var _textHighlightColor = com.rockstargames.ui.utils.HudColour.NONE;
 	var _hovered = false;
@@ -41,16 +41,9 @@
 		}
 		if (!this.highlighted)
 		{
-			if (this._mainColor == com.rockstargames.ui.utils.HudColour.HUD_COLOUR_PAUSE_BG)
-			{
-				com.rockstargames.ui.utils.Colour.ApplyHudColour(this.backgroundMC,com.rockstargames.ui.utils.HudColour.HUD_COLOUR_MENU_HIGHLIGHT);
-			}
-			else
-			{
-				var col = new com.rockstargames.ui.utils.HudColour();
-				com.rockstargames.ui.utils.Colour.setHudColour(this._mainColor,col);
-				com.rockstargames.ui.utils.Colour.Colourise(this.backgroundMC,col.r,col.g,col.b,col.a - 20);
-			}
+			var _loc1_ = new com.rockstargames.ui.utils.HudColour();
+			com.rockstargames.ScaleformUI.utils.MovieClipHandler.HexToARGB(this._highlightColor,_loc1_);
+			com.rockstargames.ui.utils.Colour.Colourise(this.backgroundMC,_loc1_.r,_loc1_.g,_loc1_.b,_loc1_.a - 80);
 		}
 	}
 	function mOut()
@@ -61,8 +54,9 @@
 		}
 		if (!this.highlighted)
 		{
-			com.rockstargames.ui.utils.Colour.ApplyHudColour(this.backgroundMC,this._mainColor);
-			if (this._mainColor == com.rockstargames.ui.utils.HudColour.HUD_COLOUR_PAUSE_BG)
+			com.rockstargames.ScaleformUI.utils.MovieClipHandler.ApplyHexColour(this.backgroundMC,this._mainColor);
+
+			if (this._mainColor == 1291845632)
 			{
 				this.backgroundMC._alpha = 0;
 			}
@@ -115,22 +109,22 @@
 			{
 				if (!this.highlighted)
 				{
-					if (this._mainColor == com.rockstargames.ui.utils.HudColour.HUD_COLOUR_PAUSE_BG)
+					if (this._mainColor != 1291845632)
 					{
-						com.rockstargames.ui.utils.Colour.ApplyHudColour(this.backgroundMC,com.rockstargames.ui.utils.HudColour.HUD_COLOUR_MENU_HIGHLIGHT);
+						var _loc1_ = new com.rockstargames.ui.utils.HudColour();
+						com.rockstargames.ScaleformUI.utils.MovieClipHandler.HexToARGB(this._mainColor,_loc1_);
+						com.rockstargames.ui.utils.Colour.Colourise(this.backgroundMC,_loc1_.r,_loc1_.g,_loc1_.b,_loc1_.a - 20);
 					}
 					else
 					{
-						var col = new com.rockstargames.ui.utils.HudColour();
-						com.rockstargames.ui.utils.Colour.setHudColour(this._mainColor,col);
-						com.rockstargames.ui.utils.Colour.Colourise(this.backgroundMC,col.r,col.g,col.b,col.a - 20);
+						this.backgroundMC._alpha = 0;
 					}
 				}
 			}
 			else
 			{
-				com.rockstargames.ui.utils.Colour.ApplyHudColour(this.backgroundMC,this._mainColor);
-				if (this._mainColor == com.rockstargames.ui.utils.HudColour.HUD_COLOUR_PAUSE_BG)
+				com.rockstargames.ScaleformUI.utils.MovieClipHandler.ApplyHexColour(this.backgroundMC,this._mainColor);
+				if (this._mainColor == 1291845632)
 				{
 					this.backgroundMC._alpha = 0;
 				}
@@ -138,7 +132,7 @@
 		}
 		else
 		{
-			com.rockstargames.ui.utils.Colour.ApplyHudColour(this.backgroundMC,this._highlightColor);
+			com.rockstargames.ScaleformUI.utils.MovieClipHandler.ApplyHexColour(this.backgroundMC,this._highlightColor);
 		}
 		//com.rockstargames.ui.utils.Colour.ApplyHudColourToTF(this.leftTextTF,this._enabled ? (!_h ? this._textColor : this._textHighlightColor) : com.rockstargames.ui.utils.HudColour.HUD_COLOUR_GREY);
 	}
